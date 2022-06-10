@@ -47,73 +47,37 @@ class BlockType {
 
 	public function init(): void {
 
+		AssetsHelper::setup();
 		add_action( 'init', array( $this, 'register' ) );
-		add_action( 'wp_ajax_themeplate_block_script-' . $this->get_config( 'name' ), array( $this, 'block_script' ) );
+		add_filter( 'themeplate_blocks_collection', array( $this, 'store' ) );
 
 	}
 
 
 	public function register(): void {
 
-		wp_register_script(
-			$this->get_config( 'name' ),
-			add_query_arg(
-				array(
-					'action'   => 'themeplate_block_script-' . $this->get_config( 'name' ),
-					'_wpnonce' => wp_create_nonce( $this->get_config( 'name' ) ),
-				),
-				admin_url( 'admin-ajax.php' )
-			),
-			array( 'wp-blocks', 'wp-element', 'wp-components' ),
-			microtime( true ),
-			true
-		);
-
 		register_block_type(
 			$this->get_config( 'name' ),
 			array(
 				'render_callback' => array( $this, 'render_block' ),
-				'editor_script'   => $this->get_config( 'name' ),
 			)
 		);
 
 	}
 
 
-	public function block_script() {
+	public function store( array $collection ): array {
 
-		check_ajax_referer( $this->get_config( 'name' ) );
-		header( 'Content-Type: text/javascript' );
-		?>
+		$collection[ $this->get_config( 'name' ) ] = array_merge(
+			$this->get_config(),
+			array(
+				'title'      => $this->get_title(),
+				'category'   => $this->get_config( 'category' ),
+				'attributes' => array(),
+			)
+		);
 
-( function ( registerBlockType, createElement, Fragment, ServerSideRender ) {
-	registerBlockType( '<?php echo esc_js( $this->get_config( 'name' ) ); ?>', {
-		title: '<?php echo esc_js( $this->get_title() ); ?>',
-		icon: '<?php echo esc_js( $this->get_config( 'icon' ) ); ?>',
-		category: '<?php echo esc_js( $this->get_config( 'category' ) ); ?>',
-
-		edit: function ( props ) {
-			return createElement(
-				Fragment,
-				null,
-				createElement(
-					ServerSideRender,
-					{
-						block: '<?php echo esc_js( $this->get_config( 'name' ) ); ?>',
-					}
-				)
-			);
-		},
-	} );
-} )(
-	wp.blocks.registerBlockType,
-	wp.element.createElement,
-	wp.element.Fragment,
-	wp.components.ServerSideRender
-);
-
-		<?php
-		exit;
+		return $collection;
 
 	}
 
