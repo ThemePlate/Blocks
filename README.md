@@ -1,7 +1,14 @@
 # ThemePlate Blocks
 
+## Usage
 ```php
 use ThemePlate\Blocks\BlockType;
 
-( new BlockType( 'My custom block', '/path/to/render.php' ) )->init();
+/** https://developer.wordpress.org/reference/classes/wp_block_type/__construct/#parameters */
+$config = array(
+	'namespace' => 'my-blocks',
+	'template'  => '/path/to/render.php',
+);
+
+( new BlockType( 'Custom Block', $config ) )->init();
 ```

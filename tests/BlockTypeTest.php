@@ -12,9 +12,15 @@ use PHPUnit\Framework\TestCase;
 
 class BlockTypeTest extends TestCase {
 	private BlockType $block_type;
+	private array $config;
 
 	public function setUp(): void {
-		$this->block_type = new BlockType( 'Test', '/path/to/render.php' );
+		$this->config = array(
+			'namespace' => 'my-blocks',
+			'template'  => '/path/to/render.php',
+		);
+
+		$this->block_type = new BlockType( 'Test', $this->config );
 	}
 
 	public function test_firing_init_actually_add_hooks(): void {

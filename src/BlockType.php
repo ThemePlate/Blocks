@@ -7,6 +7,7 @@
 namespace ThemePlate\Blocks;
 
 use ThemePlate\Core\Helper\MainHelper;
+use WP_Block;
 
 class BlockType {
 
@@ -14,18 +15,18 @@ class BlockType {
 		'namespace' => 'themeplate',
 		'icon'      => 'admin-generic',
 		'category'  => 'widgets',
+		'template'  => '',
 	);
 
+
 	protected string $title;
-	protected string $template;
 	protected array $config;
 
 
-	public function __construct( string $title, string $template, array $config = array() ) {
+	public function __construct( string $title, array $config = array() ) {
 
-		$this->title    = $title;
-		$this->template = $template;
-		$this->config   = $this->check( $config );
+		$this->title  = $title;
+		$this->config = $this->check( $config );
 
 	}
 
@@ -59,7 +60,8 @@ class BlockType {
 		register_block_type(
 			$this->get_config( 'name' ),
 			array(
-				'render_callback' => array( $this, 'render_block' ),
+				'render_callback' => array( self::class, 'render' ),
+				'view_script'     => $this->get_config( 'template' ),
 			)
 		);
 
@@ -100,10 +102,14 @@ class BlockType {
 	}
 
 
-	public function render_block(): string {
+	public static function render( array $attributes, string $content, WP_Block $block ): string {
+
+		if ( ! file_exists( $block->block_type->view_script ) ) {
+			return '';
+		}
 
 		ob_start();
-		include( $this->template );
+		include $block->block_type->view_script;
 		return ob_get_clean();
 
 	}
