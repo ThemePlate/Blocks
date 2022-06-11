@@ -107,12 +107,22 @@ class BlockType {
 
 	protected function generate_args(): array {
 
+		$config = $this->get_config();
+
+		unset( $config['namespace'] );
+		unset( $config['template'] );
+
 		return array_merge(
-			$this->get_config(),
+			$config,
 			array(
 				'title'      => $this->get_title(),
 				'category'   => $this->get_config( 'category' ),
 				'attributes' => $this->get_attributes(),
+				'themeplate' => array(
+					'namespace' => $this->get_config( 'namespace' ),
+					'template'  => $this->get_config( 'template' ),
+					'fields'    => $this->fields,
+				),
 			)
 		);
 
