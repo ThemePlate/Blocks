@@ -6,6 +6,7 @@
 
 namespace ThemePlate\Blocks;
 
+use ThemePlate\Core\Fields;
 use ThemePlate\Core\Helper\MainHelper;
 use WP_Block;
 
@@ -21,6 +22,7 @@ class BlockType {
 
 	protected string $title;
 	protected array $config;
+	protected ?Fields $fields = null;
 
 
 	public function __construct( string $title, array $config = array() ) {
@@ -46,6 +48,15 @@ class BlockType {
 	}
 
 
+	public function fields( array $list ): self {
+
+		$this->fields = new Fields( $list );
+
+		return $this;
+
+	}
+
+
 	public function init(): void {
 
 		AssetsHelper::setup();
@@ -57,27 +68,19 @@ class BlockType {
 
 	public function register(): void {
 
-		register_block_type(
-			$this->get_config( 'name' ),
-			array(
-				'render_callback' => array( self::class, 'render' ),
-				'view_script'     => $this->get_config( 'template' ),
-			)
-		);
+		$args = $this->generate_args();
+
+		$args['render_callback'] = array( self::class, 'render' );
+		$args['view_script']     = $this->get_config( 'template' );
+
+		register_block_type( $this->get_config( 'name' ), $args );
 
 	}
 
 
 	public function store( array $collection ): array {
 
-		$collection[ $this->get_config( 'name' ) ] = array_merge(
-			$this->get_config(),
-			array(
-				'title'      => $this->get_title(),
-				'category'   => $this->get_config( 'category' ),
-				'attributes' => array(),
-			)
-		);
+		$collection[ $this->get_config( 'name' ) ] = $this->generate_args();
 
 		return $collection;
 
@@ -98,6 +101,41 @@ class BlockType {
 		}
 
 		return $this->config[ $key ] ?? '';
+
+	}
+
+
+	protected function generate_args(): array {
+
+		return array_merge(
+			$this->get_config(),
+			array(
+				'title'      => $this->get_title(),
+				'category'   => $this->get_config( 'category' ),
+				'attributes' => $this->get_attributes(),
+			)
+		);
+
+	}
+
+
+	protected function get_attributes(): array {
+
+		$attributes = array();
+
+		if ( null === $this->fields ) {
+			return $attributes;
+		}
+
+		foreach ( $this->fields->get_collection() as $field ) {
+			$attributes[ $field->data_key() ] = array(
+				'type'    => 'string',
+				'default' => $field->get_config( 'default' ),
+				'label'   => $field->get_config( 'title' ),
+			);
+		}
+
+		return $attributes;
 
 	}
 

@@ -10,5 +10,5 @@ $config = array(
 	'template'  => '/path/to/render.php',
 );
 
-( new BlockType( 'Custom Block', $config ) )->init();
+( new BlockType( 'Custom Block', $config ) )->fields( $list )->init();
 ```
