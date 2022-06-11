@@ -28,6 +28,5 @@ class BlockTypeTest extends TestCase {
 		$this->assertSame( 10, has_action( 'wp_ajax_' . AssetsHelper::ACTION, array( AssetsHelper::class, 'load' ) ) );
 		$this->assertSame( 10, has_action( 'enqueue_block_editor_assets', array( AssetsHelper::class, 'enqueue' ) ) );
 		$this->assertSame( 10, has_action( 'init', array( $this->block_type, 'register' ) ) );
-		$this->assertSame( 10, has_filter( 'themeplate_blocks_collection', array( $this->block_type, 'store' ) ) );
 	}
 }

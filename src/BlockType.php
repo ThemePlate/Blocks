@@ -21,6 +21,7 @@ class BlockType {
 
 
 	protected string $title;
+	protected string $name;
 	protected array $config;
 	protected ?Fields $fields = null;
 
@@ -37,11 +38,7 @@ class BlockType {
 
 		$config = MainHelper::fool_proof( self::DEFAULTS, $config );
 
-		if ( empty( $config['name'] ) ) {
-			$config['name'] = $this->title;
-		}
-
-		$config['name'] = trailingslashit( $config['namespace'] ) . sanitize_title( $config['name'] );
+		$this->name = trailingslashit( $config['namespace'] ) . sanitize_title( $this->title );
 
 		return $config;
 
@@ -61,7 +58,6 @@ class BlockType {
 
 		AssetsHelper::setup();
 		add_action( 'init', array( $this, 'register' ) );
-		add_filter( 'themeplate_blocks_collection', array( $this, 'store' ) );
 
 	}
 
@@ -73,14 +69,18 @@ class BlockType {
 		$args['render_callback'] = array( self::class, 'render' );
 		$args['view_script']     = $this->get_config( 'template' );
 
-		register_block_type( $this->get_config( 'name' ), $args );
+		if ( false === register_block_type( $this->name, $args ) ) {
+			return;
+		}
+
+		add_filter( 'themeplate_blocks_collection', array( $this, 'store' ) );
 
 	}
 
 
 	public function store( array $collection ): array {
 
-		$collection[ $this->get_config( 'name' ) ] = $this->generate_args();
+		$collection[ $this->name ] = $this->generate_args();
 
 		return $collection;
 
