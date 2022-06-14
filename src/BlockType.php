@@ -57,6 +57,7 @@ class BlockType {
 	public function init(): void {
 
 		AssetsHelper::setup();
+		FieldsHelper::setup();
 		add_action( 'init', array( $this, 'register' ) );
 
 	}

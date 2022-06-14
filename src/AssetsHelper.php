@@ -25,7 +25,7 @@ class AssetsHelper {
 
 		check_ajax_referer( self::ACTION );
 		header( 'Content-Type: text/javascript' );
-		include dirname( __DIR__ ) . '/assets/script.js';
+		include dirname( __DIR__ ) . '/assets/build/index.js';
 		exit;
 
 	}
@@ -50,7 +50,11 @@ class AssetsHelper {
 		wp_localize_script(
 			self::HANDLE,
 			'ThemePlate_Blocks',
-			apply_filters( 'themeplate_blocks_collection', array() )
+			array(
+				'ajax_url'   => admin_url( 'admin-ajax.php' ),
+				'_wpnonce'   => wp_create_nonce( self::ACTION ),
+				'collection' => apply_filters( 'themeplate_blocks_collection', array() ),
+			),
 		);
 
 	}
