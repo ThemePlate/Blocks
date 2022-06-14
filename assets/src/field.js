@@ -70,11 +70,25 @@ const Field = ( config, attributes, setAttributes ) => {
 						{ config.title }
 					</BaseControl.VisualLabel>
 
-					<CheckboxControl
-						label={ config.title }
-						value={ attributes[ config.key ] }
-						onChange={ value => setAttributes( { [ config.key ]: value } ) }
-					/>
+					{ 0 === config.options.length &&
+						<CheckboxControl
+							label={ config.title }
+							value={ attributes[ config.key ] }
+							onChange={ value => setAttributes( { [ config.key ]: value } ) }
+						/>
+					}
+					{ 0 !== config.options.length &&
+						<Fragment>
+							{ config.options.map( option => (
+								<CheckboxControl
+									key={ option.value }
+									label={ option.label }
+									value={ attributes[ option.value ] }
+									onChange={ value => setAttributes( { [ config.key ]: value } ) }
+								/>
+							) ) }
+						</Fragment>
+					}
 				</BaseControl>
 			);
 

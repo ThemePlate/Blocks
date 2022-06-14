@@ -7,6 +7,7 @@
 namespace ThemePlate\Blocks;
 
 use ThemePlate\Core\Fields;
+use ThemePlate\Core\Helper\MainHelper;
 use WP_Block_Type_Registry;
 
 class FieldsHelper {
@@ -54,6 +55,25 @@ class FieldsHelper {
 
 			if ( 'group' === $field->get_config( 'type' ) ) {
 				$config['fields'] = self::prepare( $field->get_config( 'fields' ) );
+			}
+
+			if (
+				! empty( $config['options'] ) &&
+				in_array( $field->get_config( 'type' ), array( 'checkbox', 'checklist', 'radio', 'radiolist', 'select', 'select2' ), true )
+			) {
+				$is_sequential = MainHelper::is_sequential( $config['options'] );
+
+				$config['options'] = array_map(
+					function ( $value, $label ) use ( $is_sequential ) {
+						if ( $is_sequential ) {
+							$value++;
+						}
+
+						return compact( 'value', 'label' );
+					},
+					array_keys( $config['options'] ),
+					$config['options']
+				);
 			}
 
 			$prepared[] = $config;
