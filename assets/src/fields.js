@@ -9,7 +9,10 @@ export default function Fields( props ) {
 	return (
 		<Fragment>
 			{ list.map( field => (
-				<PanelRow key={ field.key }>
+				<PanelRow
+					key={ field.key }
+					className={ [ 'themeplate-blocks-field', `field-${ field.class }` ] }
+				>
 					{ Field( field, attributes, setAttributes ) }
 				</PanelRow>
 			) ) }

@@ -10,4 +10,30 @@
   border: 1px dotted #f00;
 }
 
+.themeplate-blocks-fields .themeplate-blocks-field {
+  padding-top: 4px;
+  border-bottom: 1px solid #ddd;
+}
+.themeplate-blocks-fields .themeplate-blocks-field:last-of-type:not(.type-group) {
+  padding: 0;
+}
+.themeplate-blocks-fields .themeplate-blocks-field.field-type-group .components-panel__row {
+  margin: 8px 0;
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+.themeplate-blocks-fields .themeplate-blocks-field.field-type-group .components-panel__row + .components-panel__row {
+  margin-top: 16px;
+}
+.themeplate-blocks-fields .themeplate-blocks-field.field-type-group .components-base-control {
+  margin-bottom: 0;
+}
+.themeplate-blocks-fields .components-base-control {
+  width: 100%;
+}
+.themeplate-blocks-fields .components-base-control__label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
 /*# sourceMappingURL=index.css.map*/

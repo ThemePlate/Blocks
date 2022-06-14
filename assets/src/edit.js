@@ -54,7 +54,7 @@ export default function Edit( props ) {
 	return (
 		<Fragment>
 			<InspectorControls>
-				<PanelBody>
+				<PanelBody className={ 'themeplate-blocks-fields' }>
 					{ 0 === fields.length &&
 						<Placeholder><Spinner /></Placeholder> }
 					{ 0 !== fields.length &&
@@ -69,6 +69,7 @@ export default function Edit( props ) {
 			<ServerSideRender
 				block={ blockProps[ 'data-type' ] }
 				attributes={ attributes }
+				className={ 'wp-block-themeplate' }
 			/>
 		</Fragment>
 	);
