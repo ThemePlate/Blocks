@@ -110,6 +110,20 @@ const Field = ( config, attributes, setAttributes ) => {
 			);
 
 		case 'group':
+			return (
+				<BaseControl>
+					<BaseControl.VisualLabel>
+						{ config.title }
+					</BaseControl.VisualLabel>
+
+					<Fields
+						list={ config.fields }
+						attributes={ attributes[ config.key ] }
+						setAttributes={ setAttributes }
+					/>
+				</BaseControl>
+			);
+
 		case 'file':
 		case 'editor':
 		case 'type':

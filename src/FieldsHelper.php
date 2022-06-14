@@ -49,7 +49,12 @@ class FieldsHelper {
 		foreach ( $fields->get_collection() as $field ) {
 			$config = $field->get_config();
 
-			$config['key'] = $field->data_key();
+			$config['key']   = $field->data_key();
+			$config['class'] = $field->get_classname();
+
+			if ( 'group' === $field->get_config( 'type' ) ) {
+				$config['fields'] = self::prepare( $field->get_config( 'fields' ) );
+			}
 
 			$prepared[] = $config;
 		}
