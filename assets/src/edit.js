@@ -4,7 +4,7 @@
  *
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
-import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { InnerBlocks, InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { PanelBody, Placeholder, Spinner } from '@wordpress/components';
 import { useMemo, useState, Fragment } from '@wordpress/element';
 import ServerSideRender from '@wordpress/server-side-render';
@@ -66,11 +66,14 @@ export default function Edit( props ) {
 					}
 				</PanelBody>
 			</InspectorControls>
-			<ServerSideRender
-				block={ blockProps[ 'data-type' ] }
-				attributes={ attributes }
-				className={ 'wp-block-themeplate' }
-			/>
+			<div className={ 'wp-block-themeplate' }>
+				<ServerSideRender
+					block={ blockProps[ 'data-type' ] }
+					attributes={ attributes }
+					className={ 'block-editor-server-side-render' }
+				/>
+				<InnerBlocks />
+			</div>
 		</Fragment>
 	);
 }

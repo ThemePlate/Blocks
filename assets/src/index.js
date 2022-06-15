@@ -9,6 +9,7 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import Edit from './edit';
+import Save from './save';
 import Blocks from './vars';
 
 /**
@@ -20,7 +21,7 @@ import Blocks from './vars';
 Object.keys( Blocks.collection ).forEach( name => {
 	registerBlockType( name, {
 		edit: Edit,
-		save: () => null,
+		save: Save,
 
 		...Blocks.collection[ name ],
 	} );

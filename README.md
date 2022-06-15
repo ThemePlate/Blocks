@@ -42,9 +42,12 @@ return ( new BlockType( 'My custom block' ) )->fields( $list );
 <?php
 /**
  * @var array    $attributes Block attributes.
+ * @var string   $content    Block inner content.
  * @var WP_Block $block      Block instance.
  */
 ?>
+
+<?php echo $content; ?>
 
 <pre><?php print_r( $attributes ); ?></pre>
 <pre><?php print_r( $block ); ?></pre>
