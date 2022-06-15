@@ -107,6 +107,17 @@ class BlockType {
 	}
 
 
+	public function get_fields(): array {
+
+		if ( null === $this->fields ) {
+			return array();
+		}
+
+		return $this->fields->get_collection();
+
+	}
+
+
 	protected function generate_args(): array {
 
 		$config = $this->get_config();
