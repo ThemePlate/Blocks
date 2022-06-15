@@ -66,7 +66,7 @@ class FieldsHelper {
 				$config['options'] = array_map(
 					function ( $value, $label ) use ( $is_sequential ) {
 						if ( $is_sequential ) {
-							$value++;
+							$value = (string) ( $value + 1 );
 						}
 
 						return compact( 'value', 'label' );

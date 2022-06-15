@@ -166,16 +166,16 @@ const Field = (config, attributes, setAttributes) => {
     case 'checkbox':
       return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl.VisualLabel, null, config.title), 0 === config.options.length && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.CheckboxControl, {
         label: config.title,
-        value: attributes[config.key],
+        checked: 'true' === attributes[config.key],
         onChange: value => setAttributes({
-          [config.key]: value
+          [config.key]: value.toString()
         })
       }), 0 !== config.options.length && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, config.options.map(option => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.CheckboxControl, {
         key: option.value,
         label: option.label,
-        value: attributes[option.value],
-        onChange: value => setAttributes({
-          [config.key]: value
+        checked: attributes[config.key] === option.value,
+        onChange: () => setAttributes({
+          [config.key]: option.value
         })
       }))));
 
@@ -191,11 +191,11 @@ const Field = (config, attributes, setAttributes) => {
     case 'range':
       return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.RangeControl, {
         label: config.title,
-        value: attributes[config.key],
+        value: parseInt(attributes[config.key]),
         onChange: value => setAttributes({
-          [config.key]: value
+          [config.key]: value.toString()
         }),
-        afterIcon: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, attributes[config.key]),
+        afterIcon: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("strong", null, attributes[config.key]),
         withInputField: false
       });
 
@@ -206,7 +206,13 @@ const Field = (config, attributes, setAttributes) => {
       return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl.VisualLabel, null, config.title), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fields__WEBPACK_IMPORTED_MODULE_2__["default"], {
         list: config.fields,
         attributes: attributes[config.key],
-        setAttributes: setAttributes
+        setAttributes: values => {
+          setAttributes({
+            [config.key]: { ...attributes[config.key],
+              ...values
+            }
+          });
+        }
       }));
 
     case 'file':

@@ -73,8 +73,8 @@ const Field = ( config, attributes, setAttributes ) => {
 					{ 0 === config.options.length &&
 						<CheckboxControl
 							label={ config.title }
-							value={ attributes[ config.key ] }
-							onChange={ value => setAttributes( { [ config.key ]: value } ) }
+							checked={ 'true' === attributes[ config.key ] }
+							onChange={ value => setAttributes( { [ config.key ]: value.toString() } ) }
 						/>
 					}
 					{ 0 !== config.options.length &&
@@ -83,8 +83,8 @@ const Field = ( config, attributes, setAttributes ) => {
 								<CheckboxControl
 									key={ option.value }
 									label={ option.label }
-									value={ attributes[ option.value ] }
-									onChange={ value => setAttributes( { [ config.key ]: value } ) }
+									checked={ attributes[ config.key ] === option.value }
+									onChange={ () => setAttributes( { [ config.key ]: option.value } ) }
 								/>
 							) ) }
 						</Fragment>
@@ -111,9 +111,9 @@ const Field = ( config, attributes, setAttributes ) => {
 			return (
 				<RangeControl
 					label={ config.title }
-					value={ attributes[ config.key ] }
-					onChange={ value => setAttributes( { [ config.key ]: value } ) }
-					afterIcon={ <span>{ attributes[ config.key ] }</span> }
+					value={ parseInt( attributes[ config.key ] ) }
+					onChange={ value => setAttributes( { [ config.key ]: value.toString() } ) }
+					afterIcon={ <strong>{ attributes[ config.key ] }</strong> }
 					withInputField={ false }
 				/>
 			);
@@ -133,7 +133,11 @@ const Field = ( config, attributes, setAttributes ) => {
 					<Fields
 						list={ config.fields }
 						attributes={ attributes[ config.key ] }
-						setAttributes={ setAttributes }
+						setAttributes={ values => {
+							setAttributes( {
+								[ config.key ]: { ...attributes[ config.key ], ...values }
+							} )
+						} }
 					/>
 				</BaseControl>
 			);
