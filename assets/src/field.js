@@ -135,8 +135,8 @@ const Field = ( config, attributes, setAttributes ) => {
 						attributes={ attributes[ config.key ] }
 						setAttributes={ values => {
 							setAttributes( {
-								[ config.key ]: { ...attributes[ config.key ], ...values }
-							} )
+								[ config.key ]: { ...attributes[ config.key ], ...values },
+							} );
 						} }
 					/>
 				</BaseControl>

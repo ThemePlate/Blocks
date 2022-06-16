@@ -209,6 +209,7 @@ class BlockType {
 
 		ob_start();
 		include $block->block_type->view_script;
+
 		return ob_get_clean();
 
 	}
