@@ -4,11 +4,12 @@
  *
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
-import { InnerBlocks, InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { InnerBlocks, InspectorControls, store, useBlockProps } from '@wordpress/block-editor';
+import { getBlockContent } from '@wordpress/blocks';
 import { PanelBody, Placeholder, Spinner } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
 import { useMemo, useState, Fragment } from '@wordpress/element';
 import ServerSideRender from '@wordpress/server-side-render';
-
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
  * Those files can contain any CSS code that gets applied to the editor.
@@ -35,6 +36,11 @@ export default function Edit( props ) {
 	const [ fields, setFields ] = useState( [] );
 	const blockProps = useBlockProps();
 	const { attributes, setAttributes } = props;
+	const currentBlock = useSelect(
+		select => select( store ).getBlock( props.clientId ),
+		[ props ]
+	);
+	const innerBlockContent = getBlockContent( currentBlock );
 
 	const query = () => {
 		fetch( Blocks.ajax_url, {
@@ -69,7 +75,7 @@ export default function Edit( props ) {
 			<div className={ 'wp-block-themeplate' }>
 				<ServerSideRender
 					block={ blockProps[ 'data-type' ] }
-					attributes={ attributes }
+					attributes={ { ...attributes, innerBlockContent } }
 					className={ 'block-editor-server-side-render' }
 				/>
 				<InnerBlocks />

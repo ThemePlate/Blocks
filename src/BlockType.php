@@ -174,7 +174,11 @@ class BlockType {
 
 	protected function get_attributes(): array {
 
-		$attributes = array();
+		$attributes = array(
+			'innerBlockContent' => array(
+				'type' => 'string',
+			),
+		);
 
 		if ( null === $this->fields ) {
 			return $attributes;
@@ -197,6 +201,10 @@ class BlockType {
 
 		if ( ! file_exists( $block->block_type->view_script ) ) {
 			return '';
+		}
+
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			$content = $attributes['innerBlockContent'];
 		}
 
 		ob_start();
