@@ -43,6 +43,16 @@ export default function Edit( props ) {
 	);
 	const innerBlockContent = getBlockContent( currentBlock );
 
+	const handleDoubleClick = event => {
+		const targetDataset = event.target.dataset;
+
+		if ( targetDataset?.block && targetDataset?.type ) {
+			return;
+		}
+
+		setPreview( !preview );
+	};
+
 	const query = () => {
 		fetch( Blocks.ajax_url, {
 			method: 'POST',
@@ -84,7 +94,7 @@ export default function Edit( props ) {
 				</ToolbarGroup>
 			</BlockControls>
 
-			<div className={ 'wp-block-themeplate' }>
+			<div className={ 'wp-block-themeplate' } onDoubleClick={ handleDoubleClick }>
 				{ true === preview &&
 					<ServerSideRender
 						block={ blockProps[ 'data-type' ] }
