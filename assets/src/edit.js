@@ -4,9 +4,9 @@
  *
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
-import { InnerBlocks, InspectorControls, store, useBlockProps } from '@wordpress/block-editor';
+import { BlockControls, InnerBlocks, InspectorControls, store, useBlockProps } from '@wordpress/block-editor';
 import { getBlockContent } from '@wordpress/blocks';
-import { PanelBody, Placeholder, Spinner } from '@wordpress/components';
+import { PanelBody, Placeholder, Spinner, ToolbarButton, ToolbarGroup } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { useMemo, useState, Fragment } from '@wordpress/element';
 import ServerSideRender from '@wordpress/server-side-render';
@@ -34,11 +34,12 @@ import Fields from './fields';
  */
 export default function Edit( props ) {
 	const [ fields, setFields ] = useState( [] );
+	const [ preview, setPreview ] = useState( true );
 	const blockProps = useBlockProps();
 	const { attributes, setAttributes } = props;
 	const currentBlock = useSelect(
 		select => select( store ).getBlock( props.clientId ),
-		[ props ]
+		[ props ],
 	);
 	const innerBlockContent = getBlockContent( currentBlock );
 
@@ -72,13 +73,29 @@ export default function Edit( props ) {
 					}
 				</PanelBody>
 			</InspectorControls>
+
+			<BlockControls>
+				<ToolbarGroup>
+					<ToolbarButton
+						icon={ preview ? 'visibility' : 'hidden' }
+						label={ preview ? 'Switch to insert inner blocks' : 'Switch to preview rendered block' }
+						onClick={ () => setPreview( !preview ) }
+					/>
+				</ToolbarGroup>
+			</BlockControls>
+
 			<div className={ 'wp-block-themeplate' }>
-				<ServerSideRender
-					block={ blockProps[ 'data-type' ] }
-					attributes={ { ...attributes, innerBlockContent } }
-					className={ 'block-editor-server-side-render' }
-				/>
-				<InnerBlocks />
+				{ true === preview &&
+					<ServerSideRender
+						block={ blockProps[ 'data-type' ] }
+						attributes={ { ...attributes, innerBlockContent } }
+						className={ 'block-editor-server-side-render' }
+					/>
+				}
+
+				{ false === preview &&
+					<InnerBlocks />
+				}
 			</div>
 		</Fragment>
 	);
