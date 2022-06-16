@@ -70,6 +70,11 @@ class BlockType {
 
 		$args['render_callback'] = array( self::class, 'render' );
 		$args['view_script']     = $this->get_config( 'template' );
+		$args['themeplate']      = array(
+			'namespace' => $this->get_config( 'namespace' ),
+			'template'  => $this->get_config( 'template' ),
+			'fields'    => $this->fields,
+		);
 
 		if ( false === register_block_type( $this->name, $args ) ) {
 			return;
@@ -131,11 +136,6 @@ class BlockType {
 				'title'      => $this->get_title(),
 				'category'   => $this->get_config( 'category' ),
 				'attributes' => $this->get_attributes(),
-				'themeplate' => array(
-					'namespace' => $this->get_config( 'namespace' ),
-					'template'  => $this->get_config( 'template' ),
-					'fields'    => $this->fields,
-				),
 			)
 		);
 
@@ -205,6 +205,10 @@ class BlockType {
 
 		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
 			$content = $attributes['innerBlockContent'];
+
+			unset( $attributes['innerBlockContent'] );
+			unset( $block->parsed_block['attrs']['innerBlockContent'] );
+			unset( $block->block_type->attributes['innerBlockContent'] );
 		}
 
 		ob_start();
