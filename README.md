@@ -34,6 +34,8 @@ use ThemePlate\Blocks\CustomBlocks;
 ```php
 <?php
 
+use ThemePlate\Blocks\BlockType;
+
 return ( new BlockType( 'My custom block' ) )->fields( $list );
 ```
 
@@ -45,10 +47,14 @@ return ( new BlockType( 'My custom block' ) )->fields( $list );
  * @var string   $content    Block inner content.
  * @var WP_Block $block      Block instance.
  */
+
+// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 ?>
 
-<?php echo $content; ?>
+<div <?php echo get_block_wrapper_attributes(); ?>>
+	<?php echo $content; ?>
 
-<pre><?php print_r( $attributes ); ?></pre>
-<pre><?php print_r( $block ); ?></pre>
+	<pre><?php print_r( $attributes ); ?></pre>
+	<pre><?php print_r( $block ); ?></pre>
+</div>
 ```
