@@ -119,7 +119,9 @@ function Edit(props) {
     className: 'block-editor-server-side-render'
   }), false === preview && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks, {
     allowedBlocks: blockType['allowed_blocks'],
-    template: blockType['template_blocks']
+    template: blockType['template_blocks'],
+    templateLock: blockType['template_lock'],
+    renderAppender: _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks.ButtonBlockAppender
   })));
 }
 

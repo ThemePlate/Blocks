@@ -20,6 +20,7 @@ class BlockType {
 		'template'        => '',
 		'allowed_blocks'  => array(),
 		'template_blocks' => array(),
+		'template_lock'   => '',
 	);
 
 

@@ -108,6 +108,8 @@ export default function Edit( props ) {
 					<InnerBlocks
 						allowedBlocks={ blockType[ 'allowed_blocks' ] }
 						template={ blockType[ 'template_blocks' ] }
+						templateLock={ blockType[ 'template_lock' ] }
+						renderAppender={ InnerBlocks.ButtonBlockAppender }
 					/>
 				}
 			</div>
