@@ -73,6 +73,7 @@ function Edit(props) {
     setAttributes
   } = props;
   const currentBlock = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useSelect)(select => select(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.store).getBlock(props.clientId), [props]);
+  const blockType = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__.getBlockType)(currentBlock.name);
   const innerBlockContent = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__.getBlockContent)(currentBlock);
 
   const handleDoubleClick = event => {
@@ -116,7 +117,10 @@ function Edit(props) {
       innerBlockContent
     },
     className: 'block-editor-server-side-render'
-  }), false === preview && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks, null)));
+  }), false === preview && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks, {
+    allowedBlocks: blockType['allowed_blocks'],
+    template: blockType['template_blocks']
+  })));
 }
 
 /***/ }),

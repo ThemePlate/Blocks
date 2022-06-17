@@ -5,7 +5,7 @@
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
 import { BlockControls, InnerBlocks, InspectorControls, store, useBlockProps } from '@wordpress/block-editor';
-import { getBlockContent } from '@wordpress/blocks';
+import { getBlockContent, getBlockType } from '@wordpress/blocks';
 import { PanelBody, Placeholder, Spinner, ToolbarButton, ToolbarGroup } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { useMemo, useState, Fragment } from '@wordpress/element';
@@ -41,6 +41,7 @@ export default function Edit( props ) {
 		select => select( store ).getBlock( props.clientId ),
 		[ props ],
 	);
+	const blockType = getBlockType( currentBlock.name );
 	const innerBlockContent = getBlockContent( currentBlock );
 
 	const handleDoubleClick = event => {
@@ -104,7 +105,10 @@ export default function Edit( props ) {
 				}
 
 				{ false === preview &&
-					<InnerBlocks />
+					<InnerBlocks
+						allowedBlocks={ blockType[ 'allowed_blocks' ] }
+						template={ blockType[ 'template_blocks' ] }
+					/>
 				}
 			</div>
 		</Fragment>

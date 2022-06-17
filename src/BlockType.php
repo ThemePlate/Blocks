@@ -14,10 +14,12 @@ use WP_Block;
 class BlockType {
 
 	public const DEFAULTS = array(
-		'namespace' => 'themeplate',
-		'icon'      => 'admin-generic',
-		'category'  => 'widgets',
-		'template'  => '',
+		'namespace'       => 'themeplate',
+		'icon'            => 'admin-generic',
+		'category'        => 'widgets',
+		'template'        => '',
+		'allowed_blocks'  => array(),
+		'template_blocks' => array(),
 	);
 
 
@@ -129,6 +131,14 @@ class BlockType {
 
 		unset( $config['namespace'] );
 		unset( $config['template'] );
+
+		if ( empty( $config['allowed_blocks'] ) ) {
+			unset( $config['allowed_blocks'] );
+		}
+
+		if ( empty( $config['template_blocks'] ) ) {
+			unset( $config['template_blocks'] );
+		}
 
 		return array_merge(
 			$config,

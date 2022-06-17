@@ -13,6 +13,24 @@ $config = array(
 ( new BlockType( 'Custom Block', $config ) )->fields( $list )->init();
 ```
 
+### Restrict inner blocks and prefill components
+```php
+$config = array(
+	'allowed_blocks'  => array(
+		'core/image',
+		'core/heading',
+		'core/paragraph',
+	),
+	'template_blocks' => array(
+		array( 'core/image', array() ),
+		array( 'core/heading', array( 'placeholder' => 'Insert title here' ) ),
+		array( 'core/paragraph', array( 'placeholder' => 'Insert content copy' ) ),
+	),
+);
+
+( new BlockType( 'My custom block', $config ) )->fields( $list )->init();
+```
+
 ### Structured *(Bulk)* Definition
 ```
 /path/to/blocks/
