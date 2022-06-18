@@ -26,6 +26,7 @@ const Field = ( config, attributes, setAttributes ) => {
 				<TextControl
 					type={ config.type }
 					label={ config.title }
+					help={ config?.help || '' }
 					value={ attributes[ config.key ] }
 					onChange={ value => setAttributes( { [ config.key ]: value } ) }
 				/>
@@ -35,6 +36,7 @@ const Field = ( config, attributes, setAttributes ) => {
 			return (
 				<TextareaControl
 					label={ config.title }
+					help={ config?.help || '' }
 					value={ attributes[ config.key ] }
 					onChange={ value => setAttributes( { [ config.key ]: value } ) }
 				/>
@@ -45,6 +47,7 @@ const Field = ( config, attributes, setAttributes ) => {
 			return (
 				<SelectControl
 					label={ config.title }
+					help={ config?.help || '' }
 					value={ attributes[ config.key ] }
 					options={ config.options }
 					onChange={ value => setAttributes( { [ config.key ]: value } ) }
@@ -56,6 +59,7 @@ const Field = ( config, attributes, setAttributes ) => {
 			return (
 				<RadioControl
 					label={ config.title }
+					help={ config?.help || '' }
 					selected={ attributes[ config.key ] }
 					options={ config.options }
 					onChange={ value => setAttributes( { [ config.key ]: value } ) }
@@ -65,7 +69,7 @@ const Field = ( config, attributes, setAttributes ) => {
 		case 'checklist':
 		case 'checkbox':
 			return (
-				<BaseControl>
+				<BaseControl help={ config?.help || '' }>
 					<BaseControl.VisualLabel>
 						{ config.title }
 					</BaseControl.VisualLabel>
@@ -94,7 +98,7 @@ const Field = ( config, attributes, setAttributes ) => {
 
 		case 'color':
 			return (
-				<BaseControl>
+				<BaseControl help={ config?.help || '' }>
 					<BaseControl.VisualLabel>
 						{ config.title }
 					</BaseControl.VisualLabel>
@@ -111,6 +115,7 @@ const Field = ( config, attributes, setAttributes ) => {
 			return (
 				<RangeControl
 					label={ config.title }
+					help={ config?.help || '' }
 					value={ parseInt( attributes[ config.key ] ) }
 					onChange={ value => setAttributes( { [ config.key ]: value.toString() } ) }
 					afterIcon={ <strong>{ attributes[ config.key ] }</strong> }
@@ -125,7 +130,7 @@ const Field = ( config, attributes, setAttributes ) => {
 
 		case 'group':
 			return (
-				<BaseControl>
+				<BaseControl help={ config?.help || '' }>
 					<BaseControl.VisualLabel>
 						{ config.title }
 					</BaseControl.VisualLabel>
@@ -151,7 +156,7 @@ const Field = ( config, attributes, setAttributes ) => {
 		case 'term':
 		case 'link':
 			return (
-				<BaseControl>
+				<BaseControl help={ config?.help || '' }>
 					<BaseControl.VisualLabel>
 						{ config.title }
 					</BaseControl.VisualLabel>

@@ -159,6 +159,7 @@ const Field = (config, attributes, setAttributes) => {
       return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
         type: config.type,
         label: config.title,
+        help: config?.help || '',
         value: attributes[config.key],
         onChange: value => setAttributes({
           [config.key]: value
@@ -168,6 +169,7 @@ const Field = (config, attributes, setAttributes) => {
     case 'textarea':
       return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextareaControl, {
         label: config.title,
+        help: config?.help || '',
         value: attributes[config.key],
         onChange: value => setAttributes({
           [config.key]: value
@@ -178,6 +180,7 @@ const Field = (config, attributes, setAttributes) => {
     case 'select2':
       return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.SelectControl, {
         label: config.title,
+        help: config?.help || '',
         value: attributes[config.key],
         options: config.options,
         onChange: value => setAttributes({
@@ -189,6 +192,7 @@ const Field = (config, attributes, setAttributes) => {
     case 'radio':
       return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.RadioControl, {
         label: config.title,
+        help: config?.help || '',
         selected: attributes[config.key],
         options: config.options,
         onChange: value => setAttributes({
@@ -198,7 +202,9 @@ const Field = (config, attributes, setAttributes) => {
 
     case 'checklist':
     case 'checkbox':
-      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl.VisualLabel, null, config.title), 0 === config.options.length && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.CheckboxControl, {
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, {
+        help: config?.help || ''
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl.VisualLabel, null, config.title), 0 === config.options.length && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.CheckboxControl, {
         label: config.title,
         checked: 'true' === attributes[config.key],
         onChange: value => setAttributes({
@@ -214,7 +220,9 @@ const Field = (config, attributes, setAttributes) => {
       }))));
 
     case 'color':
-      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl.VisualLabel, null, config.title), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ColorPicker, {
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, {
+        help: config?.help || ''
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl.VisualLabel, null, config.title), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ColorPicker, {
         color: attributes[config.key],
         onChange: value => setAttributes({
           [config.key]: value
@@ -225,6 +233,7 @@ const Field = (config, attributes, setAttributes) => {
     case 'range':
       return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.RangeControl, {
         label: config.title,
+        help: config?.help || '',
         value: parseInt(attributes[config.key]),
         onChange: value => setAttributes({
           [config.key]: value.toString()
@@ -237,7 +246,9 @@ const Field = (config, attributes, setAttributes) => {
       return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.RawHTML, null, attributes[config.key]);
 
     case 'group':
-      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl.VisualLabel, null, config.title), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fields__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, {
+        help: config?.help || ''
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl.VisualLabel, null, config.title), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fields__WEBPACK_IMPORTED_MODULE_2__["default"], {
         list: config.fields,
         attributes: attributes[config.key],
         setAttributes: values => {
@@ -257,7 +268,9 @@ const Field = (config, attributes, setAttributes) => {
     case 'user':
     case 'term':
     case 'link':
-      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl.VisualLabel, null, config.title), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Tip, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("strong", null, "TODO!"), " Field ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("code", null, config.type)));
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, {
+        help: config?.help || ''
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl.VisualLabel, null, config.title), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Tip, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("strong", null, "TODO!"), " Field ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("code", null, config.type)));
   }
 };
 
