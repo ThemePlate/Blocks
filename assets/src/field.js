@@ -1,7 +1,13 @@
+import { __experimentalLinkControl as LinkControl } from '@wordpress/block-editor';
 import {
 	BaseControl,
+	Button,
 	CheckboxControl,
 	ColorPicker,
+	ExternalLink,
+	Flex,
+	FlexItem,
+	Modal,
 	RadioControl,
 	RangeControl,
 	SelectControl,
@@ -9,7 +15,7 @@ import {
 	TextControl,
 	Tip,
 } from '@wordpress/components';
-import { Fragment, RawHTML } from '@wordpress/element';
+import { Fragment, RawHTML, useState } from '@wordpress/element';
 
 import Fields from './fields';
 
@@ -147,6 +153,59 @@ const Field = ( config, attributes, setAttributes ) => {
 				</BaseControl>
 			);
 
+		case 'link':
+			const [ isOpen, setOpen ] = useState( false );
+			return (
+				<BaseControl help={ config?.help || '' }>
+					<BaseControl.VisualLabel>
+						{ config.title }
+					</BaseControl.VisualLabel>
+
+					<Fragment>
+						<Flex
+							gap={ 6 }
+							align={ 'center' }
+							justify={ 'flex-start' }
+						>
+							<FlexItem>
+								<Button variant="secondary" onClick={ () => setOpen( true ) }>
+									Select
+								</Button>
+							</FlexItem>
+
+							<FlexItem>
+								<ExternalLink href={ attributes[ config.key ].url }>
+									{ attributes[ config.key ].title }
+								</ExternalLink>
+							</FlexItem>
+						</Flex>
+
+						{ isOpen &&
+							<Modal
+								focusOnMount
+								shouldCloseOnEsc
+								shouldCloseOnClickOutside
+								title={ 'Insert/edit link' }
+								onRequestClose={ () => setOpen( false ) }
+							>
+								<TextControl
+									type={ 'text' }
+									label={ 'Link text' }
+									value={ attributes[ config.key ].title }
+									onChange={ value => setAttributes(
+										{ [ config.key ]: { ...attributes[ config.key ], title: value } } ) }
+								/>
+
+								<LinkControl
+									value={ attributes[ config.key ] }
+									onChange={ value => setAttributes( { [ config.key ]: value } ) }
+								/>
+							</Modal>
+						}
+					</Fragment>
+				</BaseControl>
+			);
+
 		case 'file':
 		case 'editor':
 		case 'type':
@@ -154,7 +213,6 @@ const Field = ( config, attributes, setAttributes ) => {
 		case 'page':
 		case 'user':
 		case 'term':
-		case 'link':
 			return (
 				<BaseControl help={ config?.help || '' }>
 					<BaseControl.VisualLabel>
