@@ -197,7 +197,7 @@ class BlockType {
 
 		foreach ( $this->fields->get_collection() as $field ) {
 			$attributes[ $field->data_key() ] = array(
-				'type'    => in_array( $field->get_config( 'type' ), array( 'group', 'link' ), true ) ? 'object' : 'string',
+				'type'    => in_array( $field->get_config( 'type' ), array( 'group', 'link', 'file' ), true ) ? 'object' : 'string',
 				'default' => $this->get_default( $field ),
 				'label'   => $field->get_config( 'title' ),
 			);

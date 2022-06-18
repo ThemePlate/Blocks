@@ -1,4 +1,4 @@
-import { __experimentalLinkControl as LinkControl } from '@wordpress/block-editor';
+import { __experimentalLinkControl as LinkControl, MediaUpload } from '@wordpress/block-editor';
 import {
 	BaseControl,
 	Button,
@@ -8,8 +8,10 @@ import {
 	Flex,
 	FlexItem,
 	Modal,
+	Placeholder,
 	RadioControl,
 	RangeControl,
+	ResponsiveWrapper,
 	SelectControl,
 	TextareaControl,
 	TextControl,
@@ -207,6 +209,49 @@ const Field = ( config, attributes, setAttributes ) => {
 			);
 
 		case 'file':
+			return (
+				<BaseControl>
+					<BaseControl.VisualLabel>
+						{ config.title }
+					</BaseControl.VisualLabel>
+
+					<MediaUpload
+						label={ config.title }
+						value={ attributes[ config.key ].id }
+						onSelect={ value => setAttributes( {
+							[ config.key ]: {
+								id: value.id,
+								url: value.url,
+								title: value.title,
+							}
+						} ) }
+						render={ ( { open } ) => (
+							<Flex
+								gap={ 4 }
+								align={ 'center' }
+								justify={ 'flex-start' }
+							>
+								<FlexItem>
+									<Button variant="secondary" onClick={ open }>
+										Select
+									</Button>
+								</FlexItem>
+
+								<FlexItem isBlock={ true }>
+									<Placeholder>
+										{ attributes[ config.key ]?.url &&
+											<ResponsiveWrapper>
+												<img src={ attributes[ config.key ].url } alt={ attributes[ config.key ].title } />
+											</ResponsiveWrapper>
+										}
+									</Placeholder>
+								</FlexItem>
+							</Flex>
+						) }
+					/>
+				</BaseControl>
+			);
+
 		case 'editor':
 		case 'type':
 		case 'post':
