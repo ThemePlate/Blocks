@@ -6,16 +6,19 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
-.wp-block-themeplate {
-  border: 1px dotted #f00;
-}
-
 .themeplate-blocks-fields .themeplate-blocks-field {
+  margin-top: 12px;
   padding-top: 4px;
+  padding-bottom: 12px;
   border-bottom: 1px solid #ddd;
 }
-.themeplate-blocks-fields .themeplate-blocks-field:last-of-type:not(.type-group) {
-  padding: 0;
+.themeplate-blocks-fields .themeplate-blocks-field:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+}
+.themeplate-blocks-fields .themeplate-blocks-field:last-of-type {
+  padding-bottom: 0;
+  border-bottom: 0;
 }
 .themeplate-blocks-fields .themeplate-blocks-field.field-type-group .components-panel__row {
   margin: 8px 0;
@@ -24,6 +27,9 @@
 }
 .themeplate-blocks-fields .themeplate-blocks-field.field-type-group .components-panel__row + .components-panel__row {
   margin-top: 16px;
+}
+.themeplate-blocks-fields .themeplate-blocks-field.field-type-group .components-panel__row:last-of-type {
+  margin-bottom: 0;
 }
 .themeplate-blocks-fields .themeplate-blocks-field.field-type-group .components-base-control {
   margin-bottom: 0;
@@ -34,6 +40,9 @@
 .themeplate-blocks-fields .components-base-control__label {
   font-size: 14px;
   font-weight: 600;
+}
+.themeplate-blocks-fields .components-base-control:last-of-type {
+  margin-bottom: 4px;
 }
 
 /*# sourceMappingURL=index.css.map*/

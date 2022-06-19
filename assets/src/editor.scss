@@ -4,17 +4,21 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-.wp-block-themeplate {
-	border: 1px dotted #f00;
-}
-
 .themeplate-blocks-fields {
 	.themeplate-blocks-field {
+		margin-top: 12px;
 		padding-top: 4px;
+		padding-bottom: 12px;
 		border-bottom: 1px solid #ddd;
 
-		&:last-of-type:not( .type-group ) {
-			padding: 0;
+		&:first-of-type {
+			margin-top: 0;
+			padding-top: 0;
+		}
+
+		&:last-of-type {
+			padding-bottom: 0;
+			border-bottom: 0;
 		}
 
 		&.field-type-group {
@@ -25,6 +29,10 @@
 
 				+ .components-panel__row {
 					margin-top: 16px;
+				}
+
+				&:last-of-type {
+					margin-bottom: 0;
 				}
 			}
 
@@ -40,6 +48,10 @@
 		&__label {
 			font-size: 14px;
 			font-weight: 600;
+		}
+
+		&:last-of-type {
+			margin-bottom: 4px;
 		}
 	}
 }
