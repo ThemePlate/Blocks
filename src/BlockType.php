@@ -6,7 +6,6 @@
 
 namespace ThemePlate\Blocks;
 
-use ThemePlate\Core\Field;
 use ThemePlate\Core\Fields;
 use ThemePlate\Core\Helper\MainHelper;
 use WP_Block;
@@ -152,36 +151,6 @@ class BlockType {
 
 	}
 
-	/**
-	 * @return mixed
-	 */
-	protected function get_default( Field $field ) {
-
-		$default = $field->get_config( 'default' );
-
-		if ( 'group' === $field->get_config( 'type' ) ) {
-			/**
-			 * @var Fields $fields
-			 */
-			$fields = $field->get_config( 'fields' );
-
-			foreach ( $fields->get_collection() as $sub_field ) {
-				if ( isset( $default[ $sub_field->data_key() ] ) ) {
-					continue;
-				}
-
-				if ( ! is_array( $default ) ) {
-					$default = array();
-				}
-
-				$default[ $sub_field->data_key() ] = $this->get_default( $sub_field );
-			}
-		}
-
-		return $default;
-
-	}
-
 
 	protected function get_attributes(): array {
 
@@ -195,15 +164,7 @@ class BlockType {
 			return $attributes;
 		}
 
-		foreach ( $this->fields->get_collection() as $field ) {
-			$attributes[ $field->data_key() ] = array(
-				'type'    => in_array( $field->get_config( 'type' ), array( 'group', 'link', 'file' ), true ) ? 'object' : 'string',
-				'default' => $this->get_default( $field ),
-				'label'   => $field->get_config( 'title' ),
-			);
-		}
-
-		return $attributes;
+		return array_merge( FieldsHelper::build_schema( $this->fields ), $attributes );
 
 	}
 

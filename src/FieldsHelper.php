@@ -10,7 +10,7 @@ use ThemePlate\Core\Fields;
 use ThemePlate\Core\Helper\MainHelper;
 use WP_Block_Type_Registry;
 
-class FieldsHelper {
+class FieldsHelper extends \ThemePlate\Core\Helper\FieldsHelper {
 
 	public const ACTION = 'themeplate_blocks_fields';
 
