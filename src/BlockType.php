@@ -175,7 +175,7 @@ class BlockType {
 			return '';
 		}
 
-		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST && isset( $attributes['innerBlockContent'] ) ) {
 			$content = $attributes['innerBlockContent'];
 
 			unset( $attributes['innerBlockContent'] );
