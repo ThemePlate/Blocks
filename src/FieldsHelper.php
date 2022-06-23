@@ -29,8 +29,9 @@ class FieldsHelper extends \ThemePlate\Core\Helper\FieldsHelper {
 
 		$block = WP_Block_Type_Registry::get_instance()->get_registered( $_POST['block'] );
 
-		if ( null === $block ) {
+		if ( null === $block || ! property_exists( $block, 'themeplate' ) ) {
 			wp_send_json_error();
+			return;
 		}
 
 		$response = self::prepare( $block->themeplate['fields'] );
