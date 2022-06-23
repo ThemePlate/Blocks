@@ -6,6 +6,7 @@
 
 namespace ThemePlate\Blocks;
 
+use ThemePlate\Core\Field;
 use ThemePlate\Core\Fields;
 use ThemePlate\Core\Helper\MainHelper;
 use WP_Block_Type_Registry;
@@ -80,6 +81,19 @@ class FieldsHelper extends \ThemePlate\Core\Helper\FieldsHelper {
 		}
 
 		return $prepared;
+
+	}
+
+
+	public static function get_schema_type( Field $field ): string {
+
+		switch ( $field->get_config( 'type' ) ) {
+			default:
+				return parent::get_schema_type( $field );
+
+			case 'file':
+				return 'object';
+		}
 
 	}
 
