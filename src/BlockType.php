@@ -71,7 +71,7 @@ class BlockType {
 		$args = $this->generate_args();
 
 		$args['render_callback'] = array( self::class, 'render' );
-		$args['view_script']     = $this->get_config( 'template' );
+		$args['render_template'] = $this->get_config( 'template' );
 		$args['themeplate']      = array(
 			'namespace' => $this->get_config( 'namespace' ),
 			'template'  => $this->get_config( 'template' ),
@@ -171,7 +171,7 @@ class BlockType {
 
 	public static function render( array $attributes, string $content, WP_Block $block ): string {
 
-		if ( ! file_exists( $block->block_type->view_script ) ) {
+		if ( empty( $block->block_type->render_template ) || ! file_exists( $block->block_type->render_template ) ) {
 			return '';
 		}
 
@@ -184,7 +184,7 @@ class BlockType {
 		}
 
 		ob_start();
-		include $block->block_type->view_script;
+		include $block->block_type->render_template;
 
 		return ob_get_clean();
 
