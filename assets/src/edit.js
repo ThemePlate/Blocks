@@ -43,6 +43,7 @@ export default function Edit( props ) {
 	);
 	const blockType = getBlockType( currentBlock.name );
 	const innerBlockContent = getBlockContent( currentBlock );
+	const supportsInnerBlocks = Blocks.collection[ blockProps[ 'data-type' ] ].inner_blocks;
 
 	const handleDoubleClick = event => {
 		const targetDataset = event.target.dataset;
@@ -85,18 +86,20 @@ export default function Edit( props ) {
 				</PanelBody>
 			</InspectorControls>
 
-			<BlockControls>
-				<ToolbarGroup>
-					<ToolbarButton
-						icon={ preview ? 'visibility' : 'hidden' }
-						label={ preview ? 'Switch to insert inner blocks' : 'Switch to preview rendered block' }
-						onClick={ () => setPreview( !preview ) }
-					/>
-				</ToolbarGroup>
-			</BlockControls>
+			{ supportsInnerBlocks &&
+				<BlockControls>
+					<ToolbarGroup>
+						<ToolbarButton
+							icon={ preview ? 'visibility' : 'hidden' }
+							label={ preview ? 'Switch to insert inner blocks' : 'Switch to preview rendered block' }
+							onClick={ () => setPreview( !preview ) }
+						/>
+					</ToolbarGroup>
+				</BlockControls>
+			}
 
 			<div className={ 'wp-block-themeplate' } onDoubleClick={ handleDoubleClick }>
-				{ true === preview &&
+				{ ( ! supportsInnerBlocks || true === preview ) &&
 					<ServerSideRender
 						block={ blockProps[ 'data-type' ] }
 						attributes={ { ...attributes, innerBlockContent } }
@@ -104,7 +107,7 @@ export default function Edit( props ) {
 					/>
 				}
 
-				{ false === preview &&
+				{ ( supportsInnerBlocks && false === preview ) &&
 					<InnerBlocks
 						allowedBlocks={ blockType[ 'allowed_blocks' ] }
 						template={ blockType[ 'template_blocks' ] }

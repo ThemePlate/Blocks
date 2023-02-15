@@ -17,6 +17,7 @@ class BlockType {
 		'icon'            => 'admin-generic',
 		'category'        => 'widgets',
 		'template'        => '',
+		'inner_blocks'    => true,
 		'allowed_blocks'  => array(),
 		'template_blocks' => array(),
 		'template_lock'   => '',
@@ -154,11 +155,13 @@ class BlockType {
 
 	protected function get_attributes(): array {
 
-		$attributes = array(
-			'innerBlockContent' => array(
+		$attributes = array();
+
+		if ( $this->get_config( 'inner_blocks' ) ) {
+			$attributes['innerBlockContent'] = array(
 				'type' => 'string',
-			),
-		);
+			);
+		}
 
 		if ( null === $this->fields ) {
 			return $attributes;

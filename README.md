@@ -31,6 +31,8 @@ $config = array(
 ( new BlockType( 'My custom block', $config ) )->fields( $list )->init();
 ```
 
+> Disable nested blocks by setting `$config` key `inner_blocks` to `false`
+
 ### Structured *(Bulk)* Definition
 ```
 /path/to/blocks/
