@@ -35,6 +35,7 @@ import Fields from './fields';
 export default function Edit( props ) {
 	const [ fields, setFields ] = useState( [] );
 	const [ preview, setPreview ] = useState( true );
+	const [ queried, setQueried ] = useState( false );
 	const blockProps = useBlockProps();
 	const { attributes, setAttributes } = props;
 	const currentBlock = useSelect(
@@ -65,7 +66,10 @@ export default function Edit( props ) {
 			} ),
 		} )
 			.then( response => response.json() )
-			.then( response => setFields( response.data ) );
+			.then( response => {
+				setFields( response.data );
+				setQueried( true );
+			} );
 	};
 
 	useMemo( query, [] );
@@ -73,17 +77,19 @@ export default function Edit( props ) {
 	return (
 		<Fragment>
 			<InspectorControls>
-				<PanelBody className={ 'themeplate-blocks-fields' }>
-					{ 0 === fields.length &&
-						<Placeholder><Spinner /></Placeholder> }
-					{ 0 !== fields.length &&
+				{ ( ! queried && 0 === fields.length ) &&
+					<Placeholder><Spinner /></Placeholder>
+				}
+
+				{ ( queried && 0 !== fields.length ) &&
+					<PanelBody className={ 'themeplate-blocks-fields' }>
 						<Fields
 							list={ fields }
 							attributes={ attributes }
 							setAttributes={ setAttributes }
 						/>
-					}
-				</PanelBody>
+					</PanelBody>
+				}
 			</InspectorControls>
 
 			{ supportsInnerBlocks &&
