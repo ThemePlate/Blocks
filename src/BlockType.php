@@ -104,6 +104,13 @@ class BlockType {
 	}
 
 
+	public function get_name(): string {
+
+		return $this->name;
+
+	}
+
+
 	public function get_config( string $key = '' ) {
 
 		if ( '' === $key ) {

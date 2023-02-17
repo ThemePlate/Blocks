@@ -13,13 +13,22 @@ class CustomBlocks {
 
 
 	protected string $category;
+	protected string $cat_slug;
 	protected string $location;
 
 
 	public function __construct( string $category, string $location ) {
 
 		$this->category = $category;
+		$this->cat_slug = sanitize_title( $category );
 		$this->location = trailingslashit( $location );
+
+	}
+
+
+	public function category_slug(): string {
+
+		return $this->cat_slug;
 
 	}
 
@@ -34,7 +43,7 @@ class CustomBlocks {
 				$config = array_merge(
 					$block->get_config(),
 					array(
-						'category' => sanitize_title( $this->category ),
+						'category' => $this->category_slug(),
 						'template' => $this->location . trailingslashit( $folder ) . self::MARKUP_FILE,
 					)
 				);
@@ -55,7 +64,7 @@ class CustomBlocks {
 			array(
 				array(
 					'title' => $this->category,
-					'slug'  => sanitize_title( $this->category ),
+					'slug'  => $this->category_slug(),
 				),
 			)
 		);
