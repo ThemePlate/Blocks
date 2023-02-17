@@ -8,10 +8,11 @@ namespace ThemePlate\Blocks;
 
 use ThemePlate\Core\Field;
 use ThemePlate\Core\Fields;
+use ThemePlate\Core\Helper\FieldsHelper as CoreFieldsHelper;
 use ThemePlate\Core\Helper\MainHelper;
 use WP_Block_Type_Registry;
 
-class FieldsHelper extends \ThemePlate\Core\Helper\FieldsHelper {
+class FieldsHelper extends CoreFieldsHelper {
 
 	public const ACTION = 'themeplate_blocks_fields';
 
