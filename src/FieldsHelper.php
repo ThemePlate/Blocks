@@ -42,6 +42,15 @@ class FieldsHelper extends CoreFieldsHelper {
 	}
 
 
+	public static function is_choice_type( Field $field ): bool {
+
+		$fields = array( 'checkbox', 'checklist', 'radio', 'radiolist', 'select', 'select2' );
+
+		return in_array( $field->get_config( 'type' ), $fields, true );
+
+	}
+
+
 	protected static function prepare( ?Fields $fields ): array {
 
 		$prepared = array();
@@ -60,10 +69,7 @@ class FieldsHelper extends CoreFieldsHelper {
 				$config['fields'] = self::prepare( $field->get_config( 'fields' ) );
 			}
 
-			if (
-				! empty( $config['options'] ) &&
-				in_array( $field->get_config( 'type' ), array( 'checkbox', 'checklist', 'radio', 'radiolist', 'select', 'select2' ), true )
-			) {
+			if ( ! empty( $config['options'] ) && self::is_choice_type( $field ) ) {
 				$is_sequential = MainHelper::is_sequential( $config['options'] );
 
 				$config['options'] = array_map(
