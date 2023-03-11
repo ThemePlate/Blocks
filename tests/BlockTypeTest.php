@@ -12,6 +12,7 @@ use ThemePlate\Blocks\AssetsHelper;
 use ThemePlate\Blocks\BlockType;
 use PHPUnit\Framework\TestCase;
 use ThemePlate\Blocks\FieldsHelper;
+use WP_Block;
 use function Brain\Monkey\Functions\expect;
 use function Brain\Monkey\Functions\when;
 
@@ -125,5 +126,21 @@ class BlockTypeTest extends TestCase {
 		);
 
 		$block_type->register();
+	}
+
+	public static function block_callback(): string {
+		return 'TEST';
+	}
+
+	public function test_render_with_callback(): void {
+		$this->config['template'] = array( self::class, 'block_callback' );
+
+		$block_type = new BlockType( $this->args['title'], $this->config );
+
+		$block = $this->getMockBuilder( WP_Block::class )->getMock();
+
+		$block->block_type = (object) array( 'render_template' => json_encode( $this->config['template'] ) );
+
+		$this->assertSame( self::block_callback(), $block_type->render( $this->args['attributes'], '', $block ) );
 	}
 }

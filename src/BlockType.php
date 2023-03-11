@@ -181,7 +181,13 @@ class BlockType {
 
 	public static function render( array $attributes, string $content, WP_Block $block ): string {
 
-		if ( empty( $block->block_type->render_template ) || ! file_exists( $block->block_type->render_template ) ) {
+		if ( empty( $block->block_type->render_template ) ) {
+			return '';
+		}
+
+		$callback = json_decode( $block->block_type->render_template );
+
+		if ( ! file_exists( $block->block_type->render_template ) && ! is_callable( $callback ) ) {
 			return '';
 		}
 
@@ -191,6 +197,10 @@ class BlockType {
 			unset( $attributes['innerBlockContent'] );
 			unset( $block->parsed_block['attrs']['innerBlockContent'] );
 			unset( $block->block_type->attributes['innerBlockContent'] );
+		}
+
+		if ( is_callable( $callback ) ) {
+			return call_user_func( $callback, $attributes, $content, $block );
 		}
 
 		ob_start();
