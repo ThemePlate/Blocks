@@ -20,6 +20,7 @@
 	},
 	"require": {
 		"php": "^7.4|^8.0",
+		"ext-json": "*",
 		"themeplate/core": "^2.0"
 	},
 	"require-dev": {

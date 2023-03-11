@@ -139,7 +139,7 @@ class BlockTypeTest extends TestCase {
 
 		$block = $this->getMockBuilder( WP_Block::class )->getMock();
 
-		$block->block_type = (object) array( 'render_template' => json_encode( $this->config['template'] ) );
+		$block->block_type = (object) array( 'render_template' => wp_json_encode( $this->config['template'] ) );
 
 		$this->assertSame( self::block_callback(), $block_type->render( $this->args['attributes'], '', $block ) );
 	}
