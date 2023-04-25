@@ -45,6 +45,7 @@ export default function Edit( props ) {
 	const blockType = getBlockType( currentBlock.name );
 	const innerBlockContent = getBlockContent( currentBlock );
 	const supportsInnerBlocks = Blocks.collection[ blockProps[ 'data-type' ] ].inner_blocks;
+	const hasInnerBlocks = !! ( currentBlock && currentBlock?.innerBlocks?.length );
 
 	const handleDoubleClick = event => {
 		const targetDataset = event.target.dataset;
@@ -118,7 +119,7 @@ export default function Edit( props ) {
 						allowedBlocks={ blockType[ 'allowed_blocks' ] }
 						template={ blockType[ 'template_blocks' ] }
 						templateLock={ blockType[ 'template_lock' ] }
-						renderAppender={ InnerBlocks.ButtonBlockAppender }
+						renderAppender={ hasInnerBlocks ? null : InnerBlocks.ButtonBlockAppender }
 					/>
 				}
 			</div>
