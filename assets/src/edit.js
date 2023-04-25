@@ -47,16 +47,6 @@ export default function Edit( props ) {
 	const supportsInnerBlocks = Blocks.collection[ blockProps[ 'data-type' ] ].inner_blocks;
 	const hasInnerBlocks = !! ( currentBlock && currentBlock?.innerBlocks?.length );
 
-	const handleDoubleClick = event => {
-		const targetDataset = event.target.dataset;
-
-		if ( targetDataset?.block && targetDataset?.type ) {
-			return;
-		}
-
-		setPreview( !preview );
-	};
-
 	const query = () => {
 		fetch( Blocks.ajax_url, {
 			method: 'POST',
@@ -105,7 +95,7 @@ export default function Edit( props ) {
 				</BlockControls>
 			}
 
-			<div className={ 'wp-block-themeplate' } onDoubleClick={ handleDoubleClick }>
+			<div className={ 'wp-block-themeplate' }>
 				{ ( ! supportsInnerBlocks || true === preview ) &&
 					<ServerSideRender
 						block={ blockProps[ 'data-type' ] }
