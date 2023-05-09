@@ -45,4 +45,8 @@
   margin-bottom: 4px;
 }
 
+.wp-block-themeplate > .block-editor-inner-blocks {
+  display: none;
+}
+
 /*# sourceMappingURL=index.css.map*/
