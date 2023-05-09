@@ -66,7 +66,6 @@ function Edit(props) {
   const blockRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useRef)();
   const innerRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useRef)();
   const [fields, setFields] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
-  const [preview, setPreview] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
   const [queried, setQueried] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps)();
   const {
@@ -77,7 +76,7 @@ function Edit(props) {
   const blockType = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__.getBlockType)(currentBlock.name);
   const supportsInnerBlocks = _vars__WEBPACK_IMPORTED_MODULE_7__["default"].collection[blockProps['data-type']].inner_blocks;
   const hasInnerBlocks = !!(currentBlock && currentBlock?.innerBlocks?.length);
-  const query = () => {
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
     fetch(_vars__WEBPACK_IMPORTED_MODULE_7__["default"].ajax_url, {
       method: 'POST',
       body: new URLSearchParams({
@@ -89,8 +88,7 @@ function Edit(props) {
       setFields(response.data);
       setQueried(true);
     });
-  };
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useMemo)(query, []);
+  }, []);
   if (supportsInnerBlocks) {
     (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
       const observer = new MutationObserver(() => {
@@ -114,10 +112,6 @@ function Edit(props) {
     list: fields,
     attributes: attributes,
     setAttributes: setAttributes
-  }))), supportsInnerBlocks && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.BlockControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarGroup, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarButton, {
-    icon: preview ? 'visibility' : 'hidden',
-    label: preview ? 'Switch to insert inner blocks' : 'Switch to preview rendered block',
-    onClick: () => setPreview(!preview)
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: 'wp-block-themeplate',
     ref: blockRef

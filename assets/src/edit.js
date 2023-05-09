@@ -5,7 +5,7 @@
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
 import { BlockControls, InnerBlocks, InspectorControls, store, useBlockProps } from '@wordpress/block-editor';
-import { getBlockContent, getBlockType } from '@wordpress/blocks';
+import { getBlockType } from '@wordpress/blocks';
 import { PanelBody, Placeholder, Spinner, ToolbarButton, ToolbarGroup } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { useEffect, useMemo, useState, useRef, Fragment } from '@wordpress/element';
@@ -36,7 +36,6 @@ export default function Edit( props ) {
 	const blockRef = useRef();
 	const innerRef = useRef();
 	const [ fields, setFields ] = useState( [] );
-	const [ preview, setPreview ] = useState( true );
 	const [ queried, setQueried ] = useState( false );
 	const blockProps = useBlockProps();
 	const { attributes, setAttributes } = props;
@@ -48,7 +47,7 @@ export default function Edit( props ) {
 	const supportsInnerBlocks = Blocks.collection[ blockProps[ 'data-type' ] ].inner_blocks;
 	const hasInnerBlocks = !! ( currentBlock && currentBlock?.innerBlocks?.length );
 
-	const query = () => {
+	useMemo( () => {
 		fetch( Blocks.ajax_url, {
 			method: 'POST',
 			body: new URLSearchParams( {
@@ -62,9 +61,7 @@ export default function Edit( props ) {
 				setFields( response.data );
 				setQueried( true );
 			} );
-	};
-
-	useMemo( query, [] );
+	}, [] );
 
 	if ( supportsInnerBlocks ) {
 		useEffect( () => {
@@ -103,18 +100,6 @@ export default function Edit( props ) {
 					</PanelBody>
 				}
 			</InspectorControls>
-
-			{ supportsInnerBlocks &&
-				<BlockControls>
-					<ToolbarGroup>
-						<ToolbarButton
-							icon={ preview ? 'visibility' : 'hidden' }
-							label={ preview ? 'Switch to insert inner blocks' : 'Switch to preview rendered block' }
-							onClick={ () => setPreview( !preview ) }
-						/>
-					</ToolbarGroup>
-				</BlockControls>
-			}
 
 			<div className={ 'wp-block-themeplate' } ref={ blockRef }>
 				<ServerSideRender
