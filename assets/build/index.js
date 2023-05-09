@@ -75,7 +75,6 @@ function Edit(props) {
   } = props;
   const currentBlock = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useSelect)(select => select(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.store).getBlock(props.clientId), [props]);
   const blockType = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__.getBlockType)(currentBlock.name);
-  const innerBlockContent = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__.getBlockContent)(currentBlock);
   const supportsInnerBlocks = _vars__WEBPACK_IMPORTED_MODULE_7__["default"].collection[blockProps['data-type']].inner_blocks;
   const hasInnerBlocks = !!(currentBlock && currentBlock?.innerBlocks?.length);
   const query = () => {
@@ -124,10 +123,7 @@ function Edit(props) {
     ref: blockRef
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)((_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_5___default()), {
     block: blockProps['data-type'],
-    attributes: {
-      ...attributes,
-      innerBlockContent
-    },
+    attributes: attributes,
     className: 'block-editor-server-side-render'
   }), supportsInnerBlocks && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks, {
     ref: innerRef,

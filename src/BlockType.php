@@ -164,12 +164,6 @@ class BlockType {
 
 		$attributes = array();
 
-		if ( $this->get_config( 'inner_blocks' ) ) {
-			$attributes['innerBlockContent'] = array(
-				'type' => 'string',
-			);
-		}
-
 		if ( null === $this->fields ) {
 			return $attributes;
 		}
@@ -191,12 +185,8 @@ class BlockType {
 			return '';
 		}
 
-		if ( defined( 'REST_REQUEST' ) && REST_REQUEST && isset( $attributes['innerBlockContent'] ) ) {
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
 			$content = '<ThemePlateInnerBlocks></ThemePlateInnerBlocks>';
-
-			unset( $attributes['innerBlockContent'] );
-			unset( $block->parsed_block['attrs']['innerBlockContent'] );
-			unset( $block->block_type->attributes['innerBlockContent'] );
 		}
 
 		if ( is_callable( $callback ) ) {

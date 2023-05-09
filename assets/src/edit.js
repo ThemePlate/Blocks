@@ -45,7 +45,6 @@ export default function Edit( props ) {
 		[ props ],
 	);
 	const blockType = getBlockType( currentBlock.name );
-	const innerBlockContent = getBlockContent( currentBlock );
 	const supportsInnerBlocks = Blocks.collection[ blockProps[ 'data-type' ] ].inner_blocks;
 	const hasInnerBlocks = !! ( currentBlock && currentBlock?.innerBlocks?.length );
 
@@ -120,7 +119,7 @@ export default function Edit( props ) {
 			<div className={ 'wp-block-themeplate' } ref={ blockRef }>
 				<ServerSideRender
 					block={ blockProps[ 'data-type' ] }
-					attributes={ { ...attributes, innerBlockContent } }
+					attributes={ attributes }
 					className={ 'block-editor-server-side-render' }
 				/>
 
