@@ -63,6 +63,8 @@ __webpack_require__.r(__webpack_exports__);
  * @return {WPElement} Element to render.
  */
 function Edit(props) {
+  const blockRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useRef)();
+  const innerRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useRef)();
   const [fields, setFields] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [preview, setPreview] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
   const [queried, setQueried] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
@@ -90,6 +92,23 @@ function Edit(props) {
     });
   };
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useMemo)(query, []);
+  if (supportsInnerBlocks) {
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+      const observer = new MutationObserver(() => {
+        const innerBlocks = blockRef.current.querySelector('ThemePlateInnerBlocks');
+        if (null === innerBlocks || innerBlocks.childNodes.length) {
+          return;
+        }
+        innerBlocks.parentNode.replaceChild(innerRef.current, innerBlocks);
+      });
+      observer.observe(blockRef.current, {
+        childList: true
+      });
+      return () => {
+        observer.disconnect();
+      };
+    }, []);
+  }
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InspectorControls, null, !queried && 0 === fields.length && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Placeholder, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Spinner, null)), queried && 0 !== fields.length && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
     className: 'themeplate-blocks-fields'
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fields__WEBPACK_IMPORTED_MODULE_8__["default"], {
@@ -101,15 +120,17 @@ function Edit(props) {
     label: preview ? 'Switch to insert inner blocks' : 'Switch to preview rendered block',
     onClick: () => setPreview(!preview)
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: 'wp-block-themeplate'
-  }, (!supportsInnerBlocks || true === preview) && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)((_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_5___default()), {
+    className: 'wp-block-themeplate',
+    ref: blockRef
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)((_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_5___default()), {
     block: blockProps['data-type'],
     attributes: {
       ...attributes,
       innerBlockContent
     },
     className: 'block-editor-server-side-render'
-  }), supportsInnerBlocks && false === preview && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks, {
+  }), supportsInnerBlocks && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks, {
+    ref: innerRef,
     allowedBlocks: blockType['allowed_blocks'],
     template: blockType['template_blocks'],
     templateLock: blockType['template_lock'],

@@ -192,7 +192,7 @@ class BlockType {
 		}
 
 		if ( defined( 'REST_REQUEST' ) && REST_REQUEST && isset( $attributes['innerBlockContent'] ) ) {
-			$content = apply_filters( 'the_content', $attributes['innerBlockContent'] );
+			$content = '<ThemePlateInnerBlocks></ThemePlateInnerBlocks>';
 
 			unset( $attributes['innerBlockContent'] );
 			unset( $block->parsed_block['attrs']['innerBlockContent'] );

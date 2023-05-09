@@ -8,7 +8,7 @@ import { BlockControls, InnerBlocks, InspectorControls, store, useBlockProps } f
 import { getBlockContent, getBlockType } from '@wordpress/blocks';
 import { PanelBody, Placeholder, Spinner, ToolbarButton, ToolbarGroup } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { useMemo, useState, Fragment } from '@wordpress/element';
+import { useEffect, useMemo, useState, useRef, Fragment } from '@wordpress/element';
 import ServerSideRender from '@wordpress/server-side-render';
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -33,6 +33,8 @@ import Fields from './fields';
  * @return {WPElement} Element to render.
  */
 export default function Edit( props ) {
+	const blockRef = useRef();
+	const innerRef = useRef();
 	const [ fields, setFields ] = useState( [] );
 	const [ preview, setPreview ] = useState( true );
 	const [ queried, setQueried ] = useState( false );
@@ -65,6 +67,26 @@ export default function Edit( props ) {
 
 	useMemo( query, [] );
 
+	if ( supportsInnerBlocks ) {
+		useEffect( () => {
+			const observer = new MutationObserver(() => {
+				const innerBlocks = blockRef.current.querySelector( 'ThemePlateInnerBlocks' );
+
+				if ( null === innerBlocks || innerBlocks.childNodes.length ) {
+					return;
+				}
+
+				innerBlocks.parentNode.replaceChild( innerRef.current, innerBlocks );
+			} );
+
+			observer.observe( blockRef.current, { childList: true } );
+
+			return () => {
+				observer.disconnect();
+			};
+		}, [] );
+	}
+
 	return (
 		<Fragment>
 			<InspectorControls>
@@ -95,17 +117,16 @@ export default function Edit( props ) {
 				</BlockControls>
 			}
 
-			<div className={ 'wp-block-themeplate' }>
-				{ ( ! supportsInnerBlocks || true === preview ) &&
-					<ServerSideRender
-						block={ blockProps[ 'data-type' ] }
-						attributes={ { ...attributes, innerBlockContent } }
-						className={ 'block-editor-server-side-render' }
-					/>
-				}
+			<div className={ 'wp-block-themeplate' } ref={ blockRef }>
+				<ServerSideRender
+					block={ blockProps[ 'data-type' ] }
+					attributes={ { ...attributes, innerBlockContent } }
+					className={ 'block-editor-server-side-render' }
+				/>
 
-				{ ( supportsInnerBlocks && false === preview ) &&
+				{ supportsInnerBlocks &&
 					<InnerBlocks
+						ref={ innerRef }
 						allowedBlocks={ blockType[ 'allowed_blocks' ] }
 						template={ blockType[ 'template_blocks' ] }
 						templateLock={ blockType[ 'template_lock' ] }
