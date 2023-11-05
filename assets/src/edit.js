@@ -53,14 +53,14 @@ export default function Edit( props ) {
 		className: 'wp-block-themeplate',
 		ref: blockRef,
 	} );
+	const blockID = blockProps[ 'data-type' ];
 	const { attributes, setAttributes } = props;
 	const currentBlock = useSelect(
 		( select ) => select( store ).getBlock( props.clientId ),
 		[ props ]
 	);
 	const blockType = getBlockType( currentBlock.name );
-	const supportsInnerBlocks =
-		Blocks.collection[ blockProps[ 'data-type' ] ].inner_blocks;
+	const supportsInnerBlocks = Blocks.collection[ blockID ].inner_blocks;
 	const hasInnerBlocks = !! (
 		currentBlock && currentBlock?.innerBlocks?.length
 	);
@@ -71,7 +71,7 @@ export default function Edit( props ) {
 			body: new URLSearchParams( {
 				_wpnonce: Blocks._wpnonce,
 				action: 'themeplate_blocks_fields',
-				block: blockProps[ 'data-type' ],
+				block: blockID,
 			} ),
 		} )
 			.then( ( response ) => response.json() )
@@ -79,7 +79,7 @@ export default function Edit( props ) {
 				setFields( response.data );
 				setQueried( true );
 			} );
-	}, [] );
+	}, [ blockID ] );
 
 	if ( supportsInnerBlocks ) {
 		useEffect( () => {
@@ -129,7 +129,7 @@ export default function Edit( props ) {
 
 			<div { ...blockProps }>
 				<ServerSideRender
-					block={ blockProps[ 'data-type' ] }
+					block={ blockID }
 					attributes={ attributes }
 					className={ 'block-editor-server-side-render' }
 				/>

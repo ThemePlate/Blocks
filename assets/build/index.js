@@ -74,13 +74,14 @@ function Edit(props) {
     className: 'wp-block-themeplate',
     ref: blockRef
   });
+  const blockID = blockProps['data-type'];
   const {
     attributes,
     setAttributes
   } = props;
   const currentBlock = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useSelect)(select => select(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.store).getBlock(props.clientId), [props]);
   const blockType = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__.getBlockType)(currentBlock.name);
-  const supportsInnerBlocks = _vars__WEBPACK_IMPORTED_MODULE_8__["default"].collection[blockProps['data-type']].inner_blocks;
+  const supportsInnerBlocks = _vars__WEBPACK_IMPORTED_MODULE_8__["default"].collection[blockID].inner_blocks;
   const hasInnerBlocks = !!(currentBlock && currentBlock?.innerBlocks?.length);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.useMemo)(() => {
     fetch(_vars__WEBPACK_IMPORTED_MODULE_8__["default"].ajax_url, {
@@ -88,13 +89,13 @@ function Edit(props) {
       body: new URLSearchParams({
         _wpnonce: _vars__WEBPACK_IMPORTED_MODULE_8__["default"]._wpnonce,
         action: 'themeplate_blocks_fields',
-        block: blockProps['data-type']
+        block: blockID
       })
     }).then(response => response.json()).then(response => {
       setFields(response.data);
       setQueried(true);
     });
-  }, []);
+  }, [blockID]);
   if (supportsInnerBlocks) {
     (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.useEffect)(() => {
       /* global MutationObserver */
@@ -122,7 +123,7 @@ function Edit(props) {
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...blockProps
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)((_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_6___default()), {
-    block: blockProps['data-type'],
+    block: blockID,
     attributes: attributes,
     className: 'block-editor-server-side-render'
   }), supportsInnerBlocks && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks, {
