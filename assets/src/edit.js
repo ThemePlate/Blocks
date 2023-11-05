@@ -37,7 +37,10 @@ export default function Edit( props ) {
 	const innerRef = useRef();
 	const [ fields, setFields ] = useState( [] );
 	const [ queried, setQueried ] = useState( false );
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps( {
+		className: 'wp-block-themeplate',
+		ref: blockRef
+	} );
 	const { attributes, setAttributes } = props;
 	const currentBlock = useSelect(
 		select => select( store ).getBlock( props.clientId ),
@@ -101,7 +104,7 @@ export default function Edit( props ) {
 				}
 			</InspectorControls>
 
-			<div className={ 'wp-block-themeplate' } ref={ blockRef }>
+			<div { ...blockProps }>
 				<ServerSideRender
 					block={ blockProps[ 'data-type' ] }
 					attributes={ attributes }
