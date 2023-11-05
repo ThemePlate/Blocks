@@ -1,4 +1,7 @@
-import { __experimentalLinkControl as LinkControl, MediaUpload } from '@wordpress/block-editor';
+import {
+	__experimentalLinkControl as LinkControl,
+	MediaUpload,
+} from '@wordpress/block-editor';
 import {
 	BaseControl,
 	Button,
@@ -36,7 +39,9 @@ const Field = ( config, attributes, setAttributes ) => {
 					label={ config.title }
 					help={ config?.help || '' }
 					value={ attributes[ config.key ] }
-					onChange={ value => setAttributes( { [ config.key ]: value } ) }
+					onChange={ ( value ) =>
+						setAttributes( { [ config.key ]: value } )
+					}
 				/>
 			);
 
@@ -46,7 +51,9 @@ const Field = ( config, attributes, setAttributes ) => {
 					label={ config.title }
 					help={ config?.help || '' }
 					value={ attributes[ config.key ] }
-					onChange={ value => setAttributes( { [ config.key ]: value } ) }
+					onChange={ ( value ) =>
+						setAttributes( { [ config.key ]: value } )
+					}
 				/>
 			);
 
@@ -58,7 +65,9 @@ const Field = ( config, attributes, setAttributes ) => {
 					help={ config?.help || '' }
 					value={ attributes[ config.key ] }
 					options={ config.options }
-					onChange={ value => setAttributes( { [ config.key ]: value } ) }
+					onChange={ ( value ) =>
+						setAttributes( { [ config.key ]: value } )
+					}
 				/>
 			);
 
@@ -70,7 +79,9 @@ const Field = ( config, attributes, setAttributes ) => {
 					help={ config?.help || '' }
 					selected={ attributes[ config.key ] }
 					options={ config.options }
-					onChange={ value => setAttributes( { [ config.key ]: value } ) }
+					onChange={ ( value ) =>
+						setAttributes( { [ config.key ]: value } )
+					}
 				/>
 			);
 
@@ -82,25 +93,36 @@ const Field = ( config, attributes, setAttributes ) => {
 						{ config.title }
 					</BaseControl.VisualLabel>
 
-					{ 0 === config.options.length &&
+					{ 0 === config.options.length && (
 						<CheckboxControl
 							label={ config.title }
 							checked={ 'true' === attributes[ config.key ] }
-							onChange={ value => setAttributes( { [ config.key ]: value.toString() } ) }
+							onChange={ ( value ) =>
+								setAttributes( {
+									[ config.key ]: value.toString(),
+								} )
+							}
 						/>
-					}
-					{ 0 !== config.options.length &&
+					) }
+					{ 0 !== config.options.length && (
 						<Fragment>
-							{ config.options.map( option => (
+							{ config.options.map( ( option ) => (
 								<CheckboxControl
 									key={ option.value }
 									label={ option.label }
-									checked={ attributes[ config.key ] === option.value }
-									onChange={ () => setAttributes( { [ config.key ]: option.value } ) }
+									checked={
+										attributes[ config.key ] ===
+										option.value
+									}
+									onChange={ () =>
+										setAttributes( {
+											[ config.key ]: option.value,
+										} )
+									}
 								/>
 							) ) }
 						</Fragment>
-					}
+					) }
 				</BaseControl>
 			);
 
@@ -113,7 +135,9 @@ const Field = ( config, attributes, setAttributes ) => {
 
 					<ColorPicker
 						color={ attributes[ config.key ] }
-						onChange={ value => setAttributes( { [ config.key ]: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { [ config.key ]: value } )
+						}
 						enableAlpha={ true }
 					/>
 				</BaseControl>
@@ -125,16 +149,16 @@ const Field = ( config, attributes, setAttributes ) => {
 					label={ config.title }
 					help={ config?.help || '' }
 					value={ parseInt( attributes[ config.key ] ) }
-					onChange={ value => setAttributes( { [ config.key ]: value.toString() } ) }
+					onChange={ ( value ) =>
+						setAttributes( { [ config.key ]: value.toString() } )
+					}
 					afterIcon={ <strong>{ attributes[ config.key ] }</strong> }
 					withInputField={ false }
 				/>
 			);
 
 		case 'html':
-			return (
-				<RawHTML>{ attributes[ config.key ] }</RawHTML>
-			);
+			return <RawHTML>{ attributes[ config.key ] }</RawHTML>;
 
 		case 'group':
 			return (
@@ -146,9 +170,12 @@ const Field = ( config, attributes, setAttributes ) => {
 					<Fields
 						list={ config.fields }
 						attributes={ attributes[ config.key ] }
-						setAttributes={ values => {
+						setAttributes={ ( values ) => {
 							setAttributes( {
-								[ config.key ]: { ...attributes[ config.key ], ...values },
+								[ config.key ]: {
+									...attributes[ config.key ],
+									...values,
+								},
 							} );
 						} }
 					/>
@@ -170,19 +197,24 @@ const Field = ( config, attributes, setAttributes ) => {
 							justify={ 'flex-start' }
 						>
 							<FlexItem>
-								<Button variant="secondary" onClick={ () => setOpen( true ) }>
+								<Button
+									variant="secondary"
+									onClick={ () => setOpen( true ) }
+								>
 									Select
 								</Button>
 							</FlexItem>
 
 							<FlexItem>
-								<ExternalLink href={ attributes[ config.key ].url }>
+								<ExternalLink
+									href={ attributes[ config.key ].url }
+								>
 									{ attributes[ config.key ].title }
 								</ExternalLink>
 							</FlexItem>
 						</Flex>
 
-						{ isOpen &&
+						{ isOpen && (
 							<Modal
 								focusOnMount
 								shouldCloseOnEsc
@@ -194,16 +226,26 @@ const Field = ( config, attributes, setAttributes ) => {
 									type={ 'text' }
 									label={ 'Link text' }
 									value={ attributes[ config.key ].title }
-									onChange={ value => setAttributes(
-										{ [ config.key ]: { ...attributes[ config.key ], title: value } } ) }
+									onChange={ ( value ) =>
+										setAttributes( {
+											[ config.key ]: {
+												...attributes[ config.key ],
+												title: value,
+											},
+										} )
+									}
 								/>
 
 								<LinkControl
 									value={ attributes[ config.key ] }
-									onChange={ value => setAttributes( { [ config.key ]: value } ) }
+									onChange={ ( value ) =>
+										setAttributes( {
+											[ config.key ]: value,
+										} )
+									}
 								/>
 							</Modal>
-						}
+						) }
 					</Fragment>
 				</BaseControl>
 			);
@@ -218,13 +260,15 @@ const Field = ( config, attributes, setAttributes ) => {
 					<MediaUpload
 						label={ config.title }
 						value={ attributes[ config.key ].id }
-						onSelect={ value => setAttributes( {
-							[ config.key ]: {
-								id: value.id,
-								url: value.url,
-								title: value.title,
-							}
-						} ) }
+						onSelect={ ( value ) =>
+							setAttributes( {
+								[ config.key ]: {
+									id: value.id,
+									url: value.url,
+									title: value.title,
+								},
+							} )
+						}
 						render={ ( { open } ) => (
 							<Flex
 								gap={ 4 }
@@ -232,18 +276,30 @@ const Field = ( config, attributes, setAttributes ) => {
 								justify={ 'flex-start' }
 							>
 								<FlexItem>
-									<Button variant="secondary" onClick={ open }>
+									<Button
+										variant="secondary"
+										onClick={ open }
+									>
 										Select
 									</Button>
 								</FlexItem>
 
 								<FlexItem isBlock={ true }>
 									<Placeholder>
-										{ attributes[ config.key ]?.url &&
+										{ attributes[ config.key ]?.url && (
 											<ResponsiveWrapper>
-												<img src={ attributes[ config.key ].url } alt={ attributes[ config.key ].title } />
+												<img
+													src={
+														attributes[ config.key ]
+															.url
+													}
+													alt={
+														attributes[ config.key ]
+															.title
+													}
+												/>
 											</ResponsiveWrapper>
-										}
+										) }
 									</Placeholder>
 								</FlexItem>
 							</Flex>
@@ -264,7 +320,10 @@ const Field = ( config, attributes, setAttributes ) => {
 						{ config.title }
 					</BaseControl.VisualLabel>
 
-					<Tip><strong>TODO!</strong> Field <code>{ config.type }</code></Tip>
+					<Tip>
+						<strong>TODO!</strong> Field{ ' ' }
+						<code>{ config.type }</code>
+					</Tip>
 				</BaseControl>
 			);
 	}

@@ -60,6 +60,7 @@ __webpack_require__.r(__webpack_exports__);
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
+ * @param  props
  * @see https://developer.wordpress.org/block-editor/developers/block-api/block-edit-save/#edit
  *
  * @return {WPElement} Element to render.
@@ -125,9 +126,9 @@ function Edit(props) {
     className: 'block-editor-server-side-render'
   }), supportsInnerBlocks && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks, {
     ref: innerRef,
-    allowedBlocks: blockType['allowed_blocks'],
-    template: blockType['template_blocks'],
-    templateLock: blockType['template_lock'],
+    allowedBlocks: blockType.allowed_blocks,
+    template: blockType.template_blocks,
+    templateLock: blockType.template_lock,
     renderAppender: hasInnerBlocks ? null : _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks.ButtonBlockAppender
   })));
 }
@@ -333,7 +334,7 @@ const Field = (config, attributes, setAttributes) => {
     case 'term':
       return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.BaseControl, {
         help: config?.help || ''
-      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.BaseControl.VisualLabel, null, config.title), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Tip, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("strong", null, "TODO!"), " Field ", (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("code", null, config.type)));
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.BaseControl.VisualLabel, null, config.title), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Tip, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("strong", null, "TODO!"), " Field", ' ', (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("code", null, config.type)));
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Field);

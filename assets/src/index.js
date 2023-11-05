@@ -18,7 +18,7 @@ import Blocks from './vars';
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 
-Object.keys( Blocks.collection ).forEach( name => {
+Object.keys( Blocks.collection ).forEach( ( name ) => {
 	registerBlockType( name, {
 		apiVersion: 2,
 		edit: Edit,
