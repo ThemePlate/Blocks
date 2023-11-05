@@ -25,6 +25,8 @@ import { Fragment, RawHTML, useState } from '@wordpress/element';
 import Fields from './fields';
 
 const Field = ( config, attributes, setAttributes ) => {
+	const [ isOpen, setOpen ] = useState( false );
+
 	switch ( config.type ) {
 		default:
 		case 'text':
@@ -183,7 +185,6 @@ const Field = ( config, attributes, setAttributes ) => {
 			);
 
 		case 'link':
-			const [ isOpen, setOpen ] = useState( false );
 			return (
 				<BaseControl help={ config?.help || '' }>
 					<BaseControl.VisualLabel>

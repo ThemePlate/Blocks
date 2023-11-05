@@ -96,8 +96,8 @@ function Edit(props) {
       setQueried(true);
     });
   }, [blockID]);
-  if (supportsInnerBlocks) {
-    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.useEffect)(() => {
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.useEffect)(() => {
+    if (supportsInnerBlocks) {
       /* global MutationObserver */
       const observer = new MutationObserver(() => {
         const innerBlocks = blockRef.current.querySelector('ThemePlateInnerBlocks');
@@ -112,8 +112,8 @@ function Edit(props) {
       return () => {
         observer.disconnect();
       };
-    }, []);
-  }
+    }
+  }, [supportsInnerBlocks]);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InspectorControls, null, !queried && 0 === fields.length && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Placeholder, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Spinner, null)), queried && 0 !== fields.length && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
     className: 'themeplate-blocks-fields'
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fields__WEBPACK_IMPORTED_MODULE_9__["default"], {
@@ -162,6 +162,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const Field = (config, attributes, setAttributes) => {
+  const [isOpen, setOpen] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(false);
   switch (config.type) {
     default:
     case 'text':
@@ -267,7 +268,6 @@ const Field = (config, attributes, setAttributes) => {
         }
       }));
     case 'link':
-      const [isOpen, setOpen] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(false);
       return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.BaseControl, {
         help: config?.help || ''
       }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.BaseControl.VisualLabel, null, config.title), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Flex, {

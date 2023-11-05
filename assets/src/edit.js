@@ -81,8 +81,8 @@ export default function Edit( props ) {
 			} );
 	}, [ blockID ] );
 
-	if ( supportsInnerBlocks ) {
-		useEffect( () => {
+	useEffect( () => {
+		if ( supportsInnerBlocks ) {
 			/* global MutationObserver */
 			const observer = new MutationObserver( () => {
 				const innerBlocks = blockRef.current.querySelector(
@@ -104,8 +104,8 @@ export default function Edit( props ) {
 			return () => {
 				observer.disconnect();
 			};
-		}, [] );
-	}
+		}
+	}, [ supportsInnerBlocks ] );
 
 	return (
 		<Fragment>
