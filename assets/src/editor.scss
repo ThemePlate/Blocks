@@ -6,6 +6,19 @@
 
 .themeplate-blocks-fields {
 
+	.components-base-control {
+		width: 100%;
+
+		&__label {
+			font-size: 14px;
+			font-weight: 600;
+		}
+
+		&:last-of-type {
+			margin-bottom: 4px;
+		}
+	}
+
 	.themeplate-blocks-field {
 		margin-top: 12px;
 		padding-top: 4px;
@@ -41,19 +54,6 @@
 			.components-base-control {
 				margin-bottom: 0;
 			}
-		}
-	}
-
-	.components-base-control {
-		width: 100%;
-
-		&__label {
-			font-size: 14px;
-			font-weight: 600;
-		}
-
-		&:last-of-type {
-			margin-bottom: 4px;
 		}
 	}
 }

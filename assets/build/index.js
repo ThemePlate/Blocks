@@ -60,10 +60,10 @@ __webpack_require__.r(__webpack_exports__);
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
- * @param  props
+ * @param {Element} props
  * @see https://developer.wordpress.org/block-editor/developers/block-api/block-edit-save/#edit
  *
- * @return {WPElement} Element to render.
+ * @return {Element} Element to render.
  */
 function Edit(props) {
   const blockRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.useRef)();
@@ -97,6 +97,7 @@ function Edit(props) {
   }, []);
   if (supportsInnerBlocks) {
     (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.useEffect)(() => {
+      /* global MutationObserver */
       const observer = new MutationObserver(() => {
         const innerBlocks = blockRef.current.querySelector('ThemePlateInnerBlocks');
         if (null === innerBlocks || innerBlocks.childNodes.length) {
@@ -406,7 +407,7 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @see https://developer.wordpress.org/block-editor/developers/block-api/block-edit-save/#save
  *
- * @return {WPElement} Element to render.
+ * @return {Element} Element to render.
  */
 function save() {
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks.Content, null);

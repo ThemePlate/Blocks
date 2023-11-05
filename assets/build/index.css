@@ -6,6 +6,16 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
+.themeplate-blocks-fields .components-base-control {
+  width: 100%;
+}
+.themeplate-blocks-fields .components-base-control__label {
+  font-size: 14px;
+  font-weight: 600;
+}
+.themeplate-blocks-fields .components-base-control:last-of-type {
+  margin-bottom: 4px;
+}
 .themeplate-blocks-fields .themeplate-blocks-field {
   margin-top: 12px;
   padding-top: 4px;
@@ -33,16 +43,6 @@
 }
 .themeplate-blocks-fields .themeplate-blocks-field.field-type-group .components-base-control {
   margin-bottom: 0;
-}
-.themeplate-blocks-fields .components-base-control {
-  width: 100%;
-}
-.themeplate-blocks-fields .components-base-control__label {
-  font-size: 14px;
-  font-weight: 600;
-}
-.themeplate-blocks-fields .components-base-control:last-of-type {
-  margin-bottom: 4px;
 }
 
 .wp-block-themeplate > .block-editor-inner-blocks {

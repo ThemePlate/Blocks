@@ -5,20 +5,13 @@
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
 import {
-	BlockControls,
 	InnerBlocks,
 	InspectorControls,
 	store,
 	useBlockProps,
 } from '@wordpress/block-editor';
 import { getBlockType } from '@wordpress/blocks';
-import {
-	PanelBody,
-	Placeholder,
-	Spinner,
-	ToolbarButton,
-	ToolbarGroup,
-} from '@wordpress/components';
+import { PanelBody, Placeholder, Spinner } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import {
 	useEffect,
@@ -46,10 +39,10 @@ import Fields from './fields';
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
- * @param  props
+ * @param {Element} props
  * @see https://developer.wordpress.org/block-editor/developers/block-api/block-edit-save/#edit
  *
- * @return {WPElement} Element to render.
+ * @return {Element} Element to render.
  */
 export default function Edit( props ) {
 	const blockRef = useRef();
@@ -90,6 +83,7 @@ export default function Edit( props ) {
 
 	if ( supportsInnerBlocks ) {
 		useEffect( () => {
+			/* global MutationObserver */
 			const observer = new MutationObserver( () => {
 				const innerBlocks = blockRef.current.querySelector(
 					'ThemePlateInnerBlocks'
