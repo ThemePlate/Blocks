@@ -137,8 +137,8 @@ const Field = ( config, attributes, setAttributes ) => {
 
 					<Fragment>
 						<Flex
-							gap={ 6 }
-							align={ 'center' }
+							gap={ 4 }
+							align={ 'flex-start' }
 							justify={ 'flex-start' }
 						>
 							<FlexItem>
@@ -151,7 +151,10 @@ const Field = ( config, attributes, setAttributes ) => {
 							</FlexItem>
 
 							<FlexItem>
-								<ColorIndicator colorValue={ attributes[ config.key ] } />
+								<ColorIndicator
+									colorValue={ attributes[ config.key ] }
+									className={ 'themeplate-color-indicator' }
+								/>
 							</FlexItem>
 						</Flex>
 
