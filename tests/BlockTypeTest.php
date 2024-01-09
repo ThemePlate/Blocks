@@ -30,7 +30,7 @@ class BlockTypeTest extends TestCase {
 
 		$this->args = array(
 			'title'           => 'Test',
-			'attributes'      => array( 'innerBlockContent' => array( 'type' => 'string' ) ),
+			'attributes'      => array(),
 			'render_template' => $this->config['template'],
 			'themeplate'      => array(
 				'namespace' => $this->config['namespace'],
@@ -119,7 +119,6 @@ class BlockTypeTest extends TestCase {
 
 		$block_type = new BlockType( $this->args['title'], $this->config );
 
-		unset( $this->args['attributes']['innerBlockContent'] );
 		expect( 'register_block_type' )->once()->with(
 			$block_type->get_name(),
 			Mockery::on( array( $this, 'assert_in_args' ) )
