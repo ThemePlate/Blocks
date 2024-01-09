@@ -98,7 +98,6 @@ const Field = ( config, attributes, setAttributes ) => {
 
 					{ 0 === config.options.length && (
 						<CheckboxControl
-							label={ config.title }
 							checked={ 'true' === attributes[ config.key ] }
 							onChange={ ( value ) =>
 								setAttributes( {

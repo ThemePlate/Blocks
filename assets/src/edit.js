@@ -4,6 +4,7 @@
  *
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
+import { __ } from '@wordpress/i18n';
 import {
 	InnerBlocks,
 	InspectorControls,
@@ -117,7 +118,7 @@ export default function Edit( props ) {
 				) }
 
 				{ queried && 0 !== fields.length && (
-					<PanelBody className={ 'themeplate-blocks-fields' }>
+					<PanelBody title={ __( 'Settings' ) } className={ 'themeplate-blocks-fields' }>
 						<Fields
 							list={ fields }
 							attributes={ attributes }
