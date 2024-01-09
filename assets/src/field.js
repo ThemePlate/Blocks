@@ -6,6 +6,7 @@ import {
 	BaseControl,
 	Button,
 	CheckboxControl,
+	ColorIndicator,
 	ColorPicker,
 	ExternalLink,
 	Flex,
@@ -135,13 +136,44 @@ const Field = ( config, attributes, setAttributes ) => {
 						{ config.title }
 					</BaseControl.VisualLabel>
 
-					<ColorPicker
-						color={ attributes[ config.key ] }
-						onChange={ ( value ) =>
-							setAttributes( { [ config.key ]: value } )
-						}
-						enableAlpha={ true }
-					/>
+					<Fragment>
+						<Flex
+							gap={ 6 }
+							align={ 'center' }
+							justify={ 'flex-start' }
+						>
+							<FlexItem>
+								<Button
+									variant="secondary"
+									onClick={ () => setOpen( true ) }
+								>
+									Pick
+								</Button>
+							</FlexItem>
+
+							<FlexItem>
+								<ColorIndicator colorValue={ attributes[ config.key ] } />
+							</FlexItem>
+						</Flex>
+
+						{ isOpen && (
+							<Modal
+								focusOnMount
+								shouldCloseOnEsc
+								shouldCloseOnClickOutside
+								title={ 'Insert/edit color' }
+								onRequestClose={ () => setOpen( false ) }
+							>
+								<ColorPicker
+									color={ attributes[ config.key ] }
+									onChange={ ( value ) =>
+										setAttributes( { [ config.key ]: value } )
+									}
+									enableAlpha={ true }
+								/>
+							</Modal>
+						) }
+					</Fragment>
 				</BaseControl>
 			);
 
