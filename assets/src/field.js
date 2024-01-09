@@ -1,3 +1,4 @@
+import { __ } from '@wordpress/i18n';
 import {
 	__experimentalLinkControl as LinkControl,
 	MediaUpload,
@@ -138,8 +139,8 @@ const Field = ( config, attributes, setAttributes ) => {
 					<Fragment>
 						<Flex
 							gap={ 4 }
-							align={ 'flex-start' }
-							justify={ 'flex-start' }
+							align="flex-start"
+							justify="flex-start"
 						>
 							<FlexItem>
 								<Button
@@ -153,7 +154,7 @@ const Field = ( config, attributes, setAttributes ) => {
 							<FlexItem>
 								<ColorIndicator
 									colorValue={ attributes[ config.key ] }
-									className={ 'themeplate-color-indicator' }
+									className="themeplate-color-indicator"
 								/>
 							</FlexItem>
 						</Flex>
@@ -163,7 +164,7 @@ const Field = ( config, attributes, setAttributes ) => {
 								focusOnMount
 								shouldCloseOnEsc
 								shouldCloseOnClickOutside
-								title={ 'Insert/edit color' }
+								title={ __( 'Insert/edit color' ) }
 								onRequestClose={ () => setOpen( false ) }
 							>
 								<ColorPicker
@@ -228,8 +229,8 @@ const Field = ( config, attributes, setAttributes ) => {
 					<Fragment>
 						<Flex
 							gap={ 6 }
-							align={ 'center' }
-							justify={ 'flex-start' }
+							align="center"
+							justify="flex-start"
 						>
 							<FlexItem>
 								<Button
@@ -254,12 +255,12 @@ const Field = ( config, attributes, setAttributes ) => {
 								focusOnMount
 								shouldCloseOnEsc
 								shouldCloseOnClickOutside
-								title={ 'Insert/edit link' }
+								title={ __( 'Insert/edit link' ) }
 								onRequestClose={ () => setOpen( false ) }
 							>
 								<TextControl
-									type={ 'text' }
-									label={ 'Link text' }
+									type="text"
+									label={ __( 'Link text' ) }
 									value={ attributes[ config.key ].title }
 									onChange={ ( value ) =>
 										setAttributes( {
@@ -307,8 +308,8 @@ const Field = ( config, attributes, setAttributes ) => {
 						render={ ( { open } ) => (
 							<Flex
 								gap={ 4 }
-								align={ 'center' }
-								justify={ 'flex-start' }
+								align="center"
+								justify="flex-start"
 							>
 								<FlexItem>
 									<Button

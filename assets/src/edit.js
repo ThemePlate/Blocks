@@ -118,7 +118,7 @@ export default function Edit( props ) {
 				) }
 
 				{ queried && 0 !== fields.length && (
-					<PanelBody title={ __( 'Settings' ) } className={ 'themeplate-blocks-fields' }>
+					<PanelBody title={ __( 'Settings' ) } className="themeplate-blocks-fields">
 						<Fields
 							list={ fields }
 							attributes={ attributes }
@@ -132,7 +132,7 @@ export default function Edit( props ) {
 				<ServerSideRender
 					block={ blockID }
 					attributes={ attributes }
-					className={ 'block-editor-server-side-render' }
+					className="block-editor-server-side-render"
 				/>
 
 				{ supportsInnerBlocks && (
