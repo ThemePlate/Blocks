@@ -35,16 +35,21 @@ class CustomBlocks {
 
 	public function init(): void {
 
-		foreach ( glob( $this->location . '*/' . self::CONFIG_FILE ) as $config ) {
-			$folder = basename( dirname( $config ) );
-			$block  = require $config;
+		foreach ( glob( $this->location . '*/' ) as $path ) {
+			if ( file_exists( $path . 'block.json' ) ) {
+				( new BlockType( $path ) )->init();
+
+				continue;
+			}
+
+			$block = require $path . self::CONFIG_FILE;
 
 			if ( $block instanceof BlockType ) {
 				$config = array_merge(
 					$block->get_config(),
 					array(
 						'category' => $this->category_slug(),
-						'template' => $this->location . trailingslashit( $folder ) . self::MARKUP_FILE,
+						'template' => $path . self::MARKUP_FILE,
 					)
 				);
 

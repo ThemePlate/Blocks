@@ -9,10 +9,11 @@ namespace ThemePlate\Blocks;
 use ThemePlate\Core\Fields;
 use ThemePlate\Core\Helper\MainHelper;
 use WP_Block;
+use WP_Block_Type;
 
 class BlockType {
 
-	public const DEFAULTS = array(
+	public const DEPRECATED = array(
 		'namespace'       => 'themeplate',
 		'icon'            => 'admin-generic',
 		'category'        => 'widgets',
@@ -23,24 +24,44 @@ class BlockType {
 		'template_lock'   => '',
 	);
 
+	public const DEFAULTS = array(
+		'render_template' => '',
+		'custom_fields'   => array(),
+		'inner_blocks'    => true,
+		'allowed_blocks'  => array(),
+		'template_blocks' => array(),
+		'template_lock'   => '',
+	);
 
-	protected string $title;
-	protected string $name;
+
+	protected string $title; // deprecated
+	protected string $name;  // deprecated
+	protected string $path;
 	protected array $config;
+	protected bool $deprecated = true;
 	protected ?Fields $fields = null;
+	protected ?WP_Block_Type $block = null;
 
 
-	public function __construct( string $title, array $config = array() ) {
+	public function __construct( string $path, array $config = array() ) {
 
-		$this->title  = $title;
-		$this->config = $this->check( $config );
+		if ( ! file_exists( $path ) ) {
+			_deprecated_argument( __METHOD__, '1.6.0', 'Pass the path to metadata definition.' );
+
+			$this->title  = $path;
+			$this->config = $this->check( $config );
+		} else {
+			$this->path = trailingslashit( $path );
+
+			$this->deprecated = false;
+		}
 
 	}
 
 
 	protected function check( array $config ): array {
 
-		$config = MainHelper::fool_proof( self::DEFAULTS, $config );
+		$config = MainHelper::fool_proof( self::DEPRECATED, $config );
 
 		$this->name = trailingslashit( $config['namespace'] ) . sanitize_title( $this->title );
 
@@ -50,6 +71,8 @@ class BlockType {
 
 
 	public function fields( array $list ): self {
+
+		_deprecated_function( __METHOD__, '1.6.0', 'Pass in the config under "custom_fields" key.' );
 
 		$this->fields = new Fields( $list );
 
@@ -62,7 +85,36 @@ class BlockType {
 
 		AssetsHelper::setup();
 		FieldsHelper::setup();
+
+		if ( ! $this->deprecated ) {
+			$this->setup();
+
+			if ( ! file_exists( $this->path . 'block.json' ) ) {
+				return;
+			}
+		}
+
 		add_action( 'init', array( $this, 'register' ) );
+
+	}
+
+
+	protected function setup() {
+
+		$config = array();
+		$c_file = $this->path . CustomBlocks::CONFIG_FILE;
+		$m_file = $this->path . CustomBlocks::MARKUP_FILE;
+
+		if ( file_exists( $c_file ) ) {
+			$config = require $c_file;
+		}
+
+		$this->config = MainHelper::fool_proof( self::DEFAULTS, $config );
+		$this->fields = new Fields( $this->config['custom_fields'] );
+
+		if ( empty( $this->config['render_template'] ) && file_exists( $m_file ) ) {
+			$this->config['render_template'] = $m_file;
+		}
 
 	}
 
@@ -79,7 +131,10 @@ class BlockType {
 			'fields'    => $this->fields,
 		);
 
-		if ( false === register_block_type( $this->name, $args ) ) {
+		$block_type  = $this->deprecated ? $this->name : $this->path;
+		$this->block = register_block_type( $block_type, $args ) ?: null;
+
+		if ( false === $this->block ) {
 			return;
 		}
 
@@ -90,7 +145,9 @@ class BlockType {
 
 	public function store( array $collection ): array {
 
-		$collection[ $this->name ] = $this->generate_args();
+		$key = $this->deprecated ? $this->name : $this->block->name;
+
+		$collection[ $key ] = $this->generate_args();
 
 		return $collection;
 
@@ -99,12 +156,24 @@ class BlockType {
 
 	public function get_title(): string {
 
+		_deprecated_function( __METHOD__, '1.6.0' );
+
+		if ( ! $this->deprecated ) {
+			return '';
+		}
+
 		return $this->title;
 
 	}
 
 
 	public function get_name(): string {
+
+		_deprecated_function( __METHOD__, '1.6.0' );
+
+		if ( ! $this->deprecated ) {
+			return '';
+		}
 
 		return $this->name;
 
@@ -115,6 +184,12 @@ class BlockType {
 
 		if ( '' === $key ) {
 			return $this->config;
+		}
+
+		if ( ! $this->deprecated ) {
+			if ( 'template' === $key ) {
+				$key = 'render_template';
+			}
 		}
 
 		return $this->config[ $key ] ?? '';
@@ -148,11 +223,14 @@ class BlockType {
 			unset( $config['template_blocks'] );
 		}
 
+		if ( $this->deprecated ) {
+			$config['title']    = $this->get_title();
+			$config['category'] = $this->get_config( 'category' );
+		}
+
 		return array_merge(
 			$config,
 			array(
-				'title'      => $this->get_title(),
-				'category'   => $this->get_config( 'category' ),
 				'attributes' => $this->get_attributes(),
 			)
 		);

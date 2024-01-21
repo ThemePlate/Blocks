@@ -1,0 +1,7 @@
+{
+  "name": "themeplate/example",
+  "title": "Example",
+  "description": "An example block by ThemePlate.",
+  "category": "widgets",
+  "icon": "admin-generic"
+}

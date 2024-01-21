@@ -15,6 +15,7 @@ use ThemePlate\Blocks\FieldsHelper;
 use WP_Block;
 use function Brain\Monkey\Functions\expect;
 use function Brain\Monkey\Functions\when;
+use function Brain\Monkey\Functions\stubTranslationFunctions;
 
 class BlockTypeTest extends TestCase {
 	private array $args   = array();
@@ -46,6 +47,8 @@ class BlockTypeTest extends TestCase {
 	}
 
 	public function test_firing_init_actually_add_hooks(): void {
+		expect( '_deprecated_argument' )->withAnyArgs()->once();
+
 		$block_type = new BlockType( $this->args['title'], $this->config );
 
 		$block_type->init();
@@ -54,6 +57,9 @@ class BlockTypeTest extends TestCase {
 		$this->assertSame( 10, has_action( 'wp_ajax_' . FieldsHelper::ACTION, array( FieldsHelper::class, 'load' ) ) );
 		$this->assertSame( 10, has_action( 'enqueue_block_editor_assets', array( AssetsHelper::class, 'enqueue' ) ) );
 		$this->assertSame( 10, has_action( 'init', array( $block_type, 'register' ) ) );
+
+		stubTranslationFunctions();
+		( new BlockType( __DIR__ . '/example' ) )->init();
 	}
 
 	public function assert_in_args( $actual ): bool {
@@ -66,6 +72,9 @@ class BlockTypeTest extends TestCase {
 	}
 
 	public function test_register_has_wanted_config(): void {
+		expect( '_deprecated_argument' )->withAnyArgs()->once();
+		expect( '_deprecated_function' )->withAnyArgs()->twice();
+
 		$block_type = new BlockType( $this->args['title'], $this->config );
 
 		expect( 'register_block_type' )->once()->with(
@@ -101,6 +110,9 @@ class BlockTypeTest extends TestCase {
 	 * @dataProvider for_register_with_blocks_set
 	 */
 	public function test_register_with_blocks_set( string $key, array $values ): void {
+		expect( '_deprecated_argument' )->withAnyArgs()->once();
+		expect( '_deprecated_function' )->withAnyArgs()->twice();
+
 		$this->config[ $key ] = $values;
 		$this->args[ $key ]   = $values;
 
@@ -115,6 +127,9 @@ class BlockTypeTest extends TestCase {
 	}
 
 	public function test_register_with_no_inner_blocks(): void {
+		expect( '_deprecated_argument' )->withAnyArgs()->once();
+		expect( '_deprecated_function' )->withAnyArgs()->twice();
+
 		$this->config['inner_blocks'] = false;
 
 		$block_type = new BlockType( $this->args['title'], $this->config );
@@ -132,6 +147,8 @@ class BlockTypeTest extends TestCase {
 	}
 
 	public function test_render_with_callback(): void {
+		expect( '_deprecated_argument' )->withAnyArgs()->once();
+
 		$this->config['template'] = array( self::class, 'block_callback' );
 
 		$block_type = new BlockType( $this->args['title'], $this->config );
