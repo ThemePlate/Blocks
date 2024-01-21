@@ -11,7 +11,12 @@ $config = array(
 );
 
 ( new BlockType( 'Custom Block', $config ) )->fields( $list )->init();
+
+/** >= 1.6.0 */
+( new BlockType( __DIR__ . '/tests/example' ) )->init()
 ```
+
+> Check out [example block](/tests/example)
 
 ### Restrict inner blocks and prefill components
 ```php
@@ -29,6 +34,10 @@ $config = array(
 );
 
 ( new BlockType( 'My custom block', $config ) )->fields( $list )->init();
+
+/** >= 1.6.0 */
+// return in the config.php file beside block.json
+return $config;
 ```
 
 > Disable nested blocks by setting `$config` key `inner_blocks` to `false`
@@ -37,9 +46,11 @@ $config = array(
 ```
 /path/to/blocks/
 ├── first-block/
+│  ├── block.json // >= 1.6.0
 │  ├── config.php
 │  └── markup.php
 ├── second-block/
+    ├── block.json // >= 1.6.0
     ├── config.php
     └── markup.php
 ```
@@ -48,6 +59,18 @@ $config = array(
 use ThemePlate\Blocks\CustomBlocks;
 
 ( new CustomBlocks( 'My Blocks', '/path/to/blocks' ) )->init();
+
+/** >= 1.6.0 */
+( new CustomBlocks( '/path/to/blocks' ) )->init()
+```
+
+#### */block/block.json
+```json
+{
+	...
+	https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/
+	...
+}
 ```
 
 #### */block/config.php
@@ -57,6 +80,13 @@ use ThemePlate\Blocks\CustomBlocks;
 use ThemePlate\Blocks\BlockType;
 
 return ( new BlockType( 'My custom block' ) )->fields( $list );
+
+/** >= 1.6.0 */
+return array(
+	...
+	/** https://developer.wordpress.org/reference/classes/wp_block_type/__construct/#parameters */
+	...
+);
 ```
 
 #### */block/markup.php
