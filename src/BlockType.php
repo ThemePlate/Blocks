@@ -43,7 +43,7 @@ class BlockType {
 	protected ?WP_Block_Type $block = null;
 
 
-	public function __construct( string $path, array $config = array() ) {
+	public function __construct( string $path, array $config = null ) {
 
 		if ( ! file_exists( $path ) ) {
 			_deprecated_argument( __METHOD__, '1.6.0', 'Pass the path to metadata definition.' );
@@ -54,6 +54,10 @@ class BlockType {
 			$this->path = trailingslashit( $path );
 
 			$this->deprecated = false;
+		}
+
+		if ( null !== $config ) {
+			_deprecated_argument( __METHOD__, '1.6.0', 'Define custom config in file.' );
 		}
 
 	}
@@ -89,7 +93,7 @@ class BlockType {
 		if ( ! $this->deprecated ) {
 			$this->setup();
 
-			if ( ! file_exists( $this->path . 'block.json' ) ) {
+			if ( ! file_exists( $this->path . CustomBlocks::JSON_FILE ) ) {
 				return;
 			}
 		}

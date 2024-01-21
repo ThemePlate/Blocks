@@ -10,6 +10,7 @@ class CustomBlocks {
 
 	public const CONFIG_FILE = 'config.php';
 	public const MARKUP_FILE = 'markup.php';
+	public const JSON_FILE   = 'block.json';
 
 
 	protected string $category;
@@ -48,7 +49,7 @@ class CustomBlocks {
 	public function init(): void {
 
 		foreach ( glob( $this->location . '*/' ) as $path ) {
-			if ( file_exists( $path . 'block.json' ) ) {
+			if ( file_exists( $path . self::JSON_FILE ) ) {
 				( new BlockType( $path ) )->init();
 
 				continue;
