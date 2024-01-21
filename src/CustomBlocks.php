@@ -15,18 +15,30 @@ class CustomBlocks {
 	protected string $category;
 	protected string $cat_slug;
 	protected string $location;
+	protected bool $deprecated = false;
 
 
-	public function __construct( string $category, string $location ) {
+	public function __construct( string $location, string $deprecated = null ) {
 
-		$this->category = $category;
-		$this->cat_slug = sanitize_title( $category );
-		$this->location = trailingslashit( $location );
+		if ( null !== $deprecated ) {
+			$this->category   = $location;
+			$this->cat_slug   = sanitize_title( $location );
+			$this->location   = trailingslashit( $deprecated );
+			$this->deprecated = true;
+		} else {
+			$this->location = trailingslashit( $location );
+		}
 
 	}
 
 
 	public function category_slug(): string {
+
+		if ( ! $this->deprecated ) {
+			return '';
+		}
+
+		_deprecated_function( __METHOD__, '1.6.0' );
 
 		return $this->cat_slug;
 
@@ -48,7 +60,7 @@ class CustomBlocks {
 				$config = array_merge(
 					$block->get_config(),
 					array(
-						'category' => $this->category_slug(),
+						'category' => $this->cat_slug,
 						'template' => $path . self::MARKUP_FILE,
 					)
 				);
@@ -57,19 +69,27 @@ class CustomBlocks {
 			}
 		}
 
-		add_filter( 'block_categories_all', array( $this, 'block_category' ) );
+		if ( $this->deprecated ) {
+			add_filter( 'block_categories_all', array( $this, 'block_category' ) );
+		}
 
 	}
 
 
 	public function block_category( array $categories ): array {
 
+		if ( ! $this->deprecated ) {
+			return $categories;
+		}
+
+		_deprecated_function( __METHOD__, '1.6.0' );
+
 		return array_merge(
 			$categories,
 			array(
 				array(
 					'title' => $this->category,
-					'slug'  => $this->category_slug(),
+					'slug'  => $this->cat_slug,
 				),
 			)
 		);
