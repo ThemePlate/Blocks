@@ -56,7 +56,7 @@ class BlockType {
 			$this->deprecated = false;
 		}
 
-		if ( null !== $config ) {
+		if ( null !== $config && ! $this->deprecated ) {
 			_deprecated_argument( __METHOD__, '1.6.0', 'Define custom config in file.' );
 		}
 
