@@ -34,9 +34,8 @@ class BlockTypeTest extends TestCase {
 			'attributes'      => array(),
 			'render_template' => $this->config['template'],
 			'themeplate'      => array(
-				'namespace' => $this->config['namespace'],
-				'template'  => $this->config['template'],
-				'fields'    => null,
+				'template' => $this->config['template'],
+				'fields'   => null,
 			),
 		);
 	}

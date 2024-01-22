@@ -130,9 +130,8 @@ class BlockType {
 		$args['render_callback'] = array( self::class, 'render' );
 		$args['render_template'] = $this->get_config( 'template' );
 		$args['themeplate']      = array(
-			'namespace' => $this->get_config( 'namespace' ),
-			'template'  => $this->get_config( 'template' ),
-			'fields'    => $this->fields,
+			'template' => $this->get_config( 'template' ),
+			'fields'   => $this->fields,
 		);
 
 		$block_type  = $this->deprecated ? $this->name : $this->path;
@@ -216,9 +215,6 @@ class BlockType {
 
 		$config = $this->get_config();
 
-		unset( $config['namespace'] );
-		unset( $config['template'] );
-
 		if ( empty( $config['allowed_blocks'] ) ) {
 			unset( $config['allowed_blocks'] );
 		}
@@ -228,8 +224,13 @@ class BlockType {
 		}
 
 		if ( $this->deprecated ) {
-			$config['title']    = $this->get_title();
-			$config['category'] = $this->get_config( 'category' );
+			unset( $config['namespace'] );
+			unset( $config['template'] );
+
+			$config['title'] = $this->get_title();
+		} else {
+			unset( $config['render_template'] );
+			unset( $config['custom_fields'] );
 		}
 
 		return array_merge(
