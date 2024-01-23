@@ -10,7 +10,6 @@ import {
 	InspectorControls,
 	store,
 	useBlockProps,
-	useInnerBlocksProps,
 } from '@wordpress/block-editor';
 import { PanelBody, Placeholder, Spinner } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
@@ -62,18 +61,6 @@ export default function Edit( props ) {
 	);
 	const blockType = Blocks.collection[ blockID ];
 	const supportsInnerBlocks = blockType.inner_blocks;
-	const innerBlockProps = useInnerBlocksProps(
-		{ ref: innerRef },
-		{
-			allowedBlocks: blockType.allowed_blocks,
-			template: blockType.template_blocks,
-			templateLock: blockType.template_lock,
-			renderAppender: currentBlock?.innerBlocks?.length
-				? null
-				: InnerBlocks.ButtonBlockAppender,
-			templateInsertUpdatesSelection: true,
-		}
-	);
 
 	useMemo( () => {
 		fetch( Blocks.ajax_url, {
@@ -144,7 +131,19 @@ export default function Edit( props ) {
 					className="block-editor-server-side-render"
 				/>
 
-				{ supportsInnerBlocks && <div { ...innerBlockProps } /> }
+				{ supportsInnerBlocks && (
+					<InnerBlocks
+						ref={ innerRef }
+						allowedBlocks={ blockType.allowed_blocks }
+						template={ blockType.template_blocks }
+						templateLock={ blockType.template_lock }
+						renderAppender={
+							currentBlock?.innerBlocks?.length
+								? null
+								: InnerBlocks.ButtonBlockAppender
+						}
+					/>
+				) }
 			</div>
 		</Fragment>
 	);
