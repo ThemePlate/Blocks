@@ -10,8 +10,8 @@ import {
 	InspectorControls,
 	store,
 	useBlockProps,
+	useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { getBlockType } from '@wordpress/blocks';
 import { PanelBody, Placeholder, Spinner } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import {
@@ -60,10 +60,19 @@ export default function Edit( props ) {
 		( select ) => select( store ).getBlock( props.clientId ),
 		[ props ]
 	);
-	const blockType = getBlockType( currentBlock.name );
-	const supportsInnerBlocks = Blocks.collection[ blockID ].inner_blocks;
-	const hasInnerBlocks = !! (
-		currentBlock && currentBlock?.innerBlocks?.length
+	const blockType = Blocks.collection[ blockID ];
+	const supportsInnerBlocks = blockType.inner_blocks;
+	const innerBlockProps = useInnerBlocksProps(
+		{ ref: innerRef },
+		{
+			allowedBlocks: blockType.allowed_blocks,
+			template: blockType.template_blocks,
+			templateLock: blockType.template_lock,
+			renderAppender: currentBlock?.innerBlocks?.length
+				? null
+				: InnerBlocks.ButtonBlockAppender,
+			templateInsertUpdatesSelection: true,
+		}
 	);
 
 	useMemo( () => {
@@ -94,10 +103,7 @@ export default function Edit( props ) {
 					return;
 				}
 
-				innerBlocks.parentNode.replaceChild(
-					innerRef.current,
-					innerBlocks
-				);
+				innerBlocks.replaceWith( innerRef.current );
 			} );
 
 			observer.observe( blockRef.current, { childList: true } );
@@ -118,7 +124,10 @@ export default function Edit( props ) {
 				) }
 
 				{ queried && 0 !== fields.length && (
-					<PanelBody title={ __( 'Settings' ) } className="themeplate-blocks-fields">
+					<PanelBody
+						title={ __( 'Settings' ) }
+						className="themeplate-blocks-fields"
+					>
 						<Fields
 							list={ fields }
 							attributes={ attributes }
@@ -135,19 +144,7 @@ export default function Edit( props ) {
 					className="block-editor-server-side-render"
 				/>
 
-				{ supportsInnerBlocks && (
-					<InnerBlocks
-						ref={ innerRef }
-						allowedBlocks={ blockType.allowed_blocks }
-						template={ blockType.template_blocks }
-						templateLock={ blockType.template_lock }
-						renderAppender={
-							hasInnerBlocks
-								? null
-								: InnerBlocks.ButtonBlockAppender
-						}
-					/>
-				) }
+				{ supportsInnerBlocks && <div { ...innerBlockProps } /> }
 			</div>
 		</Fragment>
 	);
