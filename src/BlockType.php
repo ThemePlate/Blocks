@@ -128,10 +128,9 @@ class BlockType {
 		$args = $this->generate_args();
 
 		$args['render_callback'] = array( self::class, 'render' );
-		$args['render_template'] = $this->get_config( 'template' );
 		$args['themeplate']      = array(
-			'template' => $this->get_config( 'template' ),
-			'fields'   => $this->fields,
+			'markup' => $this->get_config( 'template' ),
+			'fields' => $this->fields,
 		);
 
 		$block_type  = $this->deprecated ? $this->name : $this->path;
@@ -258,13 +257,19 @@ class BlockType {
 
 	public static function render( array $attributes, string $content, WP_Block $block ): string {
 
-		if ( empty( $block->block_type->render_template ) ) {
+		if ( ! property_exists( $block->block_type, 'themeplate' ) ) {
 			return '';
 		}
 
-		$callback = json_decode( $block->block_type->render_template );
+		$themeplate = $block->block_type->themeplate;
 
-		if ( ! file_exists( $block->block_type->render_template ) && ! is_callable( $callback ) ) {
+		if ( empty( $themeplate['markup'] ) ) {
+			return '';
+		}
+
+		$callback = json_decode( $themeplate['markup'] );
+
+		if ( ! file_exists( $themeplate['markup'] ) && ! is_callable( $callback ) ) {
 			return '';
 		}
 
@@ -276,8 +281,10 @@ class BlockType {
 			return call_user_func( $callback, $attributes, $content, $block );
 		}
 
+		unset( $themeplate );
 		ob_start();
-		include $block->block_type->render_template;
+
+		include $block->block_type->themeplate['markup'];
 
 		return ob_get_clean();
 

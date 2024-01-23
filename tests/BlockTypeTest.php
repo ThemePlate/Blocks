@@ -32,10 +32,9 @@ class BlockTypeTest extends TestCase {
 		$this->args = array(
 			'title'           => 'Test',
 			'attributes'      => array(),
-			'render_template' => $this->config['template'],
 			'themeplate'      => array(
-				'template' => $this->config['template'],
-				'fields'   => null,
+				'markup' => $this->config['template'],
+				'fields' => null,
 			),
 		);
 	}
@@ -154,7 +153,7 @@ class BlockTypeTest extends TestCase {
 
 		$block = $this->getMockBuilder( WP_Block::class )->getMock();
 
-		$block->block_type = (object) array( 'render_template' => wp_json_encode( $this->config['template'] ) );
+		$block->block_type = (object) array( 'themeplate' => array( 'markup' => wp_json_encode( $this->config['template'] ) ) );
 
 		$this->assertSame( self::block_callback(), $block_type->render( $this->args['attributes'], '', $block ) );
 	}
