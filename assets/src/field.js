@@ -293,6 +293,12 @@ const Field = ( config, attributes, setAttributes ) => {
 			);
 
 		case 'file':
+			const items = (
+				config.multiple
+					? attributes[ config.key ]
+					: [ attributes[ config.key ] ]
+			).filter( ( item ) => !! item );
+
 			return (
 				<BaseControl>
 					<BaseControl.VisualLabel>
@@ -301,23 +307,32 @@ const Field = ( config, attributes, setAttributes ) => {
 
 					<MediaUpload
 						label={ config.title }
-						value={ attributes[ config.key ].id }
-						onSelect={ ( value ) =>
-							setAttributes( {
-								[ config.key ]: {
-									id: value.id,
-									url: value.url,
-									title: value.title,
-								},
-							} )
+						multiple={ config.multiple }
+						value={
+							config.multiple
+								? attributes[ config.key ].map(
+										( { id } ) => id
+								  )
+								: attributes[ config.key ].id
 						}
+						onSelect={ ( value ) => {
+							const saveValue = Array.isArray( value )
+								? value.map( ( { id, url, title } ) => {
+										return { id, url, title };
+								  } )
+								: {
+										id: value.id,
+										url: value.url,
+										title: value.title,
+								  };
+
+							setAttributes( {
+								[ config.key ]: saveValue,
+							} );
+						} }
 						render={ ( { open } ) => (
-							<Flex
-								gap={ 4 }
-								align="center"
-								justify="flex-start"
-							>
-								<FlexItem>
+							<Flex gap={ 4 } wrap={ true }>
+								<FlexItem isBlock={ true }>
 									<Button
 										variant="secondary"
 										onClick={ open }
@@ -326,24 +341,43 @@ const Field = ( config, attributes, setAttributes ) => {
 									</Button>
 								</FlexItem>
 
-								<FlexItem isBlock={ true }>
-									<Placeholder>
-										{ attributes[ config.key ]?.url && (
-											<ResponsiveWrapper>
-												<img
-													src={
-														attributes[ config.key ]
-															.url
-													}
-													alt={
-														attributes[ config.key ]
-															.title
-													}
-												/>
-											</ResponsiveWrapper>
-										) }
-									</Placeholder>
-								</FlexItem>
+								{ items.length >= 1 && (
+									<FlexItem isBlock={ false }>
+										<Button
+											variant="secondary"
+											onClick={ () => {
+												setAttributes( {
+													[ config.key ]:
+														config.multiple
+															? []
+															: '',
+												} );
+											} }
+										>
+											{ config.multiple &&
+											items.length > 1
+												? __( 'Clear' )
+												: __( 'Remove' ) }
+										</Button>
+									</FlexItem>
+								) }
+
+								<Flex gap={ 4 } direction={ 'column' }>
+									{ items.map( ( item ) => (
+										<FlexItem isBlock={ true }>
+											<Placeholder>
+												{ item?.url && (
+													<ResponsiveWrapper>
+														<img
+															src={ item.url }
+															alt={ item.title }
+														/>
+													</ResponsiveWrapper>
+												) }
+											</Placeholder>
+										</FlexItem>
+									) ) }
+								</Flex>
 							</Flex>
 						) }
 					/>
