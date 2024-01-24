@@ -69,6 +69,7 @@ const Field = ( config, attributes, setAttributes ) => {
 					help={ config?.help || '' }
 					value={ attributes[ config.key ] }
 					options={ config.options }
+					multiple={ config.multiple }
 					onChange={ ( value ) =>
 						setAttributes( { [ config.key ]: value } )
 					}
@@ -137,11 +138,7 @@ const Field = ( config, attributes, setAttributes ) => {
 					</BaseControl.VisualLabel>
 
 					<Fragment>
-						<Flex
-							gap={ 4 }
-							align="flex-start"
-							justify="flex-start"
-						>
+						<Flex gap={ 4 } align="flex-start" justify="flex-start">
 							<FlexItem>
 								<Button
 									variant="secondary"
@@ -170,7 +167,9 @@ const Field = ( config, attributes, setAttributes ) => {
 								<ColorPicker
 									color={ attributes[ config.key ] }
 									onChange={ ( value ) =>
-										setAttributes( { [ config.key ]: value } )
+										setAttributes( {
+											[ config.key ]: value,
+										} )
 									}
 									enableAlpha={ true }
 								/>
@@ -227,11 +226,7 @@ const Field = ( config, attributes, setAttributes ) => {
 					</BaseControl.VisualLabel>
 
 					<Fragment>
-						<Flex
-							gap={ 6 }
-							align="center"
-							justify="flex-start"
-						>
+						<Flex gap={ 6 } align="center" justify="flex-start">
 							<FlexItem>
 								<Button
 									variant="secondary"
@@ -316,7 +311,7 @@ const Field = ( config, attributes, setAttributes ) => {
 										variant="secondary"
 										onClick={ open }
 									>
-										Select
+										{ __( 'Select' ) }
 									</Button>
 								</FlexItem>
 
