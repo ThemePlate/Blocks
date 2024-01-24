@@ -114,15 +114,26 @@ const Field = ( config, attributes, setAttributes ) => {
 								<CheckboxControl
 									key={ option.value }
 									label={ option.label }
-									checked={
-										attributes[ config.key ] ===
+									checked={ attributes[ config.key ].includes(
 										option.value
-									}
-									onChange={ () =>
+									) }
+									onChange={ ( event ) => {
 										setAttributes( {
-											[ config.key ]: option.value,
-										} )
-									}
+											[ config.key ]: config.options
+												.filter( ( { value } ) => {
+													if (
+														option.value !== value
+													) {
+														return attributes[
+															config.key
+														].includes( value );
+													}
+
+													return event;
+												} )
+												.map( ( { value } ) => value ),
+										} );
+									} }
 								/>
 							) ) }
 						</Fragment>
