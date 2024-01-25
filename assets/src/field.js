@@ -317,13 +317,23 @@ const Field = ( config, attributes, setAttributes ) => {
 						}
 						onSelect={ ( value ) => {
 							const saveValue = Array.isArray( value )
-								? value.map( ( { id, url, title } ) => {
-										return { id, url, title };
-								  } )
+								? value.map(
+										( { id, url, title, type, icon } ) => {
+											return {
+												id,
+												url,
+												title,
+												type,
+												icon,
+											};
+										}
+								  )
 								: {
 										id: value.id,
 										url: value.url,
 										title: value.title,
+										type: value.type,
+										icon: value.icon,
 								  };
 
 							setAttributes( {
@@ -363,20 +373,27 @@ const Field = ( config, attributes, setAttributes ) => {
 								) }
 
 								<Flex gap={ 4 } direction={ 'column' }>
-									{ items.map( ( item ) => (
-										<FlexItem isBlock={ true }>
-											<Placeholder>
-												{ item?.url && (
-													<ResponsiveWrapper>
-														<img
-															src={ item.url }
-															alt={ item.title }
-														/>
-													</ResponsiveWrapper>
-												) }
-											</Placeholder>
-										</FlexItem>
-									) ) }
+									{ items.map(
+										( { url, title, type, icon } ) => (
+											<FlexItem isBlock={ true }>
+												<Placeholder>
+													{ url && (
+														<ResponsiveWrapper>
+															<img
+																src={
+																	'image' ===
+																	type
+																		? url
+																		: icon
+																}
+																alt={ title }
+															/>
+														</ResponsiveWrapper>
+													) }
+												</Placeholder>
+											</FlexItem>
+										)
+									) }
 								</Flex>
 							</Flex>
 						) }
