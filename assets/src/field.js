@@ -6,6 +6,9 @@ import {
 import {
 	BaseControl,
 	Button,
+	Card,
+	CardFooter,
+	CardMedia,
 	CheckboxControl,
 	ColorIndicator,
 	ColorPicker,
@@ -13,10 +16,8 @@ import {
 	Flex,
 	FlexItem,
 	Modal,
-	Placeholder,
 	RadioControl,
 	RangeControl,
-	ResponsiveWrapper,
 	SelectControl,
 	TextareaControl,
 	TextControl,
@@ -376,21 +377,21 @@ const Field = ( config, attributes, setAttributes ) => {
 									{ items.map(
 										( { url, title, type, icon } ) => (
 											<FlexItem isBlock={ true }>
-												<Placeholder>
-													{ url && (
-														<ResponsiveWrapper>
-															<img
-																src={
-																	'image' ===
-																	type
-																		? url
-																		: icon
-																}
-																alt={ title }
-															/>
-														</ResponsiveWrapper>
-													) }
-												</Placeholder>
+												<Card>
+													<CardMedia>
+														<img
+															className="themeplate-image"
+															src={
+																'image' === type
+																	? url
+																	: icon
+															}
+														/>
+													</CardMedia>
+													<CardFooter>
+														{ title }
+													</CardFooter>
+												</Card>
 											</FlexItem>
 										)
 									) }
