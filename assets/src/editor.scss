@@ -64,6 +64,12 @@
 	}
 }
 
-.wp-block-themeplate > .block-editor-inner-blocks {
-	display: none;
+.wp-block-themeplate {
+	&:not(.alignleft):not(.alignright):not(.alignfull):not(.alignwide) {
+		max-width: none;
+	}
+
+	> .block-editor-inner-blocks {
+		display: none;
+	}
 }
