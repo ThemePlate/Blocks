@@ -268,12 +268,12 @@ const Field = ( config, attributes, setAttributes ) => {
 								<TextControl
 									type="text"
 									label={ __( 'Link text' ) }
-									value={ attributes[ config.key ].title }
+									value={ attributes[ config.key ].text || attributes[ config.key ].title }
 									onChange={ ( value ) =>
 										setAttributes( {
 											[ config.key ]: {
 												...attributes[ config.key ],
-												title: value,
+												text: value,
 											},
 										} )
 									}
