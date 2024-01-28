@@ -30,9 +30,8 @@ class BlockTypeTest extends TestCase {
 		when( 'sanitize_title' )->justReturn( 'test' );
 
 		$this->args = array(
-			'title'           => 'Test',
-			'attributes'      => array(),
-			'themeplate'      => array(
+			'title'      => 'Test',
+			'themeplate' => array(
 				'markup' => $this->config['template'],
 				'fields' => null,
 			),
@@ -155,6 +154,6 @@ class BlockTypeTest extends TestCase {
 
 		$block->block_type = (object) array( 'themeplate' => array( 'markup' => wp_json_encode( $this->config['template'] ) ) );
 
-		$this->assertSame( self::block_callback(), $block_type->render( $this->args['attributes'], '', $block ) );
+		$this->assertSame( self::block_callback(), $block_type->render( array(), '', $block ) );
 	}
 }

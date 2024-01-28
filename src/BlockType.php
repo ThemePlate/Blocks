@@ -51,6 +51,7 @@ class BlockType {
 			$this->title  = $path;
 			$this->config = $this->check( $config );
 		} else {
+			$this->name = '';
 			$this->path = trailingslashit( $path );
 
 			$this->deprecated = false;
@@ -96,8 +97,11 @@ class BlockType {
 			if ( ! file_exists( $this->path . CustomBlocks::JSON_FILE ) ) {
 				return;
 			}
+
+			add_filter( 'block_type_metadata_settings', array( $this, 'set_name_from_metadata' ), 10, 2 );
 		}
 
+		add_filter( 'register_block_type_args', array( $this, 'modify_attributes' ), 10, 2 );
 		add_action( 'init', array( $this, 'register' ) );
 
 	}
@@ -119,6 +123,28 @@ class BlockType {
 		if ( empty( $this->config['render_template'] ) && file_exists( $m_file ) ) {
 			$this->config['render_template'] = $m_file;
 		}
+
+	}
+
+
+	public function set_name_from_metadata( array $settings, array $metadata ): array {
+
+		if ( $metadata['file'] === $this->path . CustomBlocks::JSON_FILE ) {
+			$this->name = $metadata['name'];
+		}
+
+		return $settings;
+
+	}
+
+
+	public function modify_attributes( array $args, string $block_name ): array {
+
+		if ( $block_name === $this->name && null !== $this->fields ) {
+			$args['attributes'] = array_merge( $args['attributes'], FieldsHelper::build_schema( $this->fields ) );
+		}
+
+		return $args;
 
 	}
 
@@ -232,25 +258,7 @@ class BlockType {
 			unset( $config['custom_fields'] );
 		}
 
-		return array_merge(
-			$config,
-			array(
-				'attributes' => $this->get_attributes(),
-			)
-		);
-
-	}
-
-
-	protected function get_attributes(): array {
-
-		$attributes = array();
-
-		if ( null === $this->fields ) {
-			return $attributes;
-		}
-
-		return array_merge( FieldsHelper::build_schema( $this->fields ), $attributes );
+		return $config;
 
 	}
 
