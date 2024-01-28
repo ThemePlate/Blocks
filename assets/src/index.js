@@ -20,10 +20,7 @@ import Blocks from './vars';
 
 Object.keys( Blocks.collection ).forEach( ( name ) => {
 	registerBlockType( name, {
-		apiVersion: 2,
 		edit: Edit,
 		save: Save,
-
-		...Blocks.collection[ name ],
 	} );
 } );

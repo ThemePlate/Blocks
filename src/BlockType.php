@@ -140,6 +140,12 @@ class BlockType {
 
 	public function modify_attributes( array $args, string $block_name ): array {
 
+		if ( ! empty( $args['themeplate'] ) ) {
+			if ( empty( $args['api_version'] ) ) {
+				$args['api_version'] = 2;
+			}
+		}
+
 		if ( $block_name === $this->name && null !== $this->fields ) {
 			$args['attributes'] = array_merge( $args['attributes'], FieldsHelper::build_schema( $this->fields ) );
 		}
