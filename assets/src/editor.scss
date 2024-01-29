@@ -65,6 +65,8 @@
 }
 
 .wp-block-themeplate {
+	z-index: 1;
+
 	&:not(.alignleft):not(.alignright):not(.alignfull):not(.alignwide) {
 		max-width: none;
 	}
