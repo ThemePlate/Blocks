@@ -140,14 +140,14 @@ class BlockType {
 
 	public function modify_attributes( array $args, string $block_name ): array {
 
-		if ( ! empty( $args['themeplate'] ) ) {
+		if ( $block_name === $this->name ) {
 			if ( empty( $args['api_version'] ) ) {
 				$args['api_version'] = 2;
 			}
-		}
 
-		if ( $block_name === $this->name && null !== $this->fields ) {
-			$args['attributes'] = array_merge( $args['attributes'], FieldsHelper::build_schema( $this->fields ) );
+			if ( null !== $this->fields ) {
+				$args['attributes'] = array_merge( $args['attributes'], FieldsHelper::build_schema( $this->fields ) );
+			}
 		}
 
 		return $args;
@@ -258,7 +258,7 @@ class BlockType {
 			unset( $config['namespace'] );
 			unset( $config['template'] );
 
-			$config['title'] = $this->get_title();
+			$config['title'] = $this->title;
 		} else {
 			unset( $config['render_template'] );
 			unset( $config['custom_fields'] );

@@ -70,7 +70,7 @@ class BlockTypeTest extends TestCase {
 
 	public function test_register_has_wanted_config(): void {
 		expect( '_deprecated_argument' )->withAnyArgs()->once();
-		expect( '_deprecated_function' )->withAnyArgs()->twice();
+		expect( '_deprecated_function' )->withAnyArgs()->once();
 
 		$block_type = new BlockType( $this->args['title'], $this->config );
 
@@ -108,7 +108,7 @@ class BlockTypeTest extends TestCase {
 	 */
 	public function test_register_with_blocks_set( string $key, array $values ): void {
 		expect( '_deprecated_argument' )->withAnyArgs()->once();
-		expect( '_deprecated_function' )->withAnyArgs()->twice();
+		expect( '_deprecated_function' )->withAnyArgs()->once();
 
 		$this->config[ $key ] = $values;
 		$this->args[ $key ]   = $values;
@@ -125,7 +125,7 @@ class BlockTypeTest extends TestCase {
 
 	public function test_register_with_no_inner_blocks(): void {
 		expect( '_deprecated_argument' )->withAnyArgs()->once();
-		expect( '_deprecated_function' )->withAnyArgs()->twice();
+		expect( '_deprecated_function' )->withAnyArgs()->once();
 
 		$this->config['inner_blocks'] = false;
 
