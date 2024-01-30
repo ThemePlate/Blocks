@@ -16,6 +16,7 @@ class CustomBlocks {
 	protected string $category;
 	protected string $cat_slug;
 	protected string $location;
+	protected array $handled;
 	protected bool $deprecated = false;
 
 
@@ -58,21 +59,29 @@ class CustomBlocks {
 			$block = require $path . self::CONFIG_FILE;
 
 			if ( $block instanceof BlockType ) {
-				$config = array_merge(
-					$block->get_config(),
-					array(
-						'category' => $this->cat_slug,
-						'template' => $path . self::MARKUP_FILE,
-					)
-				);
+				$this->handled[ $block->get_name() ] = $path;
 
-				( new BlockType( $block->get_title(), $config ) )->fields( $block->get_fields() )->init();
+				add_filter( 'register_block_type_args', array( $this, 'modify_attributes' ), 10, 2 );
+				$block->init();
 			}
 		}
 
 		if ( $this->deprecated ) {
 			add_filter( 'block_categories_all', array( $this, 'block_category' ) );
 		}
+
+	}
+
+
+	public function modify_attributes( array $args, string $block_name ): array {
+
+		if ( in_array( $block_name, array_keys( $this->handled ), true ) ) {
+			$args['category'] = $this->cat_slug;
+
+			$args['themeplate']['markup'] = $this->handled[ $block_name ] . self::MARKUP_FILE;
+		}
+
+		return $args;
 
 	}
 
@@ -84,6 +93,10 @@ class CustomBlocks {
 		}
 
 		_deprecated_function( __METHOD__, '1.6.0' );
+
+		if ( in_array( $this->cat_slug, array_column( $categories, 'slug' ) ) ) {
+			return $categories;
+		}
 
 		return array_merge(
 			$categories,
