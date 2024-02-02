@@ -287,7 +287,7 @@ const Field = ( config, attributes, setAttributes ) => {
 											[ config.key ]: {
 												...value,
 												text: value.title,
-											}
+											},
 										} )
 									}
 								/>
@@ -379,8 +379,14 @@ const Field = ( config, attributes, setAttributes ) => {
 
 								<Flex gap={ 4 } direction={ 'column' }>
 									{ items.map(
-										( { url, title, type, icon } ) => (
-											<FlexItem isBlock={ true }>
+										(
+											{ url, title, type, icon },
+											index
+										) => (
+											<FlexItem
+												key={ index }
+												isBlock={ true }
+											>
 												<Card>
 													<CardMedia>
 														<img
@@ -390,6 +396,7 @@ const Field = ( config, attributes, setAttributes ) => {
 																	? url
 																	: icon
 															}
+															alt={ title }
 														/>
 													</CardMedia>
 													<CardFooter>
