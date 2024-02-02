@@ -20,6 +20,7 @@ import {
 	useRef,
 	Fragment,
 } from '@wordpress/element';
+import { doAction } from '@wordpress/hooks';
 import ServerSideRender from '@wordpress/server-side-render';
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -79,27 +80,39 @@ export default function Edit( props ) {
 	}, [ blockID ] );
 
 	useEffect( () => {
-		if ( supportsInnerBlocks ) {
-			/* global MutationObserver */
-			const observer = new MutationObserver( () => {
+		/* global MutationObserver */
+		const observer = new MutationObserver( () => {
+			const ssrWrapper = blockRef.current.querySelector(
+				'.block-editor-server-side-render'
+			);
+
+			if ( null === ssrWrapper ) {
+				return;
+			}
+
+			if ( supportsInnerBlocks ) {
 				const innerBlocks = blockRef.current.querySelector(
 					'ThemePlateInnerBlocks'
 				);
 
-				if ( null === innerBlocks || innerBlocks.childNodes.length ) {
-					return;
+				if ( null !== innerBlocks && ! innerBlocks.childNodes.length ) {
+					innerBlocks.replaceWith( innerRef.current );
 				}
+			}
 
-				innerBlocks.replaceWith( innerRef.current );
-			} );
+			doAction( 'tpb-rendered', blockID, blockRef.current );
+			doAction(
+				`tpb-rendered-${ blockID.replace( /\//, '.' ) }`,
+				blockRef.current
+			);
+		} );
 
-			observer.observe( blockRef.current, { childList: true } );
+		observer.observe( blockRef.current, { childList: true } );
 
-			return () => {
-				observer.disconnect();
-			};
-		}
-	}, [ supportsInnerBlocks ] );
+		return () => {
+			observer.disconnect();
+		};
+	}, [ blockID, supportsInnerBlocks ] );
 
 	return (
 		<Fragment>
