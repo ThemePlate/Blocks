@@ -79,14 +79,24 @@ export default function Edit( props ) {
 			} );
 	}, [ blockID ] );
 
+	const isRendered = ( mutations ) => {
+		if ( 2 !== mutations.length ) {
+			return false;
+		}
+
+		const addedNodes = mutations[ 1 ].addedNodes;
+
+		if ( 1 !== addedNodes.length ) {
+			return false;
+		}
+
+		return 'block-editor-server-side-render' === addedNodes[ 0 ].className;
+	};
+
 	useEffect( () => {
 		/* global MutationObserver */
-		const observer = new MutationObserver( () => {
-			const ssrWrapper = blockRef.current.querySelector(
-				'.block-editor-server-side-render'
-			);
-
-			if ( null === ssrWrapper ) {
+		const observer = new MutationObserver( ( mutations ) => {
+			if ( ! isRendered( mutations ) ) {
 				return;
 			}
 
