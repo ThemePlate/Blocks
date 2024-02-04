@@ -112,10 +112,11 @@ export default function Edit( props ) {
 				}
 			}
 
-			doAction( 'tpb-rendered', blockID, blockRef.current );
+			doAction( 'tpb-rendered', blockID, blockRef.current, attributes );
 			doAction(
 				`tpb-rendered-${ blockID.replace( /\//, '.' ) }`,
-				blockRef.current
+				blockRef.current,
+				attributes
 			);
 		} );
 
@@ -124,7 +125,7 @@ export default function Edit( props ) {
 		return () => {
 			observer.disconnect();
 		};
-	}, [ blockID, supportsInnerBlocks ] );
+	}, [ blockID, supportsInnerBlocks, attributes ] );
 
 	return (
 		<Fragment>
