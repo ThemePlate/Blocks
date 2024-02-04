@@ -36,6 +36,8 @@ import './editor.scss';
 import Blocks from './vars';
 import Fields from './fields';
 
+const renderedClassName = 'block-editor-server-side-render';
+
 /**
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
@@ -90,7 +92,7 @@ export default function Edit( props ) {
 			return false;
 		}
 
-		return 'block-editor-server-side-render' === addedNodes[ 0 ].className;
+		return renderedClassName === addedNodes[ 0 ].className;
 	};
 
 	useEffect( () => {
@@ -151,7 +153,7 @@ export default function Edit( props ) {
 				<ServerSideRender
 					block={ blockID }
 					attributes={ attributes }
-					className="block-editor-server-side-render"
+					className={ renderedClassName }
 				/>
 
 				{ supportsInnerBlocks && (
