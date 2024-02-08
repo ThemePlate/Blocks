@@ -4,14 +4,12 @@
  *
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
-import { __ } from '@wordpress/i18n';
+
 import {
 	InnerBlocks,
-	InspectorControls,
 	store,
 	useBlockProps,
 } from '@wordpress/block-editor';
-import { PanelBody, Placeholder, Spinner } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import {
 	useEffect,
@@ -34,7 +32,7 @@ import './editor.scss';
  * Internal dependencies
  */
 import Blocks from './vars';
-import Fields from './fields';
+import Controls from './controls';
 
 const renderedClassName = 'block-editor-server-side-render';
 
@@ -129,47 +127,12 @@ export default function Edit( props ) {
 
 	return (
 		<Fragment>
-			<InspectorControls>
-				{ ! queried && ( ! fields?.default || 0 === fields.default.length ) && (
-					<Placeholder>
-						<Spinner />
-					</Placeholder>
-				) }
-
-				{ queried && 0 !== fields.default.length && (
-					<PanelBody
-						title={ __( 'Settings' ) }
-						className="themeplate-blocks-fields"
-					>
-						<Fields
-							list={ fields.default }
-							attributes={ attributes }
-							setAttributes={ setAttributes }
-						/>
-					</PanelBody>
-				) }
-			</InspectorControls>
-
-			<InspectorControls group="styles">
-				{ ! queried && ( ! fields?.styles || 0 === fields.styles.length ) && (
-					<Placeholder>
-						<Spinner />
-					</Placeholder>
-				) }
-
-				{ queried && 0 !== fields.styles.length && (
-					<PanelBody
-						title={ __( 'Settings' ) }
-						className="themeplate-blocks-fields"
-					>
-						<Fields
-							list={ fields.styles }
-							attributes={ attributes }
-							setAttributes={ setAttributes }
-						/>
-					</PanelBody>
-				) }
-			</InspectorControls>
+			<Controls
+				queried={ queried }
+				fields={ fields }
+				attributes={ attributes }
+				setAttributes={ setAttributes }
+			/>
 
 			<div { ...blockProps }>
 				<ServerSideRender
