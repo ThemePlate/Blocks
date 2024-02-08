@@ -53,7 +53,10 @@ class FieldsHelper extends CoreFieldsHelper {
 
 	protected static function prepare( ?Fields $fields ): array {
 
-		$prepared = array();
+		$prepared = array(
+			'default' => array(),
+			'styles'  => array(),
+		);
 
 		if ( null === $fields ) {
 			return $prepared;
@@ -67,6 +70,7 @@ class FieldsHelper extends CoreFieldsHelper {
 
 			if ( 'group' === $field->get_config( 'type' ) ) {
 				$config['fields'] = self::prepare( $field->get_config( 'fields' ) );
+				$config['fields'] = $config['fields']['default'];
 			}
 
 			if ( ! empty( $config['options'] ) && self::is_choice_type( $field ) ) {
@@ -85,7 +89,9 @@ class FieldsHelper extends CoreFieldsHelper {
 				);
 			}
 
-			$prepared[] = $config;
+			$location = $field->get_config( 'location' ) ?: 'default';
+
+			$prepared[ $location ][] = $config;
 		}
 
 		return $prepared;

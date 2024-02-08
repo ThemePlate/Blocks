@@ -130,19 +130,40 @@ export default function Edit( props ) {
 	return (
 		<Fragment>
 			<InspectorControls>
-				{ ! queried && 0 === fields.length && (
+				{ ! queried && ( ! fields?.default || 0 === fields.default.length ) && (
 					<Placeholder>
 						<Spinner />
 					</Placeholder>
 				) }
 
-				{ queried && 0 !== fields.length && (
+				{ queried && 0 !== fields.default.length && (
 					<PanelBody
 						title={ __( 'Settings' ) }
 						className="themeplate-blocks-fields"
 					>
 						<Fields
-							list={ fields }
+							list={ fields.default }
+							attributes={ attributes }
+							setAttributes={ setAttributes }
+						/>
+					</PanelBody>
+				) }
+			</InspectorControls>
+
+			<InspectorControls group="styles">
+				{ ! queried && ( ! fields?.styles || 0 === fields.styles.length ) && (
+					<Placeholder>
+						<Spinner />
+					</Placeholder>
+				) }
+
+				{ queried && 0 !== fields.styles.length && (
+					<PanelBody
+						title={ __( 'Settings' ) }
+						className="themeplate-blocks-fields"
+					>
+						<Fields
+							list={ fields.styles }
 							attributes={ attributes }
 							setAttributes={ setAttributes }
 						/>
