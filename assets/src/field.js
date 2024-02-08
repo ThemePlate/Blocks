@@ -302,7 +302,7 @@ const Field = ( config, attributes, setAttributes ) => {
 				config.multiple
 					? attributes[ config.key ]
 					: [ attributes[ config.key ] ]
-			).filter( ( item ) => !! item );
+			).filter( ( item ) => !! item.id );
 
 			return (
 				<BaseControl>
