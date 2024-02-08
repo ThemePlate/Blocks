@@ -16,6 +16,11 @@ class FieldsHelper extends CoreFieldsHelper {
 
 	public const ACTION = 'themeplate_blocks_fields';
 
+	public const LOCATIONS = array(
+		'default',
+		'styles',
+	);
+
 
 	public static function setup(): void {
 
@@ -53,10 +58,7 @@ class FieldsHelper extends CoreFieldsHelper {
 
 	public static function prepare( ?Fields $fields ): array {
 
-		$prepared = array(
-			'default' => array(),
-			'styles'  => array(),
-		);
+		$prepared = array_fill_keys( self::LOCATIONS, array() );
 
 		if ( null === $fields ) {
 			return $prepared;
@@ -91,7 +93,7 @@ class FieldsHelper extends CoreFieldsHelper {
 
 			$location = $field->get_config( 'location' );
 
-			if ( ! in_array( $location, array_keys( $prepared ), true ) ) {
+			if ( ! in_array( $location, self::LOCATIONS, true ) ) {
 				$location = 'default';
 			}
 

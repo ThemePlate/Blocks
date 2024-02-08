@@ -84,6 +84,7 @@ class AssetsHelper {
 				'ajax_url'   => admin_url( 'admin-ajax.php' ),
 				'_wpnonce'   => wp_create_nonce( self::ACTION ),
 				'collection' => apply_filters( 'themeplate_blocks_collection', array() ),
+				'locations'  => FieldsHelper::LOCATIONS,
 			),
 		);
 

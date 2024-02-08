@@ -3,36 +3,41 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, Placeholder, Spinner } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 
+import Blocks from './vars';
 import Fields from './fields';
-
-const LOCATIONS = [ 'default', 'styles' ];
 
 export default function Controls( props ) {
 	const { queried, fields, attributes, setAttributes } = props;
 
+	if ( ! queried ) {
+		return (
+			<InspectorControls>
+				<Placeholder>
+					<Spinner />
+				</Placeholder>
+			</InspectorControls>
+		);
+	}
+
 	return (
 		<Fragment>
-			{ LOCATIONS.map( ( location ) => (
-				<InspectorControls group={ location }>
-					{ ! queried && ( ! fields[ location ] || 0 === fields[ location ].length ) && (
-						<Placeholder>
-							<Spinner />
-						</Placeholder>
+			{ Blocks.locations.map( ( location ) => (
+				<Fragment>
+					{ 0 !== fields[ location ].length && (
+						<InspectorControls group={ location }>
+							<PanelBody
+								title={ __( 'Settings' ) }
+								className="themeplate-blocks-fields"
+							>
+								<Fields
+									list={ fields[ location ] }
+									attributes={ attributes }
+									setAttributes={ setAttributes }
+								/>
+							</PanelBody>
+						</InspectorControls>
 					) }
-
-					{ queried && 0 !== fields[ location ].length && (
-						<PanelBody
-							title={ __( 'Settings' ) }
-							className="themeplate-blocks-fields"
-						>
-							<Fields
-								list={ fields[ location ] }
-								attributes={ attributes }
-								setAttributes={ setAttributes }
-							/>
-						</PanelBody>
-					) }
-				</InspectorControls>
+				</Fragment>
 			) ) }
 		</Fragment>
 	);
