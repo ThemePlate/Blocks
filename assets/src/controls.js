@@ -25,16 +25,26 @@ export default function Controls( props ) {
 				<Fragment>
 					{ 0 !== fields[ location ].length && (
 						<InspectorControls group={ location }>
-							<PanelBody
-								title={ __( 'Settings' ) }
-								className="themeplate-blocks-fields"
-							>
-								<Fields
-									list={ fields[ location ] }
-									attributes={ attributes }
-									setAttributes={ setAttributes }
-								/>
-							</PanelBody>
+							<Fragment>
+								{ 'advanced' !== location && (
+									<PanelBody
+										title={ __( 'Settings' ) }
+										className="themeplate-blocks-fields"
+									>
+										<Fields
+											list={ fields[ location ] }
+											attributes={ attributes }
+											setAttributes={ setAttributes }
+										/>
+									</PanelBody>
+								) || (
+									<Fields
+										list={ fields[ location ] }
+										attributes={ attributes }
+										setAttributes={ setAttributes }
+									/>
+								) }
+							</Fragment>
 						</InspectorControls>
 					) }
 				</Fragment>

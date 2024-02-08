@@ -19,6 +19,7 @@ class FieldsHelper extends CoreFieldsHelper {
 	public const LOCATIONS = array(
 		'default',
 		'styles',
+		'advanced',
 	);
 
 

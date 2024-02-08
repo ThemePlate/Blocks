@@ -37,7 +37,11 @@ class FieldsHelperTest extends TestCase {
 				$count -= array_sum( array_diff_key( $counts['config'], $counts['actual'] ) );
 			}
 
-			$this->assertSame( $counts['config'][ $location ], $count );
+			if ( isset($counts['config'][ $location ]) ) {
+				$this->assertSame( $counts['config'][ $location ], $count );
+			} else {
+				$this->assertSame( 0, $count );
+			}
 		}
 	}
 }
