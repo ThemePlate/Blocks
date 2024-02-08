@@ -5,11 +5,7 @@
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
 
-import {
-	InnerBlocks,
-	store,
-	useBlockProps,
-} from '@wordpress/block-editor';
+import { InnerBlocks, store, useBlockProps } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import {
 	useEffect,

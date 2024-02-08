@@ -1,6 +1,11 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, Placeholder, Spinner } from '@wordpress/components';
+import {
+	PanelBody,
+	PanelRow,
+	Placeholder,
+	Spinner,
+} from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 
 import Blocks from './vars';
@@ -22,27 +27,33 @@ export default function Controls( props ) {
 	return (
 		<Fragment>
 			{ Blocks.locations.map( ( location ) => (
-				<Fragment>
+				<Fragment key={ location }>
 					{ 0 !== fields[ location ].length && (
 						<InspectorControls group={ location }>
 							<Fragment>
-								{ 'advanced' !== location && (
-									<PanelBody
-										title={ __( 'Settings' ) }
-										className="themeplate-blocks-fields"
-									>
+								{ ( 'advanced' !== location && (
+									<PanelBody title={ __( 'Control Fields' ) }>
 										<Fields
 											list={ fields[ location ] }
 											attributes={ attributes }
 											setAttributes={ setAttributes }
 										/>
 									</PanelBody>
-								) || (
-									<Fields
-										list={ fields[ location ] }
-										attributes={ attributes }
-										setAttributes={ setAttributes }
-									/>
+								) ) || (
+									<Fragment>
+										<Fields
+											list={ fields[ location ] }
+											attributes={ attributes }
+											setAttributes={ setAttributes }
+										/>
+
+										<PanelRow
+											className={ [
+												'themeplate-blocks-field',
+												`field-type-separator`,
+											] }
+										/>
+									</Fragment>
 								) }
 							</Fragment>
 						</InspectorControls>

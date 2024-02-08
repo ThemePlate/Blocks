@@ -4,20 +4,7 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-.themeplate-blocks-fields {
-
-	.components-base-control {
-		width: 100%;
-
-		&__label {
-			font-size: 14px;
-			font-weight: 600;
-		}
-
-		&:last-of-type {
-			margin-bottom: 4px;
-		}
-	}
+.block-editor-block-inspector {
 
 	.themeplate-blocks-field {
 		margin-top: 12px;
@@ -26,13 +13,22 @@
 		border-bottom: 1px solid #ddd;
 
 		&:first-of-type {
-			margin-top: 0;
-			padding-top: 0;
+			margin-top: -6px;
+			padding-top: 12px;
+			border-top: 1px solid #ddd;
 		}
 
 		&:last-of-type {
 			padding-bottom: 0;
 			border-bottom: 0;
+		}
+
+		.components-base-control {
+			width: 100%;
+
+			&:last-of-type {
+				margin-bottom: 4px;
+			}
 		}
 
 		&.field-type-group {
@@ -54,6 +50,12 @@
 			.components-base-control {
 				margin-bottom: 0;
 			}
+		}
+
+		&.field-type-separator {
+			min-height: 0;
+			padding-top: 0;
+			border-bottom: 0;
 		}
 	}
 
