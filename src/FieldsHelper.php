@@ -51,7 +51,7 @@ class FieldsHelper extends CoreFieldsHelper {
 	}
 
 
-	protected static function prepare( ?Fields $fields ): array {
+	public static function prepare( ?Fields $fields ): array {
 
 		$prepared = array(
 			'default' => array(),
@@ -89,7 +89,11 @@ class FieldsHelper extends CoreFieldsHelper {
 				);
 			}
 
-			$location = $field->get_config( 'location' ) ?: 'default';
+			$location = $field->get_config( 'location' );
+
+			if ( ! in_array( $location, array_keys( $prepared ), true ) ) {
+				$location = 'default';
+			}
 
 			$prepared[ $location ][] = $config;
 		}
