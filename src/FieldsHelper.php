@@ -93,6 +93,30 @@ class FieldsHelper extends CoreFieldsHelper {
 	}
 
 
+	public static function get_schema( Field $field ): array {
+
+		$schema = parent::get_schema( $field );
+
+		if ( 'file' !== $field->get_config( 'type' ) ) {
+			return $schema;
+		}
+
+		$properties = array();
+
+		foreach ( array( 'id', 'url', 'title' ) as $key ) {
+			$properties[ $key ] = array(
+				'type'    => 'string',
+				'default' => '',
+			);
+		};
+
+		$schema['properties'] = $properties;
+
+		return $schema;
+
+	}
+
+
 	public static function get_schema_type( Field $field ): string {
 
 		switch ( $field->get_config( 'type' ) ) {
@@ -101,6 +125,59 @@ class FieldsHelper extends CoreFieldsHelper {
 
 			case 'file':
 				return 'object';
+		}
+
+	}
+
+
+	/**
+	 * @return mixed
+	 */
+	public static function get_default_value( Field $field ) {
+
+		$default = parent::get_default_value( $field );
+
+		if ( 'group' === $field->get_config( 'type' ) ) {
+			$fields = static::group_fields( $field->get_config( 'fields' ) );
+
+			foreach ( $fields->get_collection() as $sub_field ) {
+				if ( 'file' !== $sub_field->get_config( 'type' ) ) {
+					continue;
+				}
+
+				static::adjust_file_value( $default[ $sub_field->data_key() ] );
+			}
+		} elseif ( 'file' === $field->get_config( 'type' ) ) {
+			self::adjust_file_value( $default );
+		}
+
+		return $default;
+
+	}
+
+
+	/**
+	 * @param mixed $default
+	 */
+	protected static function adjust_file_value( &$default ) {
+
+		$default = array(
+			'id'    => $default,
+			'url'   => '',
+			'title' => '',
+		);
+
+		if ( is_array( $default['id'] ) ) {
+			$default = array_map(
+				function( $value ) {
+					return array(
+						'id'    => $value,
+						'url'   => '',
+						'title' => '',
+					);
+				},
+				$default['id']
+			);
 		}
 
 	}
