@@ -174,25 +174,22 @@ class FieldsHelper extends CoreFieldsHelper {
 	 */
 	protected static function adjust_file_value( &$default ) {
 
-		$default = array(
-			'id'    => $default,
-			'url'   => '',
-			'type'  => '',
-			'title' => '',
+		$is_array = is_array( $default );
+
+		$default = array_map(
+			function( $value ) {
+				return array(
+					'id'    => $value,
+					'url'   => '',
+					'type'  => '',
+					'title' => '',
+				);
+			},
+			(array) $default
 		);
 
-		if ( is_array( $default['id'] ) ) {
-			$default = array_map(
-				function( $value ) {
-					return array(
-						'id'    => $value,
-						'url'   => '',
-						'type'  => '',
-						'title' => '',
-					);
-				},
-				$default['id']
-			);
+		if ( ! $is_array ) {
+			$default = $default[0];
 		}
 
 	}
