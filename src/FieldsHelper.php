@@ -74,9 +74,7 @@ class FieldsHelper extends CoreFieldsHelper {
 			if ( 'group' === $field->get_config( 'type' ) ) {
 				$config['fields'] = self::prepare( $field->get_config( 'fields' ) );
 				$config['fields'] = $config['fields']['default'];
-			}
-
-			if ( ! empty( $config['options'] ) && self::is_choice_type( $field ) ) {
+			} elseif ( self::is_choice_type( $field ) && ! empty( $config['options'] ) ) {
 				$is_sequential = MainHelper::is_sequential( $config['options'] );
 
 				$config['options'] = array_map(
