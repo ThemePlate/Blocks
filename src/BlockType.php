@@ -97,11 +97,8 @@ class BlockType {
 			if ( ! file_exists( $this->path . CustomBlocks::JSON_FILE ) ) {
 				return;
 			}
-
-			add_filter( 'block_type_metadata_settings', array( $this, 'set_name_from_metadata' ), 10, 2 );
 		}
 
-		add_filter( 'register_block_type_args', array( $this, 'modify_attributes' ), 10, 2 );
 		add_action( 'init', array( $this, 'register' ) );
 
 	}
@@ -165,8 +162,20 @@ class BlockType {
 			'fields' => $this->fields,
 		);
 
+		if ( ! $this->deprecated ) {
+			add_filter( 'block_type_metadata_settings', array( $this, 'set_name_from_metadata' ), 10, 2 );
+		}
+
+		add_filter( 'register_block_type_args', array( $this, 'modify_attributes' ), 10, 2 );
+
 		$block_type  = $this->deprecated ? $this->name : $this->path;
 		$this->block = register_block_type( $block_type, $args ) ?: null;
+
+		if ( ! $this->deprecated ) {
+			remove_filter( 'block_type_metadata_settings', array( $this, 'set_name_from_metadata' ) );
+		}
+
+		remove_filter( 'register_block_type_args', array( $this, 'modify_attributes' ) );
 
 		if ( false === $this->block ) {
 			return;
