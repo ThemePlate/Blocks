@@ -10,6 +10,7 @@ use ThemePlate\Core\Fields;
 use ThemePlate\Core\Helper\MainHelper;
 use WP_Block;
 use WP_Block_Type;
+use WP_Theme_JSON_Resolver;
 
 class BlockType {
 
@@ -146,19 +147,36 @@ class BlockType {
 				$args['attributes'] = array_merge( $args['attributes'], FieldsHelper::build_schema( $this->fields ) );
 			}
 
-			if ( empty( $args['supports']['align'] ) ) {
-				$args['supports']['align'] = array( 'wide', 'full' );
-			}
-
-			if ( empty( $args['attributes']['align'] ) ) {
-				$args['attributes']['align'] = array(
-					'type'    => 'string',
-					'default' => 'full',
-				);
-			}
+			$this->handle_alignment( $args );
 		}
 
 		return $args;
+
+	}
+
+
+	protected function handle_alignment( array &$args ): void {
+
+		$settings = WP_Theme_JSON_Resolver::get_theme_data()->get_settings();
+
+		if ( empty( $settings['layout'] ) || empty( $settings['layout']['contentSize'] ) ) {
+			return;
+		}
+
+		if ( empty( $args['supports']['align'] ) ) {
+			$args['supports']['align'] = array( 'full' );
+
+			if ( isset( $settings['layout']['wideSize'] ) ) {
+				$args['supports']['align'][] = 'wide';
+			}
+		}
+
+		if ( empty( $args['attributes']['align'] ) ) {
+			$args['attributes']['align'] = array(
+				'type'    => 'string',
+				'default' => 'full',
+			);
+		}
 
 	}
 
