@@ -145,6 +145,17 @@ class BlockType {
 			if ( null !== $this->fields ) {
 				$args['attributes'] = array_merge( $args['attributes'], FieldsHelper::build_schema( $this->fields ) );
 			}
+
+			if ( empty( $args['supports']['align'] ) ) {
+				$args['supports']['align'] = array( 'wide', 'full' );
+			}
+
+			if ( empty( $args['attributes']['align'] ) ) {
+				$args['attributes']['align'] = array(
+					'type'    => 'string',
+					'default' => 'full',
+				);
+			}
 		}
 
 		return $args;
