@@ -325,7 +325,7 @@ const Field = ( config, attributes, setAttributes ) => {
 								? value.map(
 										( { id, url, title, type, icon } ) => {
 											return {
-												id,
+												id: id.toString(),
 												url,
 												title,
 												type,
@@ -334,7 +334,7 @@ const Field = ( config, attributes, setAttributes ) => {
 										}
 								  )
 								: {
-										id: value.id,
+										id: value.id.toString(),
 										url: value.url,
 										title: value.title,
 										type: value.type,
