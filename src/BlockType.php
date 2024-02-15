@@ -211,6 +211,7 @@ class BlockType {
 		}
 
 		add_filter( 'themeplate_blocks_collection', array( $this, 'store' ) );
+		add_filter( 'render_block_data', array( $this, 'defaults' ) );
 
 	}
 
@@ -222,6 +223,23 @@ class BlockType {
 		$collection[ $key ] = $this->generate_args();
 
 		return $collection;
+
+	}
+
+
+	public function defaults( array $parsed ): array {
+
+		if ( $parsed['blockName'] !== $this->block->name ) {
+			return $parsed;
+		}
+
+		foreach ( $this->block->attributes as $key => $value ) {
+			if ( ! isset( $parsed['attrs'][ $key ] ) && isset( $value['default'] ) ) {
+				$parsed['attrs'][ $key ] = $value['default'];
+			}
+		}
+
+		return $parsed;
 
 	}
 
