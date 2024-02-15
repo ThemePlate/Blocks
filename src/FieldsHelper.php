@@ -116,7 +116,7 @@ class FieldsHelper extends CoreFieldsHelper {
 
 		$properties = array();
 
-		foreach ( array( 'id', 'url', 'title' ) as $key ) {
+		foreach ( array( 'id', 'url', 'type', 'title' ) as $key ) {
 			$properties[ $key ] = array(
 				'type'    => 'string',
 				'default' => '',
@@ -177,6 +177,7 @@ class FieldsHelper extends CoreFieldsHelper {
 		$default = array(
 			'id'    => $default,
 			'url'   => '',
+			'type'  => '',
 			'title' => '',
 		);
 
@@ -186,6 +187,7 @@ class FieldsHelper extends CoreFieldsHelper {
 					return array(
 						'id'    => $value,
 						'url'   => '',
+						'type'  => '',
 						'title' => '',
 					);
 				},
