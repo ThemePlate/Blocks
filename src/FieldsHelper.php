@@ -119,7 +119,7 @@ class FieldsHelper extends CoreFieldsHelper {
 				'type'    => 'string',
 				'default' => '',
 			);
-		};
+		}
 
 		$schema['properties'] = $properties;
 
@@ -175,7 +175,7 @@ class FieldsHelper extends CoreFieldsHelper {
 		$is_array = is_array( $default );
 
 		$default = array_map(
-			function( $value ) {
+			function ( $value ) {
 				return array(
 					'id'    => $value,
 					'url'   => '',

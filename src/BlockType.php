@@ -39,8 +39,8 @@ class BlockType {
 	protected string $name;  // deprecated
 	protected string $path;
 	protected array $config;
-	protected bool $deprecated = true;
-	protected ?Fields $fields = null;
+	protected bool $deprecated      = true;
+	protected ?Fields $fields       = null;
 	protected ?WP_Block_Type $block = null;
 
 
