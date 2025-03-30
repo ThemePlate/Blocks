@@ -44,7 +44,7 @@ class BlockType {
 	protected ?WP_Block_Type $block = null;
 
 
-	public function __construct( string $path, array $config = null ) {
+	public function __construct( string $path, ?array $config = null ) {
 
 		if ( ! file_exists( $path ) ) {
 			_deprecated_argument( __METHOD__, '1.6.0', 'Pass the path to metadata definition.' );
@@ -276,10 +276,8 @@ class BlockType {
 			return $this->config;
 		}
 
-		if ( ! $this->deprecated ) {
-			if ( 'template' === $key ) {
-				$key = 'render_template';
-			}
+		if ( ! $this->deprecated && 'template' === $key ) {
+			$key = 'render_template';
 		}
 
 		return $this->config[ $key ] ?? '';

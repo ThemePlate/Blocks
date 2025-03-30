@@ -78,7 +78,7 @@ class FieldsHelper extends CoreFieldsHelper {
 				$is_sequential = MainHelper::is_sequential( $config['options'] );
 
 				$config['options'] = array_map(
-					function ( $value, $label ) use ( $is_sequential ) {
+					function ( $value, $label ) use ( $is_sequential ): array {
 						if ( $is_sequential ) {
 							$value = (string) ( $value + 1 );
 						}
@@ -175,14 +175,12 @@ class FieldsHelper extends CoreFieldsHelper {
 		$is_array = is_array( $default_value );
 
 		$default_value = array_map(
-			function ( $value ) {
-				return array(
-					'id'    => $value,
-					'url'   => '',
-					'type'  => '',
-					'title' => '',
-				);
-			},
+			fn( $value ): array => array(
+				'id'    => $value,
+				'url'   => '',
+				'type'  => '',
+				'title' => '',
+			),
 			(array) $default_value
 		);
 

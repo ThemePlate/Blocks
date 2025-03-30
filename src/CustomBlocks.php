@@ -20,7 +20,7 @@ class CustomBlocks {
 	protected bool $deprecated = false;
 
 
-	public function __construct( string $location, string $deprecated = null ) {
+	public function __construct( string $location, ?string $deprecated = null ) {
 
 		if ( null !== $deprecated ) {
 			$this->category   = $location;

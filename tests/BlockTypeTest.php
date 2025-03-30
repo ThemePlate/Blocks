@@ -59,7 +59,7 @@ class BlockTypeTest extends TestCase {
 		( new BlockType( __DIR__ . '/example' ) )->init();
 	}
 
-	public function assert_in_args( $actual ): bool {
+	public function assert_in_args( array $actual ): bool {
 		foreach ( $this->args as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
 			$this->assertSame( $value, $actual[ $key ] );

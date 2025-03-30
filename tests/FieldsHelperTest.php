@@ -10,7 +10,7 @@ use function Brain\Monkey\Functions\stubTranslationFunctions;
 
 class FieldsHelperTest extends TestCase {
 
-	public function test_prepare_response() {
+	public function test_prepare_response(): void {
 		stubEscapeFunctions();
 		stubTranslationFunctions();
 
@@ -20,9 +20,7 @@ class FieldsHelperTest extends TestCase {
 		$counts = array(
 			'config' => array_count_values( array_column( $fields, 'location' ) ),
 			'actual' => array_map(
-				function ( $location ) {
-					return count( $location );
-				},
+				fn( $location ): int => count( $location ),
 				$actual
 			),
 		);
