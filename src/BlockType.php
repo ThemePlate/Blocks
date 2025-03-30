@@ -76,11 +76,11 @@ class BlockType {
 	}
 
 
-	public function fields( array $list ): self {
+	public function fields( array $collection ): self {
 
 		_deprecated_function( __METHOD__, '1.6.0', 'Pass in the config under "custom_fields" key.' );
 
-		$this->fields = new Fields( $list );
+		$this->fields = new Fields( $collection );
 
 		return $this;
 

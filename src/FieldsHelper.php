@@ -168,13 +168,13 @@ class FieldsHelper extends CoreFieldsHelper {
 
 
 	/**
-	 * @param mixed $default
+	 * @param mixed $default_value
 	 */
-	protected static function adjust_file_value( &$default ) {
+	protected static function adjust_file_value( &$default_value ) {
 
-		$is_array = is_array( $default );
+		$is_array = is_array( $default_value );
 
-		$default = array_map(
+		$default_value = array_map(
 			function ( $value ) {
 				return array(
 					'id'    => $value,
@@ -183,11 +183,11 @@ class FieldsHelper extends CoreFieldsHelper {
 					'title' => '',
 				);
 			},
-			(array) $default
+			(array) $default_value
 		);
 
 		if ( ! $is_array ) {
-			$default = $default[0];
+			$default_value = $default_value[0];
 		}
 
 	}
