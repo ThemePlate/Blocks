@@ -143,7 +143,7 @@ class BlockType {
 				$args['api_version'] = 2;
 			}
 
-			if ( null !== $this->fields ) {
+			if ( $this->fields instanceof Fields ) {
 				$args['attributes'] = array_merge( $args['attributes'], FieldsHelper::build_schema( $this->fields ) );
 			}
 
@@ -206,7 +206,7 @@ class BlockType {
 
 		remove_filter( 'register_block_type_args', array( $this, 'modify_attributes' ) );
 
-		if ( false === $this->block ) {
+		if ( null === $this->block ) {
 			return;
 		}
 
@@ -289,7 +289,7 @@ class BlockType {
 
 	public function get_fields(): array {
 
-		if ( null === $this->fields ) {
+		if ( ! $this->fields instanceof Fields ) {
 			return array();
 		}
 

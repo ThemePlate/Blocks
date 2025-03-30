@@ -61,7 +61,7 @@ class FieldsHelper extends CoreFieldsHelper {
 
 		$prepared = array_fill_keys( self::LOCATIONS, array() );
 
-		if ( null === $fields ) {
+		if ( ! $fields instanceof Fields ) {
 			return $prepared;
 		}
 

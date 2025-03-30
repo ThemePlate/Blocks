@@ -94,7 +94,7 @@ class CustomBlocks {
 
 		_deprecated_function( __METHOD__, '1.6.0' );
 
-		if ( in_array( $this->cat_slug, array_column( $categories, 'slug' ) ) ) {
+		if ( in_array( $this->cat_slug, array_column( $categories, 'slug' ), true ) ) {
 			return $categories;
 		}
 
