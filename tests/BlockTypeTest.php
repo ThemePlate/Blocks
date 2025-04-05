@@ -96,6 +96,42 @@ class BlockTypeTest extends TestCase {
 		return true;
 	}
 
+	public function for_one_liner(): array {
+		return array(
+			array(
+				true,
+				'',
+			),
+			array(
+				false,
+				'my-blocks/test',
+			),
+		);
+	}
+
+	/**
+	 * @dataProvider for_one_liner
+	 */
+	public function test_one_liner( bool $structured, string $name ): void {
+		stubEscapeFunctions();
+		stubTranslationFunctions();
+		expect( '_deprecated_function' )->times( (int) $structured )->with(
+			BlockType::class . '::fields',
+			'1.6.0',
+			'Pass in the config under "custom_fields" key.'
+		);
+
+		$path = $structured ? __DIR__ . '/example' : $this->args['title'];
+
+		$block_type = ( new BlockType( $path ) )->fields( array() );
+
+		if ( ! $structured ) {
+			$block_type->config( array( 'namespace' => 'my-blocks' ) );
+		}
+
+		$this->assertSame( $name, $block_type->get_name() );
+	}
+
 	public function test_register_has_wanted_config(): void {
 		expect( '_deprecated_function' )->withAnyArgs()->once();
 

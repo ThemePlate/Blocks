@@ -79,7 +79,9 @@ class BlockType {
 
 	public function fields( array $collection ): self {
 
-		_deprecated_function( __METHOD__, '1.6.0', 'Pass in the config under "custom_fields" key.' );
+		if ( ! $this->deprecated ) {
+			_deprecated_function( __METHOD__, '1.6.0', 'Pass in the config under "custom_fields" key.' );
+		}
 
 		$this->fields = new Fields( $collection );
 
@@ -111,6 +113,12 @@ class BlockType {
 
 
 	public function config( array $config ): self {
+
+		if ( $this->deprecated ) {
+			$this->config = $this->check( $config );
+
+			return $this;
+		}
 
 		$c_file = $this->path . CustomBlocks::CONFIG_FILE;
 		$m_file = $this->path . CustomBlocks::MARKUP_FILE;
