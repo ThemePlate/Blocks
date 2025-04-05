@@ -47,8 +47,6 @@ class BlockType {
 	public function __construct( string $path, ?array $config = null ) {
 
 		if ( ! file_exists( $path ) ) {
-			_deprecated_argument( __METHOD__, '1.6.0', 'Pass the path to metadata definition.' );
-
 			$this->title  = $path;
 			$this->path   = '';
 			$this->config = $this->check( $config ?? array() );
@@ -59,8 +57,10 @@ class BlockType {
 			$this->deprecated = false;
 		}
 
-		if ( null !== $config && ! $this->deprecated ) {
-			_deprecated_argument( __METHOD__, '1.6.0', 'Define custom config in file.' );
+		if ( null !== $config ) {
+			$message = $this->deprecated ? 'Pass the path to metadata definition.' : 'Define custom config in file.';
+
+			_deprecated_argument( __METHOD__, '1.6.0', esc_html( $message ) );
 		}
 
 	}

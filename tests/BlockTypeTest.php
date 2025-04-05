@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 use ThemePlate\Blocks\FieldsHelper;
 use WP_Block;
 use function Brain\Monkey\Functions\expect;
+use function Brain\Monkey\Functions\stubEscapeFunctions;
 use function Brain\Monkey\Functions\when;
 use function Brain\Monkey\Functions\stubTranslationFunctions;
 
@@ -44,8 +45,6 @@ class BlockTypeTest extends TestCase {
 	}
 
 	public function test_firing_init_actually_add_hooks(): void {
-		expect( '_deprecated_argument' )->withAnyArgs()->once();
-
 		$block_type = ( new BlockType( $this->args['title'] ) )->config( $this->config );
 
 		$block_type->init();
@@ -57,6 +56,35 @@ class BlockTypeTest extends TestCase {
 
 		stubTranslationFunctions();
 		( new BlockType( __DIR__ . '/example' ) )->init();
+
+	}
+
+	public function for_fired_deprecations(): array {
+		return array(
+			array(
+				true,
+				'Pass the path to metadata definition.',
+			),
+			array(
+				false,
+				'Define custom config in file.',
+			),
+		);
+	}
+
+	/**
+	 * @dataProvider for_fired_deprecations
+	 */
+	public function test_fired_deprecations( bool $deprecated, string $message ): void {
+		stubEscapeFunctions();
+		stubTranslationFunctions();
+		expect( '_deprecated_argument' )->once()->with(
+			BlockType::class . '::__construct',
+			'1.6.0',
+			$message
+		);
+		( new BlockType( $deprecated ? $this->args['title'] : __DIR__ . '/example', array() ) )->init();
+		$this->expectNotToPerformAssertions();
 	}
 
 	public function assert_in_args( array $actual ): bool {
@@ -69,7 +97,6 @@ class BlockTypeTest extends TestCase {
 	}
 
 	public function test_register_has_wanted_config(): void {
-		expect( '_deprecated_argument' )->withAnyArgs()->once();
 		expect( '_deprecated_function' )->withAnyArgs()->once();
 
 		$block_type = ( new BlockType( $this->args['title'] ) )->config( $this->config );
@@ -107,7 +134,6 @@ class BlockTypeTest extends TestCase {
 	 * @dataProvider for_register_with_blocks_set
 	 */
 	public function test_register_with_blocks_set( string $key, array $values ): void {
-		expect( '_deprecated_argument' )->withAnyArgs()->once();
 		expect( '_deprecated_function' )->withAnyArgs()->once();
 
 		$this->config[ $key ] = $values;
@@ -124,7 +150,6 @@ class BlockTypeTest extends TestCase {
 	}
 
 	public function test_register_with_no_inner_blocks(): void {
-		expect( '_deprecated_argument' )->withAnyArgs()->once();
 		expect( '_deprecated_function' )->withAnyArgs()->once();
 
 		$this->config['inner_blocks'] = false;
@@ -144,8 +169,6 @@ class BlockTypeTest extends TestCase {
 	}
 
 	public function test_render_with_callback(): void {
-		expect( '_deprecated_argument' )->withAnyArgs()->once();
-
 		$this->config['template'] = array( self::class, 'block_callback' );
 
 		$block_type = ( new BlockType( $this->args['title'] ) )->config( $this->config );
