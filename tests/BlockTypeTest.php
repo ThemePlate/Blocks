@@ -46,7 +46,7 @@ class BlockTypeTest extends TestCase {
 	public function test_firing_init_actually_add_hooks(): void {
 		expect( '_deprecated_argument' )->withAnyArgs()->once();
 
-		$block_type = new BlockType( $this->args['title'], $this->config );
+		$block_type = ( new BlockType( $this->args['title'] ) )->config( $this->config );
 
 		$block_type->init();
 		$this->assertSame( 10, has_action( 'wp_ajax_' . AssetsHelper::ACTION, array( AssetsHelper::class, 'load' ) ) );
@@ -148,7 +148,7 @@ class BlockTypeTest extends TestCase {
 
 		$this->config['template'] = array( self::class, 'block_callback' );
 
-		$block_type = new BlockType( $this->args['title'], $this->config );
+		$block_type = ( new BlockType( $this->args['title'] ) )->config( $this->config );
 
 		$block = $this->getMockBuilder( WP_Block::class )->getMock();
 

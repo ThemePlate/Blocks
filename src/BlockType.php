@@ -50,7 +50,8 @@ class BlockType {
 			_deprecated_argument( __METHOD__, '1.6.0', 'Pass the path to metadata definition.' );
 
 			$this->title  = $path;
-			$this->config = $this->check( $config );
+			$this->path   = '';
+			$this->config = $this->check( $config ?? array() );
 		} else {
 			$this->name = '';
 			$this->path = trailingslashit( $path );
@@ -65,7 +66,7 @@ class BlockType {
 	}
 
 
-	protected function check( array $config ): array {
+	protected function check( array $config = array() ): array {
 
 		$config = MainHelper::fool_proof( self::DEPRECATED, $config );
 
@@ -93,7 +94,7 @@ class BlockType {
 		FieldsHelper::setup();
 
 		if ( ! $this->deprecated ) {
-			$this->setup();
+			$this->config( array() );
 
 			if ( ! file_exists( $this->path . CustomBlocks::JSON_FILE ) ) {
 				return;
@@ -109,14 +110,13 @@ class BlockType {
 	}
 
 
-	protected function setup() {
+	public function config( array $config ): self {
 
-		$config = array();
 		$c_file = $this->path . CustomBlocks::CONFIG_FILE;
 		$m_file = $this->path . CustomBlocks::MARKUP_FILE;
 
 		if ( file_exists( $c_file ) ) {
-			$config = require $c_file;
+			$config = array_merge_recursive( require $c_file, $config );
 		}
 
 		$this->config = MainHelper::fool_proof( self::DEFAULTS, $config );
@@ -125,6 +125,8 @@ class BlockType {
 		if ( empty( $this->config['render_template'] ) && file_exists( $m_file ) ) {
 			$this->config['render_template'] = $m_file;
 		}
+
+		return $this;
 
 	}
 
