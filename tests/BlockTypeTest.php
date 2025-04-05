@@ -72,7 +72,7 @@ class BlockTypeTest extends TestCase {
 		expect( '_deprecated_argument' )->withAnyArgs()->once();
 		expect( '_deprecated_function' )->withAnyArgs()->once();
 
-		$block_type = new BlockType( $this->args['title'], $this->config );
+		$block_type = ( new BlockType( $this->args['title'] ) )->config( $this->config );
 
 		expect( 'register_block_type' )->once()->with(
 			$block_type->get_name(),
@@ -113,7 +113,7 @@ class BlockTypeTest extends TestCase {
 		$this->config[ $key ] = $values;
 		$this->args[ $key ]   = $values;
 
-		$block_type = new BlockType( $this->args['title'], $this->config );
+		$block_type = ( new BlockType( $this->args['title'] ) )->config( $this->config );
 
 		expect( 'register_block_type' )->once()->with(
 			$block_type->get_name(),
@@ -129,7 +129,7 @@ class BlockTypeTest extends TestCase {
 
 		$this->config['inner_blocks'] = false;
 
-		$block_type = new BlockType( $this->args['title'], $this->config );
+		$block_type = ( new BlockType( $this->args['title'] ) )->config( $this->config );
 
 		expect( 'register_block_type' )->once()->with(
 			$block_type->get_name(),

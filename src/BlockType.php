@@ -119,8 +119,11 @@ class BlockType {
 			$config = array_merge_recursive( require $c_file, $config );
 		}
 
+		if ( isset( $config['custom_fields'] ) ) {
+			$this->fields = new Fields( $config['custom_fields'] );
+		}
+
 		$this->config = MainHelper::fool_proof( self::DEFAULTS, $config );
-		$this->fields = new Fields( $this->config['custom_fields'] );
 
 		if ( empty( $this->config['render_template'] ) && file_exists( $m_file ) ) {
 			$this->config['render_template'] = $m_file;
