@@ -100,7 +100,11 @@ class BlockType {
 			}
 		}
 
-		add_action( 'init', array( $this, 'register' ) );
+		if ( did_action( 'init' ) ) {
+			$this->register();
+		} else {
+			add_action( 'init', array( $this, 'register' ) ); // @codeCoverageIgnore
+		}
 
 	}
 
