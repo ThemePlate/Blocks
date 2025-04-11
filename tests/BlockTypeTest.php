@@ -25,7 +25,7 @@ class BlockTypeTest extends TestCase {
 		'template'  => '/path/to/render.php',
 	);
 
-	public function setUp(): void {
+	protected function setUp(): void {
 		parent::setUp();
 		Monkey\setUp();
 		when( 'sanitize_title' )->justReturn( 'test' );
@@ -139,7 +139,9 @@ class BlockTypeTest extends TestCase {
 
 		expect( 'register_block_type' )->once()->with(
 			$block_type->get_name(),
-			Mockery::on( array( $this, 'assert_in_args' ) )
+			Mockery::on(
+				fn ( array $actual ): bool => $this->assert_in_args( $actual )
+			)
 		);
 
 		$block_type->register();
@@ -179,7 +181,9 @@ class BlockTypeTest extends TestCase {
 
 		expect( 'register_block_type' )->once()->with(
 			$block_type->get_name(),
-			Mockery::on( array( $this, 'assert_in_args' ) )
+			Mockery::on(
+				fn ( array $actual ): bool => $this->assert_in_args( $actual )
+			)
 		);
 
 		$block_type->register();
@@ -194,7 +198,9 @@ class BlockTypeTest extends TestCase {
 
 		expect( 'register_block_type' )->once()->with(
 			$block_type->get_name(),
-			Mockery::on( array( $this, 'assert_in_args' ) )
+			Mockery::on(
+				fn ( array $actual ): bool => $this->assert_in_args( $actual )
+			)
 		);
 
 		$block_type->register();
