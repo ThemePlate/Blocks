@@ -49,6 +49,10 @@ class CustomBlocks {
 
 	public function init(): void {
 
+		if ( $this->deprecated ) {
+			add_filter( 'block_categories_all', array( $this, 'block_category' ) );
+		}
+
 		$paths = glob( $this->location . '*/' );
 
 		if ( false === $paths ) {
@@ -70,10 +74,6 @@ class CustomBlocks {
 				add_filter( 'register_block_type_args', array( $this, 'modify_attributes' ), 10, 2 );
 				$block->init();
 			}
-		}
-
-		if ( $this->deprecated ) {
-			add_filter( 'block_categories_all', array( $this, 'block_category' ) );
 		}
 
 	}
