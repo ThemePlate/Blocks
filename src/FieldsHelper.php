@@ -80,7 +80,7 @@ class FieldsHelper extends CoreFieldsHelper {
 				$config['options'] = array_map(
 					function ( $value, $label ) use ( $is_sequential ): array {
 						if ( $is_sequential ) {
-							$value = (string) ( $value + 1 );
+							$value = (string) ( (int) $value + 1 );
 						}
 
 						return compact( 'value', 'label' );

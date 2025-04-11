@@ -375,7 +375,7 @@ class BlockType {
 		}
 
 		if ( is_callable( $callback ) ) {
-			return call_user_func( $callback, $attributes, $content, $block );
+			return (string) call_user_func( $callback, $attributes, $content, $block );
 		}
 
 		unset( $themeplate );
@@ -383,7 +383,7 @@ class BlockType {
 
 		include $block->block_type->themeplate['markup'];
 
-		return ob_get_clean();
+		return (string) ob_get_clean();
 
 	}
 
