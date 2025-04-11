@@ -235,6 +235,10 @@ class BlockType {
 
 	public function store( array $collection ): array {
 
+		if ( ! $this->block instanceof WP_Block_Type ) {
+			return $collection;
+		}
+
 		$key = $this->deprecated ? $this->name : $this->block->name;
 
 		$collection[ $key ] = $this->generate_args();
@@ -246,7 +250,15 @@ class BlockType {
 
 	public function defaults( array $parsed ): array {
 
+		if ( ! $this->block instanceof WP_Block_Type ) {
+			return $parsed;
+		}
+
 		if ( $parsed['blockName'] !== $this->block->name ) {
+			return $parsed;
+		}
+
+		if ( null === $this->block->attributes ) {
 			return $parsed;
 		}
 

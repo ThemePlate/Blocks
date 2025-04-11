@@ -49,7 +49,13 @@ class CustomBlocks {
 
 	public function init(): void {
 
-		foreach ( glob( $this->location . '*/' ) as $path ) {
+		$paths = glob( $this->location . '*/' );
+
+		if ( false === $paths ) {
+			return;
+		}
+
+		foreach ( $paths as $path ) {
 			if ( file_exists( $path . self::JSON_FILE ) ) {
 				( new BlockType( $path ) )->init();
 
