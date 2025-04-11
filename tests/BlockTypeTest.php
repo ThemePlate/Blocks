@@ -10,6 +10,7 @@ use Brain\Monkey;
 use Mockery;
 use ThemePlate\Blocks\AssetsHelper;
 use ThemePlate\Blocks\BlockType;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ThemePlate\Blocks\FieldsHelper;
 use WP_Block;
@@ -19,7 +20,10 @@ use function Brain\Monkey\Functions\when;
 use function Brain\Monkey\Functions\stubTranslationFunctions;
 
 class BlockTypeTest extends TestCase {
-	private array $args   = array();
+	/** @var array<string, mixed> */
+	private array $args = array();
+
+	/** @var array<string, string|bool|mixed[]> */
 	private array $config = array(
 		'namespace' => 'my-blocks',
 		'template'  => '/path/to/render.php',
@@ -59,6 +63,7 @@ class BlockTypeTest extends TestCase {
 
 	}
 
+	/** @return array<int, array<int, bool|string>> */
 	public function for_fired_deprecations(): array {
 		return array(
 			array(
@@ -87,6 +92,7 @@ class BlockTypeTest extends TestCase {
 		$this->expectNotToPerformAssertions();
 	}
 
+	/** @param array<string, mixed> $actual */
 	public function assert_in_args( array $actual ): bool {
 		foreach ( $this->args as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
@@ -96,6 +102,7 @@ class BlockTypeTest extends TestCase {
 		return true;
 	}
 
+	/** @return array<int, array<int, bool|string>> */
 	public function for_one_liner(): array {
 		return array(
 			array(
@@ -147,6 +154,7 @@ class BlockTypeTest extends TestCase {
 		$block_type->register();
 	}
 
+	/** @return array<int, array<int, mixed>> */
 	public function for_register_with_blocks_set(): array {
 		return array(
 			array(
@@ -169,6 +177,7 @@ class BlockTypeTest extends TestCase {
 	}
 
 	/**
+	 * @param mixed[] $values
 	 * @dataProvider for_register_with_blocks_set
 	 */
 	public function test_register_with_blocks_set( string $key, array $values ): void {
@@ -215,8 +224,10 @@ class BlockTypeTest extends TestCase {
 
 		$block_type = ( new BlockType( $this->args['title'] ) )->config( $this->config );
 
+		/** @var WP_Block&MockObject $block */
 		$block = $this->getMockBuilder( WP_Block::class )->getMock();
 
+		// @phpstan-ignore assign.propertyType
 		$block->block_type = (object) array( 'themeplate' => array( 'markup' => wp_json_encode( $this->config['template'] ) ) );
 
 		$this->assertSame( self::block_callback(), $block_type->render( array(), '', $block ) );

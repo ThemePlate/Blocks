@@ -16,6 +16,7 @@ class CustomBlocks {
 	protected string $category;
 	protected string $cat_slug;
 	protected string $location;
+	/** @var array<string, string> */
 	protected array $handled;
 	protected bool $deprecated = false;
 
@@ -79,6 +80,10 @@ class CustomBlocks {
 	}
 
 
+	/**
+	 * @param array<string, mixed> $args
+	 * @return array<string, mixed>
+	 */
 	public function modify_attributes( array $args, string $block_name ): array {
 
 		if ( in_array( $block_name, array_keys( $this->handled ), true ) ) {
@@ -92,6 +97,10 @@ class CustomBlocks {
 	}
 
 
+	/**
+	 * @param array{title: string, slug: string}[] $categories
+	 * @return array{title: string, slug: string}[]
+	 */
 	public function block_category( array $categories ): array {
 
 		if ( ! $this->deprecated ) {

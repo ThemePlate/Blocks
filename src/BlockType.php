@@ -6,6 +6,7 @@
 
 namespace ThemePlate\Blocks;
 
+use ThemePlate\Core\Field;
 use ThemePlate\Core\Fields;
 use ThemePlate\Core\Helper\MainHelper;
 use WP_Block;
@@ -38,12 +39,14 @@ class BlockType {
 	protected string $title; // deprecated
 	protected string $name;  // deprecated
 	protected string $path;
+	/** @var array<string, mixed> */
 	protected array $config;
 	protected bool $deprecated      = true;
 	protected ?Fields $fields       = null;
 	protected ?WP_Block_Type $block = null;
 
 
+	/** @param array<string, mixed> $config */
 	public function __construct( string $path, ?array $config = null ) {
 
 		if ( ! file_exists( $path ) ) {
@@ -66,6 +69,10 @@ class BlockType {
 	}
 
 
+	/**
+	 * @param array<string, mixed> $config
+	 * @return array<string, mixed>
+	 */
 	protected function check( array $config = array() ): array {
 
 		$config = MainHelper::fool_proof( self::DEPRECATED, $config );
@@ -77,6 +84,7 @@ class BlockType {
 	}
 
 
+	/** @param array<string, Field|mixed> $collection */
 	public function fields( array $collection ): self {
 
 		if ( ! $this->deprecated ) {
@@ -112,6 +120,7 @@ class BlockType {
 	}
 
 
+	/** @param array<string, mixed> $config */
 	public function config( array $config ): self {
 
 		if ( $this->deprecated ) {
@@ -142,6 +151,12 @@ class BlockType {
 	}
 
 
+	/**
+	 * @param array<string, mixed> $settings
+	 * @param array<string, mixed> $metadata
+	 *
+	 * @return array<string, mixed>
+	 */
 	public function set_name_from_metadata( array $settings, array $metadata ): array {
 
 		if ( $metadata['file'] === $this->path . CustomBlocks::JSON_FILE ) {
@@ -153,6 +168,10 @@ class BlockType {
 	}
 
 
+	/**
+	 * @param array<string, mixed> $args
+	 * @return array<string, mixed>
+	 */
 	public function modify_attributes( array $args, string $block_name ): array {
 
 		if ( $block_name === $this->name ) {
@@ -172,6 +191,7 @@ class BlockType {
 	}
 
 
+	/** @param array<string, mixed> $args */
 	protected function handle_alignment( array &$args ): void {
 
 		$settings = WP_Theme_JSON_Resolver::get_theme_data()->get_settings();
@@ -233,6 +253,10 @@ class BlockType {
 	}
 
 
+	/**
+	 * @param array<string, mixed> $collection
+	 * @return array<string, mixed>
+	 */
 	public function store( array $collection ): array {
 
 		if ( ! $this->block instanceof WP_Block_Type ) {
@@ -248,6 +272,10 @@ class BlockType {
 	}
 
 
+	/**
+	 * @param array<string, mixed> $parsed
+	 * @return array<string, mixed>
+	 */
 	public function defaults( array $parsed ): array {
 
 		if ( ! $this->block instanceof WP_Block_Type ) {
@@ -299,6 +327,7 @@ class BlockType {
 	}
 
 
+	/** @return mixed */
 	public function get_config( string $key = '' ) {
 
 		if ( '' === $key ) {
@@ -314,6 +343,7 @@ class BlockType {
 	}
 
 
+	/** @return array{}|Field[] */
 	public function get_fields(): array {
 
 		if ( ! $this->fields instanceof Fields ) {
@@ -325,6 +355,7 @@ class BlockType {
 	}
 
 
+	/** @return array<string, mixed> */
 	protected function generate_args(): array {
 
 		$config = $this->get_config();
@@ -352,6 +383,7 @@ class BlockType {
 	}
 
 
+	/** @param array<string, mixed> $attributes */
 	public static function render( array $attributes, string $content, WP_Block $block ): string {
 
 		if ( ! property_exists( $block->block_type, 'themeplate' ) ) {

@@ -5,7 +5,7 @@
  */
 
 /**
- * @var array    $attributes Block attributes.
+ * @var array<string, mixed> $attributes Block attributes.
  * @var string   $content    Block inner content.
  * @var WP_Block $block      Block instance.
  */

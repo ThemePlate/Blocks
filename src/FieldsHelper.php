@@ -57,6 +57,7 @@ class FieldsHelper extends CoreFieldsHelper {
 	}
 
 
+	/** @return array<string, array{}|mixed> */
 	public static function prepare( ?Fields $fields ): array {
 
 		$prepared = array_fill_keys( self::LOCATIONS, array() );
@@ -104,6 +105,14 @@ class FieldsHelper extends CoreFieldsHelper {
 	}
 
 
+	/**
+	 * @return array{}|array{
+	 *     type: string,
+	 *     default: array<int|string, mixed>|string,
+	 *     properties?: array<string, mixed>,
+	 *     items?: array<string, mixed>
+	 * }
+	 */
 	public static function get_schema( Field $field ): array {
 
 		$schema = parent::get_schema( $field );
@@ -170,7 +179,7 @@ class FieldsHelper extends CoreFieldsHelper {
 	/**
 	 * @param mixed $default_value
 	 */
-	protected static function adjust_file_value( &$default_value ) {
+	protected static function adjust_file_value( &$default_value ): void {
 
 		$is_array = is_array( $default_value );
 
