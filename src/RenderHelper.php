@@ -33,7 +33,7 @@ class RenderHelper {
 		}
 
 		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
-			$content = '<' . self::INNER_BLOCKS_TAG . '/>';
+			$content = '<' . self::INNER_BLOCKS_TAG . '></' . self::INNER_BLOCKS_TAG . '>';
 		}
 
 		if ( is_callable( $callback ) ) {
