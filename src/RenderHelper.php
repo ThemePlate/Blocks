@@ -41,6 +41,7 @@ class RenderHelper {
 		}
 
 		unset( $themeplate );
+		unset( $callback );
 		ob_start();
 
 		include $block->block_type->{ BlockType::CUSTOM_KEY }['markup'];

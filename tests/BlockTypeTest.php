@@ -224,7 +224,7 @@ class BlockTypeTest extends TestCase {
 	public function test_render_with_callback(): void {
 		$this->config['template'] = array( self::class, 'block_callback' );
 
-		$block_type = ( new BlockType( $this->args['title'] ) )->config( $this->config );
+		( new BlockType( $this->args['title'] ) )->config( $this->config );
 
 		/** @var WP_Block&MockObject $block */
 		$block = $this->getMockBuilder( WP_Block::class )->getMock();
