@@ -13,6 +13,7 @@ use ThemePlate\Blocks\BlockType;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ThemePlate\Blocks\FieldsHelper;
+use ThemePlate\Blocks\RenderHelper;
 use WP_Block;
 use function Brain\Monkey\Functions\expect;
 use function Brain\Monkey\Functions\stubEscapeFunctions;
@@ -230,6 +231,6 @@ class BlockTypeTest extends TestCase {
 		// @phpstan-ignore assign.propertyType
 		$block->block_type = (object) array( 'themeplate' => array( 'markup' => wp_json_encode( $this->config['template'] ) ) );
 
-		$this->assertSame( self::block_callback(), $block_type->render( array(), '', $block ) );
+		$this->assertSame( self::block_callback(), RenderHelper::callback( array(), '', $block ) );
 	}
 }

@@ -235,7 +235,7 @@ class BlockType {
 
 		$args = $this->generate_args();
 
-		$args['render_callback'] = array( self::class, 'render' );
+		$args['render_callback'] = array( RenderHelper::class, 'callback' );
 		$args['themeplate']      = array(
 			'markup' => $this->get_config( 'template' ),
 			'fields' => $this->fields,
@@ -392,43 +392,6 @@ class BlockType {
 		}
 
 		return $config;
-
-	}
-
-
-	/** @param array<string, mixed> $attributes */
-	public static function render( array $attributes, string $content, WP_Block $block ): string {
-
-		if ( ! property_exists( $block->block_type, 'themeplate' ) ) {
-			return '';
-		}
-
-		$themeplate = $block->block_type->themeplate;
-
-		if ( empty( $themeplate['markup'] ) ) {
-			return '';
-		}
-
-		$callback = json_decode( $themeplate['markup'] );
-
-		if ( ! file_exists( $themeplate['markup'] ) && ! is_callable( $callback ) ) {
-			return '';
-		}
-
-		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
-			$content = '<ThemePlateInnerBlocks></ThemePlateInnerBlocks>';
-		}
-
-		if ( is_callable( $callback ) ) {
-			return (string) call_user_func( $callback, $attributes, $content, $block );
-		}
-
-		unset( $themeplate );
-		ob_start();
-
-		include $block->block_type->themeplate['markup'];
-
-		return (string) ob_get_clean();
 
 	}
 
