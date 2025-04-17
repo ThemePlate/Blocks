@@ -21,11 +21,15 @@ use function Brain\Monkey\Functions\when;
 use function Brain\Monkey\Functions\stubTranslationFunctions;
 
 class BlockTypeTest extends TestCase {
-	/** @var array<string, mixed> */
-	private array $args = array();
+	public const ARGS = array(
+		'title'      => 'Test',
+		'themeplate' => array(
+			'markup' => self::CONFIG['template'],
+			'fields' => null,
+		),
+	);
 
-	/** @var array<string, string|bool|mixed[]> */
-	private array $config = array(
+	public const CONFIG = array(
 		'namespace' => 'my-blocks',
 		'template'  => '/path/to/render.php',
 	);
@@ -33,16 +37,7 @@ class BlockTypeTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		Monkey\setUp();
-		when( 'sanitize_title' )->justReturn( 'test' );
-
-		$this->args = array(
-			// phpcs:ignore WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned
-			'title' => 'Test',
-			BlockType::CUSTOM_KEY => array(
-				'markup' => $this->config['template'],
-				'fields' => null,
-			),
-		);
+		when( 'sanitize_title' )->justReturn( strtolower( self::ARGS['title'] ) );
 	}
 
 	protected function tearDown(): void {
@@ -51,7 +46,7 @@ class BlockTypeTest extends TestCase {
 	}
 
 	public function test_firing_init_actually_add_hooks(): void {
-		$block_type = ( new BlockType( $this->args['title'] ) )->config( $this->config );
+		$block_type = ( new BlockType( self::ARGS['title'] ) )->config( self::CONFIG );
 
 		$block_type->init();
 		$this->assertSame( 10, has_action( 'wp_ajax_' . AssetsHelper::ACTION, array( AssetsHelper::class, 'load' ) ) );
@@ -62,7 +57,6 @@ class BlockTypeTest extends TestCase {
 
 		stubTranslationFunctions();
 		( new BlockType( __DIR__ . '/example' ) )->init();
-
 	}
 
 	/** @return array<int, array<int, bool|string>> */
@@ -90,13 +84,13 @@ class BlockTypeTest extends TestCase {
 			'1.6.0',
 			$message
 		);
-		( new BlockType( $deprecated ? $this->args['title'] : __DIR__ . '/example', array() ) )->init();
+		( new BlockType( $deprecated ? self::ARGS['title'] : __DIR__ . '/example', array() ) )->init();
 		$this->expectNotToPerformAssertions();
 	}
 
 	/** @param array<string, mixed> $actual */
 	public function assert_in_args( array $actual ): bool {
-		foreach ( $this->args as $key => $value ) {
+		foreach ( self::ARGS as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
 			$this->assertSame( $value, $actual[ $key ] );
 		}
@@ -130,7 +124,7 @@ class BlockTypeTest extends TestCase {
 			'Pass in the config under "custom_fields" key.'
 		);
 
-		$path = $structured ? __DIR__ . '/example' : $this->args['title'];
+		$path = $structured ? __DIR__ . '/example' : self::ARGS['title'];
 
 		$block_type = ( new BlockType( $path ) )->fields( array() );
 
@@ -144,7 +138,7 @@ class BlockTypeTest extends TestCase {
 	public function test_register_has_wanted_config(): void {
 		expect( '_deprecated_function' )->withAnyArgs()->once();
 
-		$block_type = ( new BlockType( $this->args['title'] ) )->config( $this->config );
+		$block_type = ( new BlockType( self::ARGS['title'] ) )->config( self::CONFIG );
 
 		expect( 'register_block_type' )->once()->with(
 			$block_type->get_name(),
@@ -185,10 +179,13 @@ class BlockTypeTest extends TestCase {
 	public function test_register_with_blocks_set( string $key, array $values ): void {
 		expect( '_deprecated_function' )->withAnyArgs()->once();
 
-		$this->config[ $key ] = $values;
-		$this->args[ $key ]   = $values;
+		$config = self::CONFIG;
+		$args   = self::ARGS;
 
-		$block_type = ( new BlockType( $this->args['title'] ) )->config( $this->config );
+		$config[ $key ] = $values;
+		$args[ $key ]   = $values;
+
+		$block_type = ( new BlockType( $args['title'] ) )->config( $config );
 
 		expect( 'register_block_type' )->once()->with(
 			$block_type->get_name(),
@@ -203,9 +200,11 @@ class BlockTypeTest extends TestCase {
 	public function test_register_with_no_inner_blocks(): void {
 		expect( '_deprecated_function' )->withAnyArgs()->once();
 
-		$this->config['inner_blocks'] = false;
+		$config = self::CONFIG;
 
-		$block_type = ( new BlockType( $this->args['title'] ) )->config( $this->config );
+		$config['inner_blocks'] = false;
+
+		$block_type = ( new BlockType( self::ARGS['title'] ) )->config( $config );
 
 		expect( 'register_block_type' )->once()->with(
 			$block_type->get_name(),
@@ -222,15 +221,17 @@ class BlockTypeTest extends TestCase {
 	}
 
 	public function test_render_with_callback(): void {
-		$this->config['template'] = array( self::class, 'block_callback' );
+		$config = self::CONFIG;
 
-		( new BlockType( $this->args['title'] ) )->config( $this->config );
+		$config['template'] = array( self::class, 'block_callback' );
+
+		( new BlockType( self::ARGS['title'] ) )->config( $config );
 
 		/** @var WP_Block&MockObject $block */
 		$block = $this->getMockBuilder( WP_Block::class )->getMock();
 
 		// @phpstan-ignore assign.propertyType
-		$block->block_type = (object) array( BlockType::CUSTOM_KEY => array( 'markup' => wp_json_encode( $this->config['template'] ) ) );
+		$block->block_type = (object) array( BlockType::CUSTOM_KEY => array( 'markup' => wp_json_encode( $config['template'] ) ) );
 
 		$this->assertSame( self::block_callback(), RenderHelper::callback( array(), '', $block ) );
 	}
