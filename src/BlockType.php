@@ -9,14 +9,15 @@ namespace ThemePlate\Blocks;
 use ThemePlate\Core\Field;
 use ThemePlate\Core\Fields;
 use ThemePlate\Core\Helper\MainHelper;
-use WP_Block;
 use WP_Block_Type;
 use WP_Theme_JSON_Resolver;
 
 class BlockType {
 
+	public const CUSTOM_KEY = 'themeplate';
+
 	public const DEPRECATED = array(
-		'namespace'       => 'themeplate',
+		'namespace'       => self::CUSTOM_KEY,
 		'icon'            => 'admin-generic',
 		'category'        => 'widgets',
 		'template'        => '',
@@ -171,7 +172,7 @@ class BlockType {
 				);
 
 				if ( $template_path ) {
-					$settings['themeplate']['markup'] = $template_path;
+					$settings[ self::CUSTOM_KEY ]['markup'] = $template_path;
 				}
 			}
 		}
@@ -235,8 +236,8 @@ class BlockType {
 
 		$args = $this->generate_args();
 
-		$args['render_callback'] = array( RenderHelper::class, 'callback' );
-		$args['themeplate']      = array(
+		$args['render_callback']  = array( RenderHelper::class, 'callback' );
+		$args[ self::CUSTOM_KEY ] = array(
 			'markup' => $this->get_config( 'template' ),
 			'fields' => $this->fields,
 		);
@@ -260,7 +261,7 @@ class BlockType {
 			return;
 		}
 
-		add_filter( 'themeplate_blocks_collection', array( $this, 'store' ) );
+		add_filter( AssetsHelper::FILTER, array( $this, 'store' ) );
 		add_filter( 'render_block_data', array( $this, 'defaults' ) );
 
 	}

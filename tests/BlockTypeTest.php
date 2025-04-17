@@ -36,8 +36,9 @@ class BlockTypeTest extends TestCase {
 		when( 'sanitize_title' )->justReturn( 'test' );
 
 		$this->args = array(
-			'title'      => 'Test',
-			'themeplate' => array(
+			// phpcs:ignore WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned
+			'title' => 'Test',
+			BlockType::CUSTOM_KEY => array(
 				'markup' => $this->config['template'],
 				'fields' => null,
 			),
@@ -229,7 +230,7 @@ class BlockTypeTest extends TestCase {
 		$block = $this->getMockBuilder( WP_Block::class )->getMock();
 
 		// @phpstan-ignore assign.propertyType
-		$block->block_type = (object) array( 'themeplate' => array( 'markup' => wp_json_encode( $this->config['template'] ) ) );
+		$block->block_type = (object) array( BlockType::CUSTOM_KEY => array( 'markup' => wp_json_encode( $this->config['template'] ) ) );
 
 		$this->assertSame( self::block_callback(), RenderHelper::callback( array(), '', $block ) );
 	}

@@ -10,6 +10,7 @@ class AssetsHelper {
 
 	public const ACTION  = 'themeplate_blocks_assets';
 	public const HANDLE  = 'themeplate-blocks-assets';
+	public const FILTER  = 'themeplate_blocks_collection';
 	public const VERSION = '0.1.0';
 
 
@@ -83,7 +84,7 @@ class AssetsHelper {
 			array(
 				'ajax_url'   => admin_url( 'admin-ajax.php' ),
 				'_wpnonce'   => wp_create_nonce( self::ACTION ),
-				'collection' => apply_filters( 'themeplate_blocks_collection', array() ),
+				'collection' => apply_filters( self::FILTER, array() ),
 				'locations'  => FieldsHelper::LOCATIONS,
 			),
 		);

@@ -89,7 +89,7 @@ class CustomBlocks {
 		if ( in_array( $block_name, array_keys( $this->handled ), true ) ) {
 			$args['category'] = $this->cat_slug;
 
-			$args['themeplate']['markup'] = $this->handled[ $block_name ] . self::MARKUP_FILE;
+			$args[ BlockType::CUSTOM_KEY ]['markup'] = $this->handled[ $block_name ] . self::MARKUP_FILE;
 		}
 
 		return $args;

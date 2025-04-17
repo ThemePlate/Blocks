@@ -10,14 +10,17 @@ use WP_Block;
 
 class RenderHelper {
 
+	public const INNER_BLOCKS_TAG = 'ThemePlateInnerBlocks';
+
+
 	/** @param array<string, mixed> $attributes */
 	public static function callback( array $attributes, string $content, WP_Block $block ): string {
 
-		if ( ! property_exists( $block->block_type, 'themeplate' ) ) {
+		if ( ! property_exists( $block->block_type, BlockType::CUSTOM_KEY ) ) {
 			return '';
 		}
 
-		$themeplate = $block->block_type->themeplate;
+		$themeplate = $block->block_type->{ BlockType::CUSTOM_KEY };
 
 		if ( empty( $themeplate['markup'] ) ) {
 			return '';
@@ -30,7 +33,7 @@ class RenderHelper {
 		}
 
 		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
-			$content = '<ThemePlateInnerBlocks></ThemePlateInnerBlocks>';
+			$content = '<' . self::INNER_BLOCKS_TAG . '/>';
 		}
 
 		if ( is_callable( $callback ) ) {
@@ -40,7 +43,7 @@ class RenderHelper {
 		unset( $themeplate );
 		ob_start();
 
-		include $block->block_type->themeplate['markup'];
+		include $block->block_type->{ BlockType::CUSTOM_KEY }['markup'];
 
 		return (string) ob_get_clean();
 

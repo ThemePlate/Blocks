@@ -36,12 +36,12 @@ class FieldsHelper extends CoreFieldsHelper {
 
 		$block = WP_Block_Type_Registry::get_instance()->get_registered( $_POST['block'] );
 
-		if ( null === $block || ! property_exists( $block, 'themeplate' ) ) {
+		if ( null === $block || ! property_exists( $block, BlockType::CUSTOM_KEY ) ) {
 			wp_send_json_error();
 			return;
 		}
 
-		$response = self::prepare( $block->themeplate['fields'] );
+		$response = self::prepare( $block->{ BlockType::CUSTOM_KEY }['fields'] );
 
 		wp_send_json_success( $response );
 
