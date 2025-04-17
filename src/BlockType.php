@@ -157,10 +157,23 @@ class BlockType {
 	 *
 	 * @return array<string, mixed>
 	 */
-	public function set_name_from_metadata( array $settings, array $metadata ): array {
+	public function set_config_from_metadata( array $settings, array $metadata ): array {
 
 		if ( $metadata['file'] === $this->path . CustomBlocks::JSON_FILE ) {
 			$this->name = $metadata['name'];
+
+			if ( ! empty( $metadata['render'] ) ) {
+				$template_path = wp_normalize_path(
+					(string) realpath(
+						dirname( $metadata['file'] ) . '/' .
+						remove_block_asset_path_prefix( $metadata['render'] )
+					)
+				);
+
+				if ( $template_path ) {
+					$settings['themeplate']['markup'] = $template_path;
+				}
+			}
 		}
 
 		return $settings;
@@ -229,16 +242,16 @@ class BlockType {
 		);
 
 		if ( ! $this->deprecated ) {
-			add_filter( 'block_type_metadata_settings', array( $this, 'set_name_from_metadata' ), 10, 2 );
+			add_filter( 'block_type_metadata_settings', array( $this, 'set_config_from_metadata' ), 10, 2 );
 		}
 
 		add_filter( 'register_block_type_args', array( $this, 'modify_attributes' ), 10, 2 );
 
-		$block_type  = $this->deprecated ? $this->name : $this->path;
+		$block_type  = $this->deprecated ? $this->name : $this->path . CustomBlocks::JSON_FILE;
 		$this->block = register_block_type( $block_type, $args ) ?: null; // phpcs:ignore Universal.Operators.DisallowShortTernary
 
 		if ( ! $this->deprecated ) {
-			remove_filter( 'block_type_metadata_settings', array( $this, 'set_name_from_metadata' ) );
+			remove_filter( 'block_type_metadata_settings', array( $this, 'set_config_from_metadata' ) );
 		}
 
 		remove_filter( 'register_block_type_args', array( $this, 'modify_attributes' ) );
